@@ -15,6 +15,7 @@
 # next.js
 /.next/
 /out/
+next-env.d.ts
 
 # production
 /build
@@ -41,3 +42,6 @@ yarn-error.log*
 
 # migrations
 /prisma/migrations
+
+
+docs.md

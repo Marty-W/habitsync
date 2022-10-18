@@ -1,30 +1,31 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import NextAuth, { type NextAuthOptions } from 'next-auth'
+import GoogleProvider from 'next-auth/providers/google'
+import { prisma } from '../../../server/db/client'
 
-// Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "../../../server/db/client";
-import { env } from "../../../env/server.mjs";
+// TODO
+//  2. add paswordless sign in
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
     session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id;
+        session.user.id = user.id
       }
-      return session;
+      return session
     },
   },
   // Configure one or more authentication providers
+  // TODO figure out how to properly pass envs
   adapter: PrismaAdapter(prisma),
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-    // ...add more providers here
   ],
-};
+  secret: process.env.NEXTAUTH_SECRET,
+}
 
-export default NextAuth(authOptions);
+export default NextAuth(authOptions)
