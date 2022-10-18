@@ -17,8 +17,18 @@ export const habitRouter = t.router({
       })
 
       if (userId && userHabits) {
+        // RIGHT NOW SETTING TODOIST_ID ON THE FIRST FETCHED TASK, BUT COULD BE HANDLED BETTER
+        await ctx.prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            todoistId: userHabits[0]?.creatorId,
+          },
+        })
+
         const formattedHabitsForDb = userHabits.map((habit) => {
-          const { id, content, description, labels, url } = habit
+          const { id, content, description, labels, url, creatorId } = habit
 
           return {
             id,

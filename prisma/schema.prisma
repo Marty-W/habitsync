@@ -41,6 +41,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  // TODO MAKE THIS UNIQUE BEFORE DEPLOY
+  todoistId     String?   @unique
   accounts      Account[]
   sessions      Session[]
   habits        Habit[]
@@ -55,6 +57,7 @@ model Habit {
   url         String
   projectId   Int?
   labels      String[]
+  timestamps  Int[]
   userId      String
   user        User     @relation(fields: [userId], references: [id])
 
