@@ -17,7 +17,7 @@ const AccountPage: NextPage = () => {
       <div className='avatar placeholder'>
         <div className='w-24 rounded-full bg-neutral-focus text-neutral-content'>
           {avatarUrl ? (
-            <img alt='user avatar' src={avatarUrl} layout='fill' />
+            <img alt='user avatar' src={avatarUrl} />
           ) : (
             <span className='text-3xl'>MW</span>
           )}
