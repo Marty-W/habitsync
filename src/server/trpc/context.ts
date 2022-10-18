@@ -40,7 +40,7 @@ export const createContext = async (
   const session = await getServerAuthSession({ req, res })
 
   // Doist API, right now hardcoded to my token
-  const doist = createDoistApi(process.env.NEXT_PUBLIC_TEMP_API_TOKEN)
+  const doist = createDoistApi(process.env.NEXT_PUBLIC_TEMP_API_TOKEN!)
 
   return await createContextInner({
     session,
