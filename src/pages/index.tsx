@@ -43,7 +43,6 @@ const Home: NextPage = () => {
             <div className='flex w-full justify-center'>
               <img
                 src='https://via.placeholder.com/300'
-                layout='fill'
                 alt='product screenshot'
               />
             </div>
