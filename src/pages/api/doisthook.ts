@@ -1,14 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../server/db/client'
 
+// TODO check for edge cases later
+// 1. user postpones the habit for the day that is scheduled
+// 2. user deletes habit
+// 3. user "uncompletes" the habit for the day
+
 const doisthook = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { event_name, event_data, user_id } = req.body
+    const userId = user_id.toString()
+    const habitId = event_data.id.toString()
 
     if (event_name === 'item:completed') {
-      const userId = user_id.toString()
-      const habitId = event_data.id
-      const utc = Date.now()
+      // TODO batch findUnique user + habit
 
       try {
         await prisma.user.findUniqueOrThrow({
@@ -17,24 +22,15 @@ const doisthook = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })
 
-        //TODO this could be batched
         await prisma.habit.findUniqueOrThrow({
           where: {
             id: habitId,
           },
         })
 
-        // TODO check if habit is already completed for today
-        // TODO catch also habit updated => delete timestamp for today
-
-        await prisma.habit.update({
-          where: {
-            id: habitId,
-          },
+        await prisma.timestamp.create({
           data: {
-            timestamps: {
-              push: utc,
-            },
+            habitId: habitId,
           },
         })
 

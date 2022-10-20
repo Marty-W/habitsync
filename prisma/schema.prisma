@@ -51,17 +51,24 @@ model User {
 }
 
 model Habit {
-  id          String   @id @unique
+  id          String      @id @unique
   name        String
   description String?
   url         String
   projectId   Int?
   labels      String[]
-  timestamps  Int[]
+  timestamps  Timestamp[]
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
 
   @@index([id, userId])
+}
+
+model Timestamp {
+  id      String   @id @default(cuid())
+  time    DateTime @default(now())
+  Habit   Habit?   @relation(fields: [habitId], references: [id])
+  habitId String?
 }
 
 model VerificationToken {
