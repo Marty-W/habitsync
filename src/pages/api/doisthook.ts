@@ -28,13 +28,15 @@ const doisthook = async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })
 
+        //TODO check if there is already a timestamp for today
+
         await prisma.timestamp.create({
           data: {
             habitId: habitId,
           },
         })
 
-        res.status(200).json({ message: 'Success' })
+        res.status(200).json({ messaee: 'Success' })
       } catch (err) {
         console.log(err)
         res.status(500).json({ message: 'Resource not found in database' })
