@@ -88,7 +88,7 @@ export const habitRouter = t.router({
               name: true,
               projectId: true,
               url: true,
-              // TODO here I'll want to fetch habit logs (all dates and stuff like that)
+              timestamps: true,
             },
           })
 

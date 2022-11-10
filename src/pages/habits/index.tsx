@@ -5,6 +5,8 @@ import { trpc } from '../../utils/trpc'
 const Habits: NextPage = () => {
   const { data: habitData } = trpc.habit.getUserHabits.useQuery()
 
+  console.log(habitData)
+
   return (
     <div className='flex min-h-screen flex-col'>
       <h1>Dashboard</h1>
