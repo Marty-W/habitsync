@@ -1,4 +1,3 @@
-import ParentSize from '@visx/responsive/lib/components/ParentSize'
 import { useRouter } from 'next/router'
 import Calendar from '../../components/calendar/calendar'
 
