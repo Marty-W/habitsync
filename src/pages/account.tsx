@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { useState } from 'react'
-import { trpc } from '../utils/trpc'
+import { trpc } from '../lib/trpc'
 
 const AccountPage: NextPage = () => {
   const { data: labelData, refetch: labelRefetch } =
@@ -14,7 +14,7 @@ const AccountPage: NextPage = () => {
 
   return (
     <div className='flex min-h-screen w-full flex-col items-center p-4'>
-      <div className='avatar placeholder'>
+      <div className='placeholder avatar'>
         <div className='w-24 rounded-full bg-neutral-focus text-neutral-content'>
           {avatarUrl ? (
             <img alt='user avatar' src={avatarUrl} />
@@ -28,7 +28,7 @@ const AccountPage: NextPage = () => {
           <span>Habit label</span>
           {/* TODO Disable the sync all habits button until user picks a label */}
           <select
-            className='select select-primary max-w-xs'
+            className='select-primary select max-w-xs'
             disabled={!labelData}
             defaultValue='placeholder'
             onChange={(e) => setLocalLabel(e.currentTarget.value)}
@@ -44,13 +44,13 @@ const AccountPage: NextPage = () => {
           </select>
         </div>
         <button
-          className='btn btn-outline btn-xs mt-3 border-red-400'
+          className='btn-outline btn-xs btn mt-3 border-red-400'
           onClick={() => labelRefetch()}
         >
           Sync labels
         </button>
         <button
-          className='btn btn-outline btn-xs mt-3 border-red-400'
+          className='btn-outline btn-xs btn mt-3 border-red-400'
           onClick={() => fetchUserHabits({ labelName: localLabel })}
           disabled={!localLabel}
         >

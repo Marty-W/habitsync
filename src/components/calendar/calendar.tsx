@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { DAYS } from '../../const/date'
-import { CalendarData } from '../../types'
 import {
   generateCalendarData,
   getMaxDate,
   getMinDate,
   getNumCalRows,
-} from '../../utils/date'
+} from '../../lib/date'
+import { CalendarData } from '../../types'
 import MonthSwitcher from './monthSwitcher'
 
 interface CalendarProps {

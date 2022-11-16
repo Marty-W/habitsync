@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Calendar from '../../components/calendar/calendar'
-import { trpc } from '../../utils/trpc'
+import { trpc } from '../../lib/trpc'
 
 export const habitData = {
   description: 'Kazdy den ber prasky, musis byt zdravy. Je to jednoduche.',
