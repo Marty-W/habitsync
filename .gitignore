@@ -43,5 +43,8 @@ yarn-error.log*
 # migrations
 /prisma/migrations
 
+# seed 
+/prisma/seed
+
 
 docs.md

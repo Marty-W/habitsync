@@ -4,15 +4,23 @@ import { MONTHS } from '../../const/date'
 interface Props {
   month: number
   year: number
+  increment: () => void
+  decrement: () => void
 }
 
-const MonthSwitcher = ({ month, year }: Props) => {
+const MonthSwitcher = ({ month, year, decrement, increment }: Props) => {
   return (
     <div className='flex justify-center pt-5'>
       <div className='flex items-center'>
-        <BsChevronDoubleLeft className='cursor-pointer text-xl' />
+        <BsChevronDoubleLeft
+          onClick={decrement}
+          className='cursor-pointer text-xl'
+        />
         <span className='px-4'>{MONTHS[month]}</span>
-        <BsChevronDoubleRight className='text-xl cursor-pointer' />
+        <BsChevronDoubleRight
+          className='cursor-pointer text-xl'
+          onClick={increment}
+        />
       </div>
     </div>
   )

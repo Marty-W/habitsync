@@ -1,4 +1,5 @@
 import { endOfMonth, getDaysInMonth, getISODay, startOfMonth } from 'date-fns'
+import { CalendarData } from '../types'
 
 export const generateCalendarData = (date: Date, timestamps: Set<number>) => {
   const daysInMonth = getDaysInMonth(date)
@@ -52,4 +53,31 @@ export const getNumCalRows = (date: Date) => {
   const firstISODay = getISODay(startOfMonth(date))
   const daysInMonth = getDaysInMonth(date)
   return Math.ceil((daysInMonth - (7 - firstISODay)) / 7) + 1
+}
+
+export const getMinDate = (timestamps: CalendarData | undefined) => {
+  if (!timestamps) {
+    const today = new Date()
+    today.setDate(1)
+
+    return today
+  }
+
+  const minYear = Math.min(...Object.keys(timestamps).map(Number))
+  const minMonth = Math.min(...Object.keys(timestamps[minYear]).map(Number))
+
+  return new Date(minYear, minMonth, 1)
+}
+
+export const getMaxDate = (timestamps: CalendarData | undefined) => {
+  if (!timestamps) {
+    const today = new Date()
+    today.setDate(1)
+
+    return today
+  }
+  const maxYear = Math.max(...Object.keys(timestamps).map(Number))
+  const maxMonth = Math.max(...Object.keys(timestamps[maxYear]).map(Number))
+
+  return new Date(maxYear, maxMonth - 1, 1)
 }

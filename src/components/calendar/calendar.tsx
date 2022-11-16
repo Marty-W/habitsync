@@ -1,18 +1,43 @@
 import { useState } from 'react'
 import { DAYS } from '../../const/date'
-import { generateCalendarData, getNumCalRows } from '../../utils/date'
+import { CalendarData } from '../../types'
+import {
+  generateCalendarData,
+  getMaxDate,
+  getMinDate,
+  getNumCalRows,
+} from '../../utils/date'
 import MonthSwitcher from './monthSwitcher'
 
 interface CalendarProps {
-  timestamps: Set<number>
+  timestamps?: CalendarData
 }
 
 const Calendar = ({ timestamps }: CalendarProps) => {
   const today = new Date()
-  const numberOfRows = getNumCalRows(today)
-  const data = generateCalendarData(today, timestamps)
-  const [currentMonth, setCurrentMonth] = useState<number>(today.getMonth())
-  const [currentYear, setCurrentYear] = useState<number>(today.getFullYear())
+  const [selectedMonth, setSelectedMonth] = useState<number>(today.getMonth())
+  const [selectedYear, setSelectedYear] = useState<number>(today.getFullYear())
+  const numberOfRows = getNumCalRows(new Date(selectedYear, selectedMonth))
+  const startDate = getMinDate(timestamps)
+  const endDate = getMaxDate(timestamps)
+
+  const incrementMonth = () => {
+    if (selectedMonth === 11) {
+      setSelectedMonth(0)
+      setSelectedYear(selectedYear + 1)
+    } else {
+      setSelectedMonth(selectedMonth + 1)
+    }
+  }
+
+  const decrementMonth = () => {
+    if (selectedMonth === 0) {
+      setSelectedMonth(11)
+      setSelectedYear(selectedYear - 1)
+    } else {
+      setSelectedMonth(selectedMonth - 1)
+    }
+  }
 
   return (
     <div className='flex h-full w-full max-w-lg flex-col  rounded-xl bg-slate-300 p-5'>
@@ -28,7 +53,7 @@ const Calendar = ({ timestamps }: CalendarProps) => {
           numberOfRows === 5 ? 'grid-rows-5' : 'grid-rows-6'
         } flex-1 place-items-center gap-2`}
       >
-        {data.map((day, i) => {
+        {/* {data.map((day, i) => {
           return (
             <div
               key={i}
@@ -47,9 +72,14 @@ const Calendar = ({ timestamps }: CalendarProps) => {
               </span>
             </div>
           )
-        })}
+        })} */}
       </div>
-      <MonthSwitcher month={currentMonth} year={currentYear} />
+      <MonthSwitcher
+        month={selectedMonth}
+        year={selectedYear}
+        increment={incrementMonth}
+        decrement={decrementMonth}
+      />
     </div>
   )
 }

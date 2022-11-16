@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Calendar from '../../components/calendar/calendar'
+import { trpc } from '../../utils/trpc'
 
 export const habitData = {
   description: 'Kazdy den ber prasky, musis byt zdravy. Je to jednoduche.',
@@ -34,17 +35,15 @@ const HabitDetail = () => {
   // const { data: habitData } = trpc.habit.getHabitDetail.useQuery({
   //   id: id as string,
   // })
+  const { data: calendarData } = trpc.habit.getHabitCalendarData.useQuery(
+    {
+      id: id as string,
+    },
+    { enabled: !!id }
+  )
 
   //TODO add a loading state
   //TODO add handler to go back to dashboard
-
-  const timestamps = new Set([
-    ...habitData.timestamps.map((t) => {
-      const day = new Date(t.time).getDay()
-
-      return day
-    }),
-  ])
 
   return (
     <div className='flex h-screen flex-col p-5'>
@@ -54,9 +53,11 @@ const HabitDetail = () => {
           <p className='flex-1  bg-zinc-800'>{habitData?.description}</p>
         </div>
       </div>
-      <div className='flex flex-1 items-center justify-center'>
-        <Calendar timestamps={timestamps} />
-      </div>
+      {calendarData && (
+        <div className='flex flex-1 items-center justify-center'>
+          <Calendar timestamps={calendarData} />
+        </div>
+      )}
       <div className='flex-1'></div>
     </div>
   )

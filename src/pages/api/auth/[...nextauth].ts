@@ -3,8 +3,7 @@ import NextAuth, { type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { prisma } from '../../../server/db/client'
 
-// TODO
-//  2. add paswordless sign in
+// TODO add paswordless auth
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session

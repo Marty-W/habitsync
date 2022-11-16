@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { CalendarData } from '../../../types'
 import { t } from '../trpc'
 
 //TODO check how trpc handles errors and how to handle them
@@ -93,6 +94,50 @@ export const habitRouter = t.router({
           })
 
           return habit
+        } catch (err) {
+          console.error(err)
+        }
+      }
+    }),
+  getHabitCalendarData: t.procedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id
+      const { id } = input
+
+      if (userId) {
+        try {
+          const timestamps = await ctx.prisma.habit.findUnique({
+            where: {
+              id,
+            },
+            select: {
+              timestamps: true,
+            },
+          })
+
+          return timestamps?.timestamps.reduce(
+            (acc: CalendarData, timestamp) => {
+              const date = new Date(timestamp.time)
+              const year = date.getFullYear()
+              const month = date.getMonth() + 1
+
+              if (!acc[year]) {
+                acc[year] = {}
+              }
+
+              if (!acc[year][month]) {
+                acc[year][month] = []
+              }
+
+              if (!acc[year][month].includes(date.getDate())) {
+                acc[year][month].push(date.getDate())
+              }
+
+              return acc
+            },
+            {}
+          )
         } catch (err) {
           console.error(err)
         }
