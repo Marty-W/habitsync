@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { DAYS } from '../../const/date'
 import { generateCalendarData, getNumCalRows } from '../../utils/date'
 import MonthSwitcher from './monthSwitcher'

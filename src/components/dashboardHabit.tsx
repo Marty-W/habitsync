@@ -9,12 +9,7 @@ interface IDashboardHabitProps {
   projectId: number | null
 }
 
-const DashboardHabit = ({
-  id,
-  labels,
-  name,
-  projectId,
-}: IDashboardHabitProps) => {
+const DashboardHabit = ({ id, labels, name }: IDashboardHabitProps) => {
   return (
     <Link href={`/habits/${id}`}>
       <div className='border-2'>
@@ -23,7 +18,7 @@ const DashboardHabit = ({
         <div>
           {labels.map((label) => {
             return (
-              <span key={label} className='badge badge-primary'>
+              <span key={label} className='badge-primary badge'>
                 {label}
               </span>
             )

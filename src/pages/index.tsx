@@ -1,10 +1,7 @@
 import type { NextPage } from 'next'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 
 const Home: NextPage = () => {
   const session = useSession()
@@ -13,14 +10,6 @@ const Home: NextPage = () => {
   //TODO show landing page/dashboard components based on auth state, right now hardcoding to authed
   // TODO check if this imperative usage of router for authed pages is ok
   const authed = session.status === 'authenticated'
-
-  // console.log(session)
-
-  // useEffect(() => {
-  //   if (authed) {
-  //     router.push('/habits')
-  //   }
-  // }, [authed, router])
 
   return (
     <div>
