@@ -1,25 +1,23 @@
+import { isSameDay } from 'date-fns'
 import { useState } from 'react'
 import { DAYS } from '../../const/date'
-import { CalendarData } from '../../types'
-import {
-  generateCalendarData,
-  getMaxDate,
-  getMinDate,
-  getNumCalRows,
-} from '../../utils/date'
+import useCalendar from '../../hooks/useCalendar'
+import { getNumCalRows } from '../../lib/date'
 import MonthSwitcher from './monthSwitcher'
 
 interface CalendarProps {
-  timestamps?: CalendarData
+  timestamps: Set<string>
 }
 
 const Calendar = ({ timestamps }: CalendarProps) => {
+  const calendarData = useCalendar([...timestamps][0])
   const today = new Date()
-  const [selectedMonth, setSelectedMonth] = useState<number>(today.getMonth())
+  const [selectedMonth, setSelectedMonth] = useState<number>(
+    today.getMonth() + 1
+  )
   const [selectedYear, setSelectedYear] = useState<number>(today.getFullYear())
   const numberOfRows = getNumCalRows(new Date(selectedYear, selectedMonth))
-  const startDate = getMinDate(timestamps)
-  const endDate = getMaxDate(timestamps)
+  const activeMonth = calendarData[selectedYear]?.[selectedMonth]
 
   const incrementMonth = () => {
     if (selectedMonth === 11) {
@@ -53,26 +51,31 @@ const Calendar = ({ timestamps }: CalendarProps) => {
           numberOfRows === 5 ? 'grid-rows-5' : 'grid-rows-6'
         } flex-1 place-items-center gap-2`}
       >
-        {/* {data.map((day, i) => {
-          return (
-            <div
-              key={i}
-              className={`flex w-10 items-center justify-center rounded-md ${
-                day.thisMonth ? 'border-2' : 'border-0'
-              } border-slate-400 p-1 ${
-                day.day === today.getDate() ? 'bg-blue-600' : 'bg-slate-50'
-              }`}
-            >
-              <span
-                className={`${day.done ? 'bg-red-500' : 'bg-transparent'} ${
-                  day.thisMonth ? 'text-zinc-800' : 'text-zinc-400'
+        {calendarData &&
+          activeMonth.map(({ thisMonth, dayDate }, i) => {
+            return (
+              <div
+                key={i}
+                className={`flex w-10 items-center justify-center rounded-md ${
+                  thisMonth ? 'border-2' : 'border-0'
+                } border-slate-400 p-1 ${
+                  isSameDay(new Date(dayDate), today)
+                    ? 'bg-blue-600'
+                    : 'bg-slate-50'
                 }`}
               >
-                {day.day}
-              </span>
-            </div>
-          )
-        })} */}
+                <span
+                  className={`${
+                    timestamps.has(dayDate) && thisMonth
+                      ? 'bg-red-500'
+                      : 'bg-transparent'
+                  } ${thisMonth ? 'text-zinc-800' : 'text-zinc-400'}`}
+                >
+                  {new Date(dayDate).getDate()}
+                </span>
+              </div>
+            )
+          })}
       </div>
       <MonthSwitcher
         month={selectedMonth}

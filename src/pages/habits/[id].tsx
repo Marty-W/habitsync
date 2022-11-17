@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Calendar from '../../components/calendar/calendar'
-import { trpc } from '../../utils/trpc'
+import { trpc } from '../../lib/trpc'
 
 export const habitData = {
   description: 'Kazdy den ber prasky, musis byt zdravy. Je to jednoduche.',
@@ -35,7 +35,7 @@ const HabitDetail = () => {
   // const { data: habitData } = trpc.habit.getHabitDetail.useQuery({
   //   id: id as string,
   // })
-  const { data: calendarData } = trpc.habit.getHabitCalendarData.useQuery(
+  const { data: timestamps } = trpc.habit.getHabitTimestamps.useQuery(
     {
       id: id as string,
     },
@@ -53,9 +53,9 @@ const HabitDetail = () => {
           <p className='flex-1  bg-zinc-800'>{habitData?.description}</p>
         </div>
       </div>
-      {calendarData && (
+      {timestamps && (
         <div className='flex flex-1 items-center justify-center'>
-          <Calendar timestamps={calendarData} />
+          <Calendar timestamps={timestamps} />
         </div>
       )}
       <div className='flex-1'></div>

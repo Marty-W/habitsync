@@ -1,11 +1,9 @@
 import { NextPage } from 'next'
 import DashboardHabit from '../../components/dashboardHabit'
-import { trpc } from '../../utils/trpc'
+import { trpc } from '../../lib/trpc'
 
 const Habits: NextPage = () => {
   const { data: habitData } = trpc.habit.getUserHabits.useQuery()
-
-  console.log(habitData)
 
   return (
     <div className='flex min-h-screen flex-col'>
