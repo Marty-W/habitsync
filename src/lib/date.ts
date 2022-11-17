@@ -1,7 +1,13 @@
-import { endOfMonth, getDaysInMonth, getISODay, startOfMonth } from 'date-fns'
-import { CalendarData } from '../types'
+import {
+  eachMonthOfInterval,
+  endOfMonth,
+  getDaysInMonth,
+  getISODay,
+  startOfMonth,
+} from 'date-fns'
+import { SortedMonthInterval } from '../types'
 
-export const generateCalendarData = (date: Date, timestamps: Set<number>) => {
+export const generateCalendarMonth = (date: Date) => {
   const daysInMonth = getDaysInMonth(date)
   const daysInPrevMonth = getDaysInMonth(
     new Date(date.getFullYear(), date.getMonth() - 1, 1)
@@ -20,10 +26,16 @@ export const generateCalendarData = (date: Date, timestamps: Set<number>) => {
     },
     (_, i) => {
       let day
+      let dayDate
       if (i < numberOfDaysFromPrevMonth) {
         day = daysInPrevMonth - numberOfDaysFromPrevMonth + i + 1
+        dayDate = new Date(
+          date.getFullYear(),
+          date.getMonth() - 1,
+          day
+        ).toDateString()
         return {
-          day,
+          dayDate,
           thisMonth: false,
         }
       } else if (
@@ -31,17 +43,24 @@ export const generateCalendarData = (date: Date, timestamps: Set<number>) => {
         i < daysInMonth + numberOfDaysFromPrevMonth
       ) {
         day = i - numberOfDaysFromPrevMonth + 1
-
+        dayDate = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          day
+        ).toDateString()
         return {
-          day,
-          done: timestamps.has(day),
+          dayDate,
           thisMonth: true,
         }
       } else {
         day = i - numberOfDaysFromPrevMonth - daysInMonth + 1
-
+        dayDate = new Date(
+          date.getFullYear(),
+          date.getMonth() + 1,
+          day
+        ).toDateString()
         return {
-          day,
+          dayDate,
           thisMonth: false,
         }
       }
@@ -49,35 +68,33 @@ export const generateCalendarData = (date: Date, timestamps: Set<number>) => {
   )
 }
 
+export const generateCalendarInterval = (start: Date, end: Date) => {
+  const monthStarts = eachMonthOfInterval({ start, end })
+
+  return monthStarts
+    .map((monthStart) => generateCalendarMonth(monthStart))
+    .reduce((acc: SortedMonthInterval, curr) => {
+      const firstDayOfMonth = curr.find((day) => day.thisMonth)
+
+      if (!firstDayOfMonth) return acc
+
+      const month = new Date(firstDayOfMonth.dayDate).getMonth() + 1
+      const year = new Date(firstDayOfMonth.dayDate).getFullYear()
+
+      if (!acc[year]) {
+        acc[year] = {}
+      }
+
+      if (!acc[year][month]) {
+        acc[year][month] = curr
+      }
+
+      return acc
+    }, {})
+}
+
 export const getNumCalRows = (date: Date) => {
   const firstISODay = getISODay(startOfMonth(date))
   const daysInMonth = getDaysInMonth(date)
   return Math.ceil((daysInMonth - (7 - firstISODay)) / 7) + 1
-}
-
-export const getMinDate = (timestamps: CalendarData | undefined) => {
-  if (!timestamps) {
-    const today = new Date()
-    today.setDate(1)
-
-    return today
-  }
-
-  const minYear = Math.min(...Object.keys(timestamps).map(Number))
-  const minMonth = Math.min(...Object.keys(timestamps[minYear]).map(Number))
-
-  return new Date(minYear, minMonth, 1)
-}
-
-export const getMaxDate = (timestamps: CalendarData | undefined) => {
-  if (!timestamps) {
-    const today = new Date()
-    today.setDate(1)
-
-    return today
-  }
-  const maxYear = Math.max(...Object.keys(timestamps).map(Number))
-  const maxMonth = Math.max(...Object.keys(timestamps[maxYear]).map(Number))
-
-  return new Date(maxYear, maxMonth - 1, 1)
 }

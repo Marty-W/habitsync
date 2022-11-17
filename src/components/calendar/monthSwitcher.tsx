@@ -16,7 +16,7 @@ const MonthSwitcher = ({ month, year, decrement, increment }: Props) => {
           onClick={decrement}
           className='cursor-pointer text-xl'
         />
-        <span className='px-4'>{MONTHS[month]}</span>
+        <span className='px-4'>{MONTHS[month - 1]}</span>
         <BsChevronDoubleRight
           className='cursor-pointer text-xl'
           onClick={increment}
