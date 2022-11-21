@@ -1,5 +1,5 @@
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
-import { MONTHS } from '../../const/date'
+import { MONTHS } from '../../lib/const'
 
 interface Props {
   month: number

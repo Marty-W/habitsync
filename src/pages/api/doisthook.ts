@@ -1,34 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { TODOIST_EVENTS } from '../../lib/const'
 import { prisma } from '../../server/db/client'
-
-// TODO check for edge cases later
-// 1. user postpones the habit for the day that is scheduled
-// 2. user deletes habit
-// 3. user "uncompletes" the habit for the day
 
 const doisthook = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { event_name, event_data, user_id } = req.body
-    const userId = user_id.toString()
+    const { event_name, event_data } = req.body
     const habitId = event_data.id.toString()
 
-    if (event_name === 'item:completed') {
+    if (event_name === TODOIST_EVENTS.ITEM_COMPLETED) {
       // TODO batch findUnique user + habit
 
       try {
-        await prisma.user.findUniqueOrThrow({
-          where: {
-            todoistId: userId,
-          },
-        })
-
         await prisma.habit.findUniqueOrThrow({
           where: {
             id: habitId,
           },
         })
-
-        //TODO check if there is already a timestamp for today
 
         await prisma.timestamp.create({
           data: {
@@ -37,9 +24,10 @@ const doisthook = async (req: NextApiRequest, res: NextApiResponse) => {
         })
 
         res.status(200).json({ messaee: 'Success' })
-      } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: 'Resource not found in database' })
+      } catch (e) {
+        console.error(e)
+        // you have to return 200 to avoid Doist retrying
+        res.status(200).json({ message: 'Resource not found in database' })
       }
     }
   }
