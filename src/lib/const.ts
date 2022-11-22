@@ -14,3 +14,7 @@ export const MONTHS = [
   'Nov',
   'Dec',
 ]
+
+export const TODOIST_EVENTS = {
+  ITEM_COMPLETED: 'item:completed',
+}

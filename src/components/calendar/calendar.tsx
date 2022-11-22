@@ -1,7 +1,7 @@
 import { isSameDay } from 'date-fns'
 import { useState } from 'react'
-import { DAYS } from '../../const/date'
 import useCalendar from '../../hooks/useCalendar'
+import { DAYS } from '../../lib/const'
 import { getNumCalRows } from '../../lib/date'
 import MonthSwitcher from './monthSwitcher'
 
