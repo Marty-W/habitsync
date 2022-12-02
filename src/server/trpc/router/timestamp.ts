@@ -75,7 +75,7 @@ export const timestampRouter = t.router({
 
         return calculateAllStreaks(
           timestamps.map((timestamp) => timestamp.time)
-        )
+        ).slice(0, input.numStreaks)
       } catch (err) {
         if (err instanceof Error) {
           console.error(err.message)

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import Calendar from '../../components/calendar/calendar'
+import Streaks from '../../components/streaks'
 import { trpc } from '../../lib/trpc'
 
 export const habitData = {
@@ -54,8 +55,13 @@ const HabitDetail = () => {
         </div>
       </div>
       {timestamps && (
-        <div className='flex flex-1 items-center justify-center'>
-          <Calendar timestamps={timestamps} />
+        <div>
+          <div className='flex flex-1 items-center justify-center'>
+            <Calendar timestamps={timestamps} />
+          </div>
+          <div>
+            <Streaks timestamps={timestamps} />
+          </div>
         </div>
       )}
       <div className='flex-1'></div>
