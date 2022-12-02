@@ -1,10 +1,10 @@
-import { t } from '../trpc'
+import { authedProcedure, t } from '../trpc'
 
 export const accRouter = t.router({
-  getUserImgUrl: t.procedure.query(({ ctx }) => {
-    return ctx.session?.user?.image
+  getUserImgUrl: authedProcedure.query(({ ctx }) => {
+    return ctx.session.user.image
   }),
-  getUserLabels: t.procedure.query(async ({ ctx }) => {
+  getUserLabels: authedProcedure.query(async ({ ctx }) => {
     return await ctx.doist.getLabels()
   }),
 })

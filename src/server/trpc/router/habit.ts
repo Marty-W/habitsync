@@ -1,10 +1,10 @@
 import { z } from 'zod'
-import { t } from '../trpc'
+import { authedProcedure, t } from '../trpc'
 
 //TODO check how trpc handles errors and how to handle them
 
 export const habitRouter = t.router({
-  setUserHabits: t.procedure
+  setUserHabits: authedProcedure
     .input(z.object({ labelName: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id
@@ -16,7 +16,7 @@ export const habitRouter = t.router({
         label: labelName,
       })
 
-      if (userId && userHabits) {
+      if (userHabits) {
         // RIGHT NOW SETTING TODOIST_ID ON THE FIRST FETCHED TASK, BUT COULD BE HANDLED BETTER
         await ctx.prisma.user.update({
           where: {
@@ -46,84 +46,51 @@ export const habitRouter = t.router({
         })
       }
     }),
-  getUserHabits: t.procedure.query(async ({ ctx }) => {
+  getUserHabits: authedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session?.user?.id
 
-    if (userId) {
+    try {
+      const habits = await ctx.prisma.habit.findMany({
+        where: {
+          userId,
+        },
+        select: {
+          id: true,
+          labels: true,
+          name: true,
+          projectId: true,
+        },
+      })
+
+      return habits
+    } catch (err) {
+      console.error(err)
+    }
+  }),
+  getHabitDetail: authedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const { id } = input
+
       try {
-        const habits = await ctx.prisma.habit.findMany({
+        const habit = await ctx.prisma.habit.findUnique({
           where: {
-            userId,
+            id,
           },
           select: {
+            description: true,
             id: true,
             labels: true,
             name: true,
             projectId: true,
+            url: true,
+            timestamps: true,
           },
         })
 
-        return habits
+        return habit
       } catch (err) {
         console.error(err)
-      }
-    }
-  }),
-  getHabitDetail: t.procedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const userId = ctx.session?.user?.id
-      const { id } = input
-
-      if (userId) {
-        try {
-          const habit = await ctx.prisma.habit.findUnique({
-            where: {
-              id,
-            },
-            select: {
-              description: true,
-              id: true,
-              labels: true,
-              name: true,
-              projectId: true,
-              url: true,
-              timestamps: true,
-            },
-          })
-
-          return habit
-        } catch (err) {
-          console.error(err)
-        }
-      }
-    }),
-  getHabitTimestamps: t.procedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const userId = ctx.session?.user?.id
-      const { id } = input
-
-      if (userId) {
-        try {
-          const timestamps = await ctx.prisma.timestamp.findMany({
-            where: {
-              habitId: id,
-            },
-            orderBy: {
-              time: 'asc',
-            },
-            select: {
-              time: true,
-            },
-          })
-
-          return new Set(
-            timestamps.map((timestamp) => timestamp.time.toDateString())
-          )
-        } catch (err) {
-          console.error(err)
-        }
       }
     }),
 })
