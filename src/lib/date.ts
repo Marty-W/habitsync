@@ -1,8 +1,11 @@
 import {
+  differenceInDays,
   eachMonthOfInterval,
   endOfMonth,
   getDaysInMonth,
   getISODay,
+  isToday,
+  isYesterday,
   startOfMonth,
 } from 'date-fns'
 import { SortedMonthInterval } from '../types'
@@ -97,4 +100,76 @@ export const getNumCalRows = (date: Date) => {
   const firstISODay = getISODay(startOfMonth(date))
   const daysInMonth = getDaysInMonth(date)
   return Math.ceil((daysInMonth - (7 - firstISODay)) / 7) + 1
+}
+
+interface Streak {
+  start?: string
+  end?: string
+  length: number
+}
+
+const areDaysConsecutive = (date1: Date | string, date2: Date | string) => {
+  const diff = differenceInDays(new Date(date1), new Date(date2))
+  return diff === 1
+}
+
+export const calculateAllStreaks = (dates: Date[]) => {
+  return dates
+    .reduce((streaks: Streak[], timestamp, idx, arr) => {
+      const prevTimestamp = arr[idx - 1]
+
+      if (idx === 0 || !areDaysConsecutive(prevTimestamp, timestamp)) {
+        streaks.push({
+          start: timestamp.toDateString(),
+          end: timestamp.toDateString(),
+          length: 1,
+        })
+        return streaks
+      }
+
+      const lastStreak = streaks[streaks.length - 1]
+
+      if (areDaysConsecutive(prevTimestamp, timestamp)) {
+        lastStreak.length++
+        lastStreak.start = timestamp.toDateString()
+      } else {
+        lastStreak.start = timestamp.toISOString()
+        streaks.push(lastStreak)
+      }
+
+      return streaks
+    }, [])
+    .filter((streak) => streak.length > 1)
+}
+
+export const calculateCurrentStreak = (dates: Date[]) => {
+  let isStreakActive = true
+  let currentStreak = 0
+  let streakStart
+
+  for (let i = 0; i < dates.length; i++) {
+    if (i === 0) {
+      const shouldContinue = isToday(dates[i]) || isYesterday(dates[i])
+
+      if (shouldContinue) {
+        currentStreak++
+        streakStart = dates[i]
+        continue
+      } else {
+        isStreakActive = false
+        break
+      }
+    }
+
+    const diffInDays = differenceInDays(dates[i - 1], dates[i])
+
+    if (diffInDays === 1) {
+      currentStreak++
+      streakStart = dates[i]
+    } else {
+      break
+    }
+  }
+
+  return isStreakActive ? null : { start: streakStart, length: currentStreak }
 }
