@@ -1,14 +1,11 @@
-import { calculateStreaks } from '../lib/date'
+import { Streak } from '../lib/date'
 
 interface Props {
-  timestamps: Set<string>
+  streaks: Streak[]
 }
 
-const Streaks = ({ timestamps }: Props) => {
-  const sortedStreaks = calculateStreaks([...timestamps])
-
-  console.log(sortedStreaks)
-
+const Streaks = ({ streaks }: Props) => {
+  console.log(streaks)
   return (
     <div>
       <h1>Streaks</h1>

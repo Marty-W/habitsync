@@ -102,7 +102,7 @@ export const getNumCalRows = (date: Date) => {
   return Math.ceil((daysInMonth - (7 - firstISODay)) / 7) + 1
 }
 
-interface Streak {
+export interface Streak {
   start?: string
   end?: string
   length: number

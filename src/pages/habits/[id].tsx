@@ -31,16 +31,22 @@ export const habitData = {
 
 const HabitDetail = () => {
   const router = useRouter()
-  //THIS thing is url param, so habit/THETHING so I will have to fetch habit detail again (probably)
   const { id } = router.query
-  // const { data: habitData } = trpc.habit.getHabitDetail.useQuery({
-  //   id: id as string,
-  // })
-  const { data: timestamps } = trpc.habit.getHabitTimestamps.useQuery(
+  const { data: timestamps } = trpc.timestamp.getAllTimestamps.useQuery(
     {
-      id: id as string,
+      habitId: id as string,
     },
     { enabled: !!id }
+  )
+
+  const { data: bestStreaks } = trpc.timestamp.getBestStreaks.useQuery(
+    {
+      habitId: id as string,
+      numStreaks: 5,
+    },
+    {
+      enabled: !!id,
+    }
   )
 
   //TODO add a loading state
@@ -50,7 +56,7 @@ const HabitDetail = () => {
     <div className='flex h-screen flex-col p-5'>
       <div className='header mb-4 flex h-40 flex-col justify-center'>
         <h1 className='flex-1 text-center text-2xl'>{habitData?.name}</h1>
-        <div className='flex flex-1 items-center rounded-lg bg-zinc-800 text-center'>
+        <div className='flex flex-1 items-center rounded-lg bg-zinc-800 px-4 text-center'>
           <p className='flex-1  bg-zinc-800'>{habitData?.description}</p>
         </div>
       </div>
@@ -59,12 +65,13 @@ const HabitDetail = () => {
           <div className='flex flex-1 items-center justify-center'>
             <Calendar timestamps={timestamps} />
           </div>
-          <div>
-            <Streaks timestamps={timestamps} />
-          </div>
         </div>
       )}
-      <div className='flex-1'></div>
+      {bestStreaks && (
+        <div>
+          <Streaks streaks={bestStreaks} />
+        </div>
+      )}
     </div>
   )
 }

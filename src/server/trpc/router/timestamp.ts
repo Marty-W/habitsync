@@ -73,6 +73,8 @@ export const timestampRouter = t.router({
           },
         })
 
+        //TODO pagination ????
+
         return calculateAllStreaks(
           timestamps.map((timestamp) => timestamp.time)
         ).slice(0, input.numStreaks)
