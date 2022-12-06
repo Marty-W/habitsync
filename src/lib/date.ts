@@ -120,8 +120,8 @@ export const calculateAllStreaks = (dates: Date[]) => {
 
       if (idx === 0 || !areDaysConsecutive(prevTimestamp, timestamp)) {
         streaks.push({
-          start: timestamp.toDateString(),
-          end: timestamp.toDateString(),
+          start: timestamp.toString(),
+          end: timestamp.toString(),
           length: 1,
         })
         return streaks
@@ -131,9 +131,9 @@ export const calculateAllStreaks = (dates: Date[]) => {
 
       if (areDaysConsecutive(prevTimestamp, timestamp)) {
         lastStreak.length++
-        lastStreak.start = timestamp.toDateString()
+        lastStreak.start = timestamp.toString()
       } else {
-        lastStreak.start = timestamp.toISOString()
+        lastStreak.start = timestamp.toString()
         streaks.push(lastStreak)
       }
 
@@ -172,4 +172,20 @@ export const calculateCurrentStreak = (dates: Date[]) => {
   }
 
   return isStreakActive ? null : { start: streakStart, length: currentStreak }
+}
+
+export const getMaxDate = (months: SortedMonthInterval) => {
+  const years = Object.keys(months)
+  const maxYear = Math.max(...years.map(Number))
+  const maxMonth = Math.max(...Object.keys(months[maxYear]).map(Number))
+
+  return new Date(months[maxYear][maxMonth][0].dayDate)
+}
+
+export const getMinDate = (months: SortedMonthInterval) => {
+  const years = Object.keys(months)
+  const minYear = Math.min(...years.map(Number))
+  const minMonth = Math.min(...Object.keys(months[minYear]).map(Number))
+
+  return new Date(months[minYear][minMonth][0].dayDate)
 }

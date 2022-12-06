@@ -4,7 +4,6 @@ import { generateCalendarInterval } from '../lib/date'
 import { SortedMonthInterval } from '../types'
 
 const useCalendar = (calendarStart: string) => {
-  //   const [calendarData, setCalendarData] = useState<SortedMonthInterval>()
   const [calendarData] = useState<SortedMonthInterval>(() => {
     try {
       const lastMonthSavedOn = localStorage.getItem('lastMonth')

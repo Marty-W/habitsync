@@ -12,10 +12,12 @@ interface CalendarProps {
 const Calendar = ({ timestamps }: CalendarProps) => {
   const calendarData = useCalendar([...timestamps][0])
   const today = new Date()
+  //TODO add year+month to reducer
   const [selectedMonth, setSelectedMonth] = useState<number>(
     today.getMonth() + 1
   )
   const [selectedYear, setSelectedYear] = useState<number>(today.getFullYear())
+  //TODO add useMemo to prevent re-calculating
   const numberOfRows = getNumCalRows(new Date(selectedYear, selectedMonth))
   const activeMonth = calendarData[selectedYear]?.[selectedMonth]
 
@@ -38,7 +40,7 @@ const Calendar = ({ timestamps }: CalendarProps) => {
   }
 
   return (
-    <div className='flex h-full w-full max-w-lg flex-col  rounded-xl bg-slate-300 p-5'>
+    <div className='flex flex-col rounded-xl bg-slate-100 p-5'>
       <div className='grid h-8 grid-cols-7 justify-items-center'>
         {DAYS.map((day, key) => (
           <span key={`${day}-${key}`} className='text-zinc-500'>

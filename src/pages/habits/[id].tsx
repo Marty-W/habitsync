@@ -53,25 +53,17 @@ const HabitDetail = () => {
   //TODO add handler to go back to dashboard
 
   return (
-    <div className='flex h-screen flex-col p-5'>
-      <div className='header mb-4 flex h-40 flex-col justify-center'>
-        <h1 className='flex-1 text-center text-2xl'>{habitData?.name}</h1>
-        <div className='flex flex-1 items-center rounded-lg bg-zinc-800 px-4 text-center'>
-          <p className='flex-1  bg-zinc-800'>{habitData?.description}</p>
-        </div>
+    <div className='flex min-h-screen flex-col bg-slate-50 p-5'>
+      <div className='mt-8 mb-4 flex flex-col'>
+        <h1 className='flex-1 text-2xl text-zinc-800'>{habitData?.name}</h1>
+        <p className='flex-1 py-6 text-zinc-500'>{habitData?.description}</p>
       </div>
-      {timestamps && (
-        <div>
-          <div className='flex flex-1 items-center justify-center'>
-            <Calendar timestamps={timestamps} />
-          </div>
-        </div>
-      )}
-      {bestStreaks && (
+      {timestamps && <Calendar timestamps={timestamps} />}
+      {/* {bestStreaks && (
         <div>
           <Streaks streaks={bestStreaks} />
         </div>
-      )}
+      )}{' '} */}
     </div>
   )
 }
