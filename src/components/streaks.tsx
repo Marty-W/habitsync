@@ -5,7 +5,6 @@ interface Props {
 }
 
 const Streaks = ({ streaks }: Props) => {
-  console.log(streaks)
   return (
     <div>
       <h1>Streaks</h1>

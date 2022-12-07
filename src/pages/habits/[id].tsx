@@ -53,7 +53,7 @@ const HabitDetail = () => {
   //TODO add handler to go back to dashboard
 
   return (
-    <div className='flex min-h-screen flex-col bg-slate-50 p-5'>
+    <div className='flex min-h-screen flex-col bg-slate-100 p-5'>
       <div className='mt-8 mb-4 flex flex-col'>
         <h1 className='flex-1 text-2xl text-zinc-800'>{habitData?.name}</h1>
         <p className='flex-1 py-6 text-zinc-500'>{habitData?.description}</p>
