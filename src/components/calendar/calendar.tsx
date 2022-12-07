@@ -1,6 +1,7 @@
 import { isToday } from 'date-fns'
 import useCalendarData from '../../hooks/useCalendar'
 import { DAYS } from '../../lib/const'
+import ResizablePanel from '../resizablePanel'
 import DayCell from './dayCell'
 import MonthSwitcher from './monthSwitcher'
 
@@ -27,21 +28,23 @@ const Calendar = ({ timestamps }: CalendarProps) => {
           </span>
         ))}
       </div>
-      <div className={`grid flex-1 grid-cols-7 place-items-center gap-3`}>
-        {calendarData &&
-          calendarData.map((dateStr, i) => {
-            const date = new Date(dateStr)
-            return (
-              <DayCell
-                date={date.getDate()}
-                isThisMonth={month === date.getMonth()}
-                hasTimestamp={timestamps.has(date.toDateString())}
-                isToday={isToday(date)}
-                key={i}
-              />
-            )
-          })}
-      </div>
+      <ResizablePanel>
+        <div className={`grid flex-1 grid-cols-7 place-items-center gap-3`}>
+          {calendarData &&
+            calendarData.map((dateStr, i) => {
+              const date = new Date(dateStr)
+              return (
+                <DayCell
+                  date={date.getDate()}
+                  isThisMonth={month === date.getMonth()}
+                  hasTimestamp={timestamps.has(date.toDateString())}
+                  isToday={isToday(date)}
+                  key={i}
+                />
+              )
+            })}
+        </div>
+      </ResizablePanel>
     </div>
   )
 }

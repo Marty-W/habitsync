@@ -17,7 +17,7 @@ const DayCell = ({ date, hasTimestamp, isToday, isThisMonth }: Props) => {
           'text-zinc-200': !isThisMonth,
           'bg-slate-50': isThisMonth,
           'text-red-200': hasTimestamp,
-          'bg-red-500 text-slate-50': hasTimestamp && isThisMonth,
+          'text-slate-0 bg-red-500': hasTimestamp && isThisMonth,
         }
       )}
     >
