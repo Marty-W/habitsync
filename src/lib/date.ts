@@ -13,19 +13,10 @@ export const generateCalendarMonth = (year: number, month: number) => {
   const firstDayOfMonth = startOfMonth(new Date(year, month))
   const lastDayOfMonth = endOfMonth(new Date(year, month))
 
-  const calendarData = eachDayOfInterval({
+  return eachDayOfInterval({
     start: startOfWeek(firstDayOfMonth, { weekStartsOn: 1 }),
     end: lastDayOfWeek(lastDayOfMonth, { weekStartsOn: 1 }),
-  }).map((date) => {
-    return {
-      day: date.getDate(),
-      isThisMonth: date.getMonth() === month,
-    }
   })
-
-  return {
-    calendarData,
-  }
 }
 
 export interface Streak {

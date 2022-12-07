@@ -13,7 +13,7 @@ const Calendar = ({ timestamps }: CalendarProps) => {
     useCalendarData()
 
   return (
-    <div className='flex flex-col rounded-xl bg-slate-50 p-5'>
+    <div className='flex flex-col rounded-xl bg-slate-100 p-5'>
       <MonthSwitcher
         month={month}
         year={year}
@@ -22,21 +22,21 @@ const Calendar = ({ timestamps }: CalendarProps) => {
       />
       <div className='grid h-8 grid-cols-7 justify-items-center'>
         {DAYS.map((day, key) => (
-          <span key={`${day}-${key}`} className='text-zinc-500'>
+          <span key={`${day}-${key}`} className='text-zinc-300'>
             {day}
           </span>
         ))}
       </div>
-      <div className={`grid flex-1  grid-cols-7 place-items-center gap-2`}>
+      <div className={`grid flex-1 grid-cols-7 place-items-center gap-3`}>
         {calendarData &&
-          calendarData.calendarData.map(({ day, isThisMonth }, i) => {
-            const exactDate = new Date(year, month, day)
+          calendarData.map((dateStr, i) => {
+            const date = new Date(dateStr)
             return (
               <DayCell
-                date={day}
-                isThisMonth={isThisMonth}
-                hasTimestamp={timestamps.has(exactDate.toDateString())}
-                isToday={isToday(exactDate)}
+                date={date.getDate()}
+                isThisMonth={month === date.getMonth()}
+                hasTimestamp={timestamps.has(date.toDateString())}
+                isToday={isToday(date)}
                 key={i}
               />
             )

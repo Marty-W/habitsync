@@ -14,6 +14,7 @@ const MonthSwitcher = ({ month, year, decrement, increment }: Props) => {
       <GoChevronLeft
         onClick={decrement}
         className='cursor-pointer rounded-full hover:bg-slate-200'
+        size='1.5rem'
       />
       <span className='px-4 text-lg  text-zinc-800 '>
         {MONTHS[month]} {year}
@@ -21,6 +22,7 @@ const MonthSwitcher = ({ month, year, decrement, increment }: Props) => {
       <GoChevronRight
         className='cursor-pointer rounded-full text-lg hover:bg-slate-200'
         onClick={increment}
+        size='1.5rem'
       />
     </div>
   )
