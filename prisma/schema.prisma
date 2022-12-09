@@ -56,7 +56,6 @@ model Habit {
   projectId   Int?
   labels      String[]
   timestamps  Timestamp[]
-  Streaks     Streak[]
   userId      String
   user        User        @relation(fields: [userId], references: [id])
 
@@ -66,15 +65,6 @@ model Habit {
 model Timestamp {
   id      String   @id @default(cuid())
   time    DateTime @default(now())
-  Habit   Habit?   @relation(fields: [habitId], references: [id])
-  habitId String?
-}
-
-model Streak {
-  id      String   @id @default(cuid())
-  start   DateTime
-  end     DateTime
-  length  Int
   Habit   Habit?   @relation(fields: [habitId], references: [id])
   habitId String?
 }

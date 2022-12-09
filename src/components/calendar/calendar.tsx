@@ -1,4 +1,5 @@
 import { isToday } from 'date-fns'
+import { motion } from 'framer-motion'
 import useCalendarData from '../../hooks/useCalendar'
 import { DAYS } from '../../lib/const'
 import ResizablePanel from '../resizablePanel'
@@ -14,7 +15,7 @@ const Calendar = ({ timestamps }: CalendarProps) => {
     useCalendarData()
 
   return (
-    <div className='flex flex-col rounded-xl bg-slate-100 p-5'>
+    <div className='flex flex-col rounded-xl bg-slate-100 p-5 shadow-sm'>
       <MonthSwitcher
         month={month}
         year={year}
@@ -29,8 +30,10 @@ const Calendar = ({ timestamps }: CalendarProps) => {
         ))}
       </div>
       <ResizablePanel>
-        <div className={`grid flex-1 grid-cols-7 place-items-center gap-3`}>
-          {calendarData &&
+        <motion.div
+          className={`grid flex-1 grid-cols-7 place-items-center gap-3`}
+        >
+          {calendarData?.length &&
             calendarData.map((dateStr, i) => {
               const date = new Date(dateStr)
               return (
@@ -43,7 +46,7 @@ const Calendar = ({ timestamps }: CalendarProps) => {
                 />
               )
             })}
-        </div>
+        </motion.div>
       </ResizablePanel>
     </div>
   )
