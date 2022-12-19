@@ -49,48 +49,37 @@ export const habitRouter = t.router({
   getUserHabits: authedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session?.user?.id
 
-    try {
-      const habits = await ctx.prisma.habit.findMany({
-        where: {
-          userId,
-        },
-        select: {
-          id: true,
-          labels: true,
-          name: true,
-          projectId: true,
-        },
-      })
+    const habits = await ctx.prisma.habit.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        labels: true,
+        name: true,
+        projectId: true,
+      },
+    })
 
-      return habits
-    } catch (err) {
-      console.error(err)
-    }
+    return habits
   }),
   getHabitDetail: authedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const { id } = input
 
-      try {
-        const habit = await ctx.prisma.habit.findUnique({
-          where: {
-            id,
-          },
-          select: {
-            description: true,
-            id: true,
-            labels: true,
-            name: true,
-            projectId: true,
-            url: true,
-            timestamps: true,
-          },
-        })
+      const habit = await ctx.prisma.habit.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          description: true,
+          labels: true,
+          name: true,
+          url: true,
+        },
+      })
 
-        return habit
-      } catch (err) {
-        console.error(err)
-      }
+      return habit
     }),
 })
