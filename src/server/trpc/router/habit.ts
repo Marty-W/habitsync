@@ -4,7 +4,7 @@ import { authedProcedure, t } from '../trpc'
 //TODO check how trpc handles errors and how to handle them
 
 export const habitRouter = t.router({
-  setUserHabits: authedProcedure
+  setAll: authedProcedure
     .input(z.object({ labelName: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id
@@ -46,7 +46,7 @@ export const habitRouter = t.router({
         })
       }
     }),
-  getUserHabits: authedProcedure.query(async ({ ctx }) => {
+  getAll: authedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session?.user?.id
 
     const habits = await ctx.prisma.habit.findMany({
@@ -63,7 +63,7 @@ export const habitRouter = t.router({
 
     return habits
   }),
-  getHabitDetail: authedProcedure
+  getDetail: authedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
       const { id } = input

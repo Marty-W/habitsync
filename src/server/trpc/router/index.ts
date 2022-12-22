@@ -3,6 +3,7 @@ import { t } from '../trpc'
 import { accRouter } from './acc'
 import { authRouter } from './auth'
 import { habitRouter } from './habit'
+import { streakRouter } from './streak'
 import { timestampRouter } from './timestamp'
 
 export const appRouter = t.router({
@@ -10,6 +11,7 @@ export const appRouter = t.router({
   acc: accRouter,
   habit: habitRouter,
   timestamp: timestampRouter,
+  streak: streakRouter,
 })
 
 // export type definition of API

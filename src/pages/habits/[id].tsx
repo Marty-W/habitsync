@@ -1,52 +1,66 @@
+import { motion } from 'framer-motion'
+import NextError from 'next/error'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { BsArrowLeft } from 'react-icons/bs'
 import Calendar from '../../components/calendar/calendar'
-import Streaks from '../../components/streaks'
+import CardSkeleton from '../../components/cardSkeleton'
+import HabitDescription from '../../components/habitDescription'
+// import Streaks from '../../components/streaks'
 import { trpc } from '../../lib/trpc'
 
-export const habitData = {
-  description: 'Kazdy den ber prasky, musis byt zdravy. Je to jednoduche.',
-  id: '5855839430',
-  labels: ['habit'],
-  name: '💊 Prášky',
-}
-
 const HabitDetail = () => {
-  const router = useRouter()
-  const { id } = router.query
-  const { data: timestamps } = trpc.timestamp.getAllTimestamps.useQuery(
-    {
-      habitId: id as string,
-    },
-    { enabled: !!id }
-  )
+    const id = useRouter().query.id as string
+    const name = useRouter().query.name as string
+    const timestamps = trpc.timestamp.getAll.useQuery({
+        habitId: id,
+    })
+    const description = trpc.habit.getDetail.useQuery({
+        id: id,
+    })
 
-  const { data: bestStreaks } = trpc.timestamp.getBestStreaks.useQuery(
-    {
-      habitId: id as string,
-      numStreaks: 5,
-    },
-    {
-      enabled: !!id,
+    if (description.isError || timestamps.isError) {
+        const statusCode =
+            (description.error?.data?.httpStatus ?? 500) ||
+            (timestamps.error?.data?.httpStatus ?? 500)
+
+        const title = description.error?.message || timestamps.error?.message
+
+        return <NextError statusCode={statusCode} title={title} />
     }
-  )
 
-  //TODO add a loading state
-  //TODO add handler to go back to dashboard
 
-  return (
-    <div className='flex min-h-screen flex-col bg-slate-200 p-5'>
-      <div className='mt-8 mb-4 flex flex-col'>
-        <h1 className='flex-1 text-2xl text-zinc-800'>{habitData?.name}</h1>
-        <p className='flex-1 py-6 text-zinc-500'>{habitData?.description}</p>
-      </div>
-      {timestamps && <Calendar timestamps={timestamps} />}
-      {/* {bestStreaks && (
+    return (
+        <div className='flex min-h-screen flex-col bg-slate-200 p-5'>
+            <div className='grid grid-cols-3 items-center text-center'>
+                <motion.button whileTap={{ scale: 0.95 }}>
+                    <Link href='/habits'>
+                        <BsArrowLeft size='1.5rem' className='text-zinc-500' />
+                    </Link>
+                </motion.button>
+                <div>
+                    <h1 className='ml-auto justify-self-center text-xl text-zinc-800'>
+                        {name}
+                    </h1>
+                </div>
+            </div>
+            {description.isSuccess ? (
+                <HabitDescription desc={description.data} />
+            ) : (
+                <CardSkeleton count={5} />
+            )}
+            {timestamps.isSuccess ? (
+                <Calendar timestamps={timestamps.data} />
+            ) : (
+                <CardSkeleton count={6} />
+            )}
+            {/* {bestStreaks && (
         <div>
           <Streaks streaks={bestStreaks} />
         </div>
       )}{' '} */}
-    </div>
-  )
+        </div>
+    )
 }
 
 export default HabitDetail
