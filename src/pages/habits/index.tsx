@@ -1,9 +1,24 @@
 import { NextPage } from 'next'
+import { useEffect } from 'react'
 import DashboardHabit from '../../components/dashboardHabit'
 import { trpc } from '../../lib/trpc'
 
 const Habits: NextPage = () => {
   const allHabits = trpc.habit.getAll.useQuery()
+  const utils = trpc.useContext()
+
+  //TODO add loading state
+  //TODO add error state
+
+  useEffect(() => {
+    const allHabitIds = allHabits.data?.flatMap((habit) => habit.id) || []
+
+    for (const id of allHabitIds) {
+      void utils.habit.getDetail.prefetch({ id })
+      void utils.timestamp.getAll.prefetch({ habitId: id })
+      void utils.streak.getBest.prefetch({ habitId: id, numStreaks: 5 })
+    }
+  }, [allHabits.data, utils])
 
   return (
     <div className='flex min-h-screen flex-col'>
