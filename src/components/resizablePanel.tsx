@@ -1,12 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React from 'react'
+import { PropsWithChildren } from 'react'
 import useMeasure from 'react-use-measure'
 
-interface Props {
-  children: React.ReactNode
-}
-
-const ResizablePanel = ({ children }: Props) => {
+const ResizablePanel = ({ children }: PropsWithChildren) => {
   const [ref, { height }] = useMeasure()
 
   return (

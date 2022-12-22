@@ -1,22 +1,20 @@
-//TODO figure out how to inherit stuff from trpc to not create new types
-
 import Link from 'next/link'
+import { RouterOutput } from '../lib/trpc'
 
 interface IDashboardHabitProps {
-  id: string
-  name: string
-  labels: string[]
-  projectId: number | null
+  habit: RouterOutput['habit']['getAll'][0]
 }
 
-const DashboardHabit = ({ id, labels, name }: IDashboardHabitProps) => {
+const DashboardHabit = ({ habit }: IDashboardHabitProps) => {
+  const { id, labels, name } = habit
   return (
-    <Link href={`/habits/${id}`}>
+    <Link href={`/habits/${id}?name=${name}`}>
       <div className='border-2'>
         <span>{name}</span>
         {/* displaying only labels that are not called 'habit'  */}
         <div>
           {labels.map((label) => {
+            if (label === 'habit') return null
             return (
               <span key={label} className='badge-primary badge'>
                 {label}
