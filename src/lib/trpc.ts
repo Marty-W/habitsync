@@ -1,4 +1,3 @@
-// src/utils/trpc.ts
 import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
@@ -42,6 +41,14 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
           },
         }),
       ],
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus:
+              process.env.NODE_ENV === 'development' ? false : true,
+          },
+        },
+      },
     }
   },
   ssr: true,

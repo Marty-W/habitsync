@@ -7,12 +7,12 @@ import { getServerAuthSession } from '../common/get-server-auth-session'
 import { prisma } from '../db/client'
 
 const createDoistApi = (token: string) => {
-  return new TodoistApi(token)
+    return new TodoistApi(token)
 }
 
 type CreateContextOptions = {
-  session: Session | null
-  doist: TodoistApi
+    session: Session | null
+    doist: TodoistApi
 }
 
 /** Use this helper for:
@@ -20,11 +20,11 @@ type CreateContextOptions = {
  * - trpc's `createSSGHelpers` where we don't have req/res
  **/
 export const createContextInner = async (opts: CreateContextOptions) => {
-  return {
-    session: opts.session,
-    doist: opts.doist,
-    prisma,
-  }
+    return {
+        session: opts.session,
+        doist: opts.doist,
+        prisma,
+    }
 }
 
 /**
@@ -32,20 +32,20 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  **/
 export const createContext = async (
-  opts: trpcNext.CreateNextContextOptions
+    opts: trpcNext.CreateNextContextOptions
 ) => {
-  const { req, res } = opts
+    const { req, res } = opts
 
-  // Get the session from the server using the unstable_getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res })
+    // Get the session from the server using the unstable_getServerSession wrapper function
+    const session = await getServerAuthSession({ req, res })
 
-  // Doist API, right now hardcoded to my token
-  const doist = createDoistApi(process.env.NEXT_PUBLIC_TEMP_API_TOKEN!)
+    // Doist API, right now hardcoded to my token
+    const doist = createDoistApi(process.env.NEXT_PUBLIC_TEMP_API_TOKEN!)
 
-  return await createContextInner({
-    session,
-    doist,
-  })
+    return await createContextInner({
+        session,
+        doist,
+    })
 }
 
 export type Context = trpc.inferAsyncReturnType<typeof createContext>
