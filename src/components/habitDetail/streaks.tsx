@@ -1,4 +1,4 @@
-import { Streak } from '@lib/date'
+import { Streak } from 'lib/date'
 
 interface Props {
   streaks: Streak[]

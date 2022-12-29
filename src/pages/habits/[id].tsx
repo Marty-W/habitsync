@@ -3,13 +3,13 @@ import NextError from 'next/error'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BsArrowLeft } from 'react-icons/bs'
-import Calendar from '@components/habitDetail/calendar/calendar'
-import CardSkeleton from '@components/ui/cardSkeleton'
-import HabitDescription from '@components/habitDetail/habitDescription'
+import Calendar from 'components/habitDetail/calendar/calendar'
+import CardSkeleton from 'components/ui/cardSkeleton'
+import HabitDescription from 'components/habitDetail/habitDescription'
 // import Streaks from '../../components/streaks'
 import { HiOutlineCog } from 'react-icons/hi'
 import { SiTodoist } from 'react-icons/si'
-import { trpc } from '@lib/trpc'
+import { trpc } from 'lib/trpc'
 
 const HabitDetail = () => {
   const id = useRouter().query.id as string

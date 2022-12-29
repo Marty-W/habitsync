@@ -3,7 +3,7 @@ import { createTRPCNext } from '@trpc/next'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 import { NextPageContext } from 'next'
 import superjson from 'superjson'
-import type { AppRouter } from '@server/trpc/router'
+import type { AppRouter } from 'server/trpc/router'
 
 const getBaseUrl = () => {
   if (typeof window !== 'undefined') return '' // browser should use relative url

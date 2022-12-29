@@ -1,6 +1,6 @@
 import { addMonths, subMonths } from 'date-fns'
 import { useEffect, useState } from 'react'
-import { generateCalendarMonth } from '@lib/date'
+import { generateCalendarMonth } from 'lib/date'
 
 const useCalendarData = (initialYear?: number, initialMonth?: number) => {
   const [displayedDate, setDisplayedDate] = useState(() => {

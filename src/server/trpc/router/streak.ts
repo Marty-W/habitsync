@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { calculateAllStreaks, calculateCurrentStreak } from '@lib/date'
+import { calculateAllStreaks, calculateCurrentStreak } from 'lib/date'
 import { authedProcedure, t } from '../trpc'
 
 export const streakRouter = t.router({

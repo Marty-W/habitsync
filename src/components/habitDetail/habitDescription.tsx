@@ -1,5 +1,5 @@
-import { RouterOutput } from '@lib/trpc'
-import Card from '@components/ui/card'
+import { RouterOutput } from 'lib/trpc'
+import Card from 'components/ui/card'
 
 type Props = {
   desc: RouterOutput['habit']['getDetail']
@@ -12,7 +12,7 @@ const HabitDescription = ({ desc }: Props) => {
         {desc?.labels.map((label) => {
           if (label === 'habit') return null
           return (
-            <span key={label} className='badge-primary badge'>
+            <span key={label} className='badge badge-primary'>
               {label}
             </span>
           )

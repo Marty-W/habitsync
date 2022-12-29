@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { TODOIST_EVENTS } from '@lib/const'
-import { prisma } from '@server/db/client'
+import { TODOIST_EVENTS } from 'lib/const'
+import { prisma } from 'server/db/client'
 
 const doisthook = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {

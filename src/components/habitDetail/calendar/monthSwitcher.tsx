@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { GoChevronLeft, GoChevronRight } from 'react-icons/go'
-import { MONTHS } from '@lib/const'
+import { MONTHS } from 'lib/const'
 
 interface Props {
   month: number

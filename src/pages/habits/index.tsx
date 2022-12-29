@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useEffect } from 'react'
-import DashboardHabit from '@components/dashboard/dashboardHabit'
-import { trpc } from '@lib/trpc'
+import DashboardHabit from 'components/dashboard/dashboardHabit'
+import { trpc } from 'lib/trpc'
 
 const Habits: NextPage = () => {
   const allHabits = trpc.habit.getAll.useQuery()

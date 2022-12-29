@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import { useState } from 'react'
-import { trpc } from '@lib/trpc'
+import { trpc } from 'lib/trpc'
 
 const AccountPage: NextPage = () => {
   const { data: labelData, refetch: labelRefetch } =

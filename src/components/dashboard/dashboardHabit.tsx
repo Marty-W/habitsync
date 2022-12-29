@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { RouterOutput } from '@lib/trpc'
+import { RouterOutput } from 'lib/trpc'
 
 interface IDashboardHabitProps {
   habit: RouterOutput['habit']['getAll'][0]
@@ -16,7 +16,7 @@ const DashboardHabit = ({ habit }: IDashboardHabitProps) => {
           {labels.map((label) => {
             if (label === 'habit') return null
             return (
-              <span key={label} className='badge-primary badge'>
+              <span key={label} className='badge badge-primary'>
                 {label}
               </span>
             )
