@@ -1,4 +1,4 @@
-import { generateCalendarMonth } from '../lib/date'
+import { generateCalendarMonth } from '@lib/date'
 
 // {Year: {Month: [Day]}}
 export interface SortedMonthInterval {

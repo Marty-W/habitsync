@@ -1,11 +1,12 @@
 import { NextPage } from 'next'
 import { useState } from 'react'
-import { trpc } from '../lib/trpc'
+import { trpc } from '@lib/trpc'
 
 const AccountPage: NextPage = () => {
   const { data: labelData, refetch: labelRefetch } =
     trpc.acc.getUserLabels.useQuery(undefined, { enabled: false })
   const { data: avatarUrl } = trpc.acc.getUserImgUrl.useQuery()
+  //TODO fix old path
   const { mutate: fetchUserHabits } = trpc.habit.setUserHabits.useMutation()
   const [localLabel, setLocalLabel] = useState('')
 

@@ -1,5 +1,5 @@
-import { RouterOutput } from '../lib/trpc'
-import Card from './card'
+import { RouterOutput } from '@lib/trpc'
+import Card from '@components/ui/card'
 
 type Props = {
   desc: RouterOutput['habit']['getDetail']

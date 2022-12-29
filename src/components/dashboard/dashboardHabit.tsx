@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { RouterOutput } from '../lib/trpc'
+import { RouterOutput } from '@lib/trpc'
 
 interface IDashboardHabitProps {
   habit: RouterOutput['habit']['getAll'][0]

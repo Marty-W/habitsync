@@ -1,10 +1,10 @@
 import { isToday } from 'date-fns'
 import { motion } from 'framer-motion'
-import useCalendarData from '../../hooks/useCalendar'
-import { DAYS } from '../../lib/const'
-import { RouterOutput } from '../../lib/trpc'
-import Card from '../card'
-import ResizablePanel from '../resizablePanel'
+import useCalendarData from '@hooks/useCalendar'
+import { DAYS } from '@lib/const'
+import { RouterOutput } from '@lib/trpc'
+import Card from '@components/ui/card'
+import ResizablePanel from '@components/ui/resizablePanel'
 import DayCell from './dayCell'
 import MonthSwitcher from './monthSwitcher'
 
@@ -33,9 +33,7 @@ const Calendar = ({ timestamps }: Props) => {
           ))}
         </div>
         <ResizablePanel>
-          <motion.div
-            className={`grid flex-1 grid-cols-7 place-items-center gap-3`}
-          >
+          <motion.div className='grid flex-1 grid-cols-7 place-items-center gap-3'>
             {calendarData?.length &&
               calendarData.map((dateStr, i) => {
                 const date = new Date(dateStr)
