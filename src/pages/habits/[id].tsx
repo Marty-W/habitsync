@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion'
 import NextError from 'next/error'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BsArrowLeft } from 'react-icons/bs'
@@ -32,24 +32,21 @@ const HabitDetail = () => {
   }
 
   return (
-    <div className='flex min-h-screen flex-col bg-slate-200 p-5'>
-      <div className='mb-5 grid grid-cols-3 items-center text-center'>
+    <div className='flex min-h-screen flex-col bg-slate-200 px-5 py-8'>
+      <div className='mb-8 grid grid-cols-3 items-center text-center'>
         <motion.button whileTap={{ scale: 0.95 }}>
           <Link href='/habits'>
-            <BsArrowLeft size='1.5rem' className='text-zinc-500' />
+            <BsArrowLeft size='1.8rem' className='text-zinc-500' />
           </Link>
         </motion.button>
         <div>
-          <h1 className='ml-auto justify-self-center text-xl text-zinc-800'>
+          <h1 className='ml-auto justify-self-center text-2xl text-zinc-800'>
             {name}
           </h1>
         </div>
         <div className='flex items-center justify-end'>
-          <Link href={`${description.data?.url}`} className='mr-2 '>
-            <SiTodoist size='1.5rem' className='text-zinc-500' />
-          </Link>
-          <Link href={``}>
-            <HiOutlineCog size='1.5rem' className='text-zinc-500' />
+          <Link href='/account'>
+            <HiOutlineCog size='1.8rem' className='text-zinc-500' />
           </Link>
         </div>
       </div>
@@ -58,16 +55,19 @@ const HabitDetail = () => {
       ) : (
         <CardSkeleton count={5} />
       )}
+      <Link
+        href={`${description.data?.url}`}
+        target='_blank'
+        className='mt-4 flex items-center justify-center hover:text-zinc-400'
+      >
+        <SiTodoist size='1rem' className='mr-1' />
+        <span>Open in Todoist</span>
+      </Link>
       {timestamps.isSuccess ? (
         <Calendar timestamps={timestamps.data} />
       ) : (
         <CardSkeleton count={6} />
       )}
-      {/* {bestStreaks && (
-        <div>
-          <Streaks streaks={bestStreaks} />
-        </div>
-      )}{' '} */}
     </div>
   )
 }
