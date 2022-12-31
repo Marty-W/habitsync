@@ -7,7 +7,7 @@ const Card = ({
 }: PropsWithChildren<{ className?: string }>) => (
   <div
     className={clsx(
-      'flex flex-col rounded-xl bg-slate-100 p-5 shadow-sm',
+      'flex flex-col rounded-2xl bg-slate-100 p-5 shadow-sm',
       `${className}`
     )}
   >
