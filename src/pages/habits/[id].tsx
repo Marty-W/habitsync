@@ -31,7 +31,7 @@ const HabitDetail = () => {
   return (
     <div className='flex min-h-screen flex-col bg-slate-200 px-5 py-8'>
       <div className='mb-8 grid grid-cols-3 items-center text-center'>
-        <motion.button whileTap={{ scale: 0.95 }}>
+        <motion.button whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.05 }}>
           <Link href='/habits'>
             <BsArrowLeft size='1.8rem' className='text-zinc-500' />
           </Link>
@@ -42,9 +42,14 @@ const HabitDetail = () => {
           </h1>
         </div>
         <div className='flex items-center justify-end'>
-          <Link href='/account'>
-            <HiOutlineCog size='1.8rem' className='text-zinc-500' />
-          </Link>
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Link href='/account'>
+              <HiOutlineCog size='1.8rem' className='text-zinc-500' />
+            </Link>
+          </motion.button>
         </div>
       </div>
       <CardWithLoader
@@ -52,6 +57,13 @@ const HabitDetail = () => {
         data={description.data}
         isLoadingSuccess={description.isSuccess}
         lineCount={4}
+        className='mb-8'
+      />
+      <CardWithLoader
+        data={timestamps.data}
+        lineCount={8}
+        cardType='calendar'
+        isLoadingSuccess={timestamps.isSuccess}
       />
       <Link
         href={`${description.data?.url}`}
@@ -61,12 +73,6 @@ const HabitDetail = () => {
         <SiTodoist size='1rem' className='mr-1' />
         <span>Open in Todoist</span>
       </Link>
-      <CardWithLoader
-        data={timestamps.data}
-        lineCount={8}
-        cardType='calendar'
-        isLoadingSuccess={timestamps.isSuccess}
-      />
     </div>
   )
 }
