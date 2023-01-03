@@ -1,28 +1,22 @@
 import { RouterOutput } from 'lib/trpc'
+import Tag from '../ui/tag'
 
 type Props = {
   desc: RouterOutput['habit']['getDetail']
 }
 
+//TODO still needs a redesign, after current streak implemetation, maybe add it?
+
 const HabitDescription = ({ desc }: Props) => (
   <>
-    <div>
+    <div className='mb-2 flex flex-col'>
+      <p className='flex-1 text-lg text-zinc-500'>{desc?.description}</p>
+    </div>
+    <div className='flex justify-center'>
       {desc?.labels.map((label) => {
         if (label === 'habit') return null
-        return (
-          <span key={label} className='badge badge-primary'>
-            {label}
-          </span>
-        )
+        return <Tag key={label} tag={label} className='' />
       })}
-    </div>
-    <div className='my-4 flex flex-col'>
-      <p className='flex-1 py-6 text-zinc-500'>{desc?.description}</p>
-    </div>
-    <div>
-      <a href={desc?.url} target='_blank' rel='noreferrer'>
-        Open in Todoist
-      </a>
     </div>
   </>
 )
