@@ -7,6 +7,8 @@ import { HiOutlineCog } from 'react-icons/hi'
 import { SiTodoist } from 'react-icons/si'
 import { trpc } from 'lib/trpc'
 import CardWithLoader from 'components/habitDetail/cardWithLoader'
+import Card from '@/components/ui/card'
+import Streaks from '@/components/habitDetail/streaks'
 
 const HabitDetail = () => {
   const id = useRouter().query.id as string
@@ -17,6 +19,8 @@ const HabitDetail = () => {
   const description = trpc.habit.getDetail.useQuery({
     id: id,
   })
+
+  const streaks = trpc.streak.getBest.useQuery({ habitId: id, numStreaks: 5 })
 
   if (description.isError || timestamps.isError) {
     const statusCode =
@@ -64,6 +68,14 @@ const HabitDetail = () => {
         lineCount={8}
         cardType='calendar'
         isLoadingSuccess={timestamps.isSuccess}
+        className='mb-8'
+      />
+      <CardWithLoader
+        data={streaks.data}
+        lineCount={6}
+        cardType='streak'
+        isLoadingSuccess={streaks.isSuccess}
+        className='mb-8'
       />
       <Link
         href={`${description.data?.url}`}

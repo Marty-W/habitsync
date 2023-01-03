@@ -6,3 +6,9 @@ export interface SortedMonthInterval {
     [month: number]: ReturnType<typeof generateCalendarMonth>
   }
 }
+
+export type Streak = {
+  start: string
+  end: string
+  length: number
+}

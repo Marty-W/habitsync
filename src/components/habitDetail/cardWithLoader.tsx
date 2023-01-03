@@ -3,12 +3,16 @@ import CardSkeleton from 'components/ui/cardSkeleton'
 import Card from 'components/ui/card'
 import Calendar from 'components/habitDetail/calendar/calendar'
 import HabitDescription from 'components/habitDetail/habitDescription'
+import Streaks from 'components/habitDetail/streaks'
+
+//FIX cleanup the messy types
 
 type CalendarData = RouterOutput['timestamp']['getAll'] | null | undefined
 type HabitDescriptionData =
   | RouterOutput['habit']['getDetail']
   | null
   | undefined
+type StreakData = RouterOutput['streak']['getBest'] | null | undefined
 
 interface BaseProps {
   className?: string
@@ -26,7 +30,12 @@ interface HabitDescriptionProps extends BaseProps {
   data: HabitDescriptionData
 }
 
-type Props = CalendarProps | HabitDescriptionProps
+interface StreakProps extends BaseProps {
+  cardType: 'streak'
+  data: StreakData
+}
+
+type Props = CalendarProps | HabitDescriptionProps | StreakProps
 
 const CardWithLoader = ({
   className,
@@ -47,6 +56,9 @@ const CardWithLoader = ({
       break
     case 'habitDescription':
       content = <HabitDescription desc={data} />
+      break
+    case 'streak':
+      content = <Streaks streaks={data} />
   }
 
   return <Card className={className}>{content}</Card>

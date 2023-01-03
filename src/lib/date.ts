@@ -57,6 +57,7 @@ export const calculateAllStreaks = (dates: Date[]) => {
       return streaks
     }, [])
     .filter((streak) => streak.length > 1)
+    .sort((a, b) => b.length - a.length)
 }
 
 export const calculateCurrentStreak = (dates: Date[]) => {
