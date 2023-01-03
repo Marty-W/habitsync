@@ -1,29 +1,57 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { PropsWithChildren } from 'react'
 import useMeasure from 'react-use-measure'
+import clsx from 'clsx'
 
-const ResizablePanel = ({ children }: PropsWithChildren) => {
-  const [ref, { height }] = useMeasure()
+interface Props {
+  duration: number
+  slideDirection: 'left' | 'right' | undefined
+}
+
+const ResizableSlidePanel = ({
+  children,
+  duration,
+  slideDirection,
+}: PropsWithChildren<Props>) => {
+  const [ref, { height, width }] = useMeasure()
+
+  const variants = {
+    initial: (direction: 'left' | 'right') => ({
+      x: direction === 'right' ? width : -width,
+      opacity: 0,
+    }),
+    animate: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: 'left' | 'right') => ({
+      x: direction === 'left' ? width : -width,
+      opacity: 0,
+    }),
+  }
 
   return (
     <motion.div
       animate={{ height: height || 'auto' }}
-      className='relative overflow-hidden'
+      className={clsx('relative overflow-hidden')}
+      transition={{ duration }}
     >
-      <AnimatePresence initial={false}>
+      {/* FIX it still has initial animation */}
+      <AnimatePresence initial={false} custom={slideDirection}>
         <motion.div
           key={JSON.stringify(children, ignoreCircularReferences())}
-          initial={{
-            opacity: 0,
+          variants={variants}
+          animate='animate'
+          initial='initial'
+          exit='exit'
+          custom={slideDirection}
+          transition={{
+            x: { type: 'spring', stiffness: 300, damping: 30 },
+            opacity: { duration },
           }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
+          className={height ? 'absolute w-full' : 'relative w-full'}
         >
-          <div ref={ref} className={`${height ? 'absolute' : 'relative'}`}>
+          <div ref={ref} className={`w-full`}>
             {children}
           </div>
         </motion.div>
@@ -49,4 +77,4 @@ const ignoreCircularReferences = () => {
   }
 }
 
-export default ResizablePanel
+export default ResizableSlidePanel
