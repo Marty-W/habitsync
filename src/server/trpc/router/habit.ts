@@ -1,10 +1,14 @@
+import {
+  getRecurrenceStep,
+  getRecurrenceType,
+  getSpecificRecurrenceDays,
+} from 'server/common/recurrence'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { authedProcedure, t } from '../trpc'
 
-//TODO check how trpc handles errors and how to handle them
-
 export const habitRouter = t.router({
-  setAll: authedProcedure
+  syncWithTodoist: authedProcedure
     .input(z.object({ labelName: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id
@@ -12,39 +16,85 @@ export const habitRouter = t.router({
 
       //TODO add option to fetch tasks based on project_id, and also todoist filters
 
-      const userHabits = await ctx.doist.getTasks({
+      const fetchedHabits = await ctx.doist.getTasks({
         label: labelName,
       })
 
-      if (userHabits) {
-        // RIGHT NOW SETTING TODOIST_ID ON THE FIRST FETCHED TASK, BUT COULD BE HANDLED BETTER
-        await ctx.prisma.user.update({
-          where: {
-            id: userId,
-          },
-          data: {
-            todoistId: userHabits[0]?.creatorId,
-          },
-        })
-
-        const formattedHabitsForDb = userHabits.map((habit) => {
-          const { id, content, description, labels, url, creatorId } = habit
-
-          return {
-            id,
-            name: content,
-            description,
-            labels,
-            url,
-            userId,
-          }
-        })
-
-        await ctx.prisma.habit.createMany({
-          data: formattedHabitsForDb,
-          skipDuplicates: true,
+      if (!fetchedHabits) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message:
+            'No tasks with the specified query found. Please check Todoist',
         })
       }
+
+      //TODO diffenerentiate between initial and subsequent syncs (this wont be needed in subsequent)
+
+      const todoistId = fetchedHabits[0].creatorId
+      await ctx.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          todoistId,
+        },
+      })
+
+      const formattedHabitsForDb = fetchedHabits.map((habit) => {
+        const { id, content, description, labels, url, due } = habit
+
+        // TODO there should be a partial completion (filter those that don't match and still write the good ones)
+        if (!due || !due.isRecurring) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: `Task ${content} is not recurring, please repair it in Todoist`,
+          })
+        }
+
+        if (!due.string) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: `Task ${content} has the recurrence string in bad format, please repair it in Todoist`,
+          })
+        }
+
+        const recurrenceType = getRecurrenceType(due.string)
+
+        const baseHabit = {
+          id,
+          name: content,
+          description,
+          labels,
+          url,
+          userId,
+          recurrenceType,
+        }
+
+        if (recurrenceType === 'every_x_days') {
+          const step = getRecurrenceStep(due.string)
+
+          return {
+            ...baseHabit,
+            recurrenceStep: step,
+          }
+        }
+
+        if (recurrenceType === 'specific_days') {
+          const days = getSpecificRecurrenceDays(due.string)
+
+          return {
+            ...baseHabit,
+            recurrenceDays: days,
+          }
+        }
+
+        return baseHabit
+      })
+
+      await ctx.prisma.habit.createMany({
+        data: formattedHabitsForDb,
+        skipDuplicates: true,
+      })
     }),
   getAll: authedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session?.user?.id

@@ -1,3 +1,4 @@
+import { cleanseRecurrenceString } from '@/server/common/todoist'
 import { generateCalendarMonth } from 'lib/date'
 
 // {Year: {Month: [Day]}}
@@ -12,3 +13,13 @@ export type Streak = {
   end: string
   length: number
 }
+
+export type CleanDoistRecurrenceString = ReturnType<
+  typeof cleanseRecurrenceString
+>
+
+export type RecurrenceType =
+  | 'every_day'
+  | 'every_workday'
+  | 'every_x_days'
+  | 'specific_days'

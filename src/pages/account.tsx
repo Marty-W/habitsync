@@ -6,8 +6,7 @@ const AccountPage: NextPage = () => {
   const { data: labelData, refetch: labelRefetch } =
     trpc.acc.getUserLabels.useQuery(undefined, { enabled: false })
   const { data: avatarUrl } = trpc.acc.getUserImgUrl.useQuery()
-  //TODO fix old path
-  const { mutate: fetchUserHabits } = trpc.habit.setUserHabits.useMutation()
+  const { mutate: fetchUserHabits } = trpc.habit.syncWithTodoist.useMutation()
   const [localLabel, setLocalLabel] = useState('')
 
   //TODO add some visual prompt to tell user to pick label before fetching habits

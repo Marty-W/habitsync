@@ -1,78 +1,92 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
+    @@unique([provider, providerAccountId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  // TODO MAKE THIS UNIQUE BEFORE DEPLOY
-  todoistId     String?   @unique
-  accounts      Account[]
-  sessions      Session[]
-  habits        Habit[]
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    timezone      String?
+    // FIX WTF? 
+    emailVerified DateTime?
+    image         String?
+    // TODO MAKE THIS UNIQUE BEFORE DEPLOY
+    todoistId     String?   @unique
+    accounts      Account[]
+    sessions      Session[]
+    habits        Habit[]
 
-  @@index([id, email])
+    @@index([id, email])
 }
 
 model Habit {
-  id          String      @id @unique
-  name        String
-  description String?
-  url         String
-  projectId   Int?
-  labels      String[]
-  timestamps  Timestamp[]
-  userId      String
-  user        User        @relation(fields: [userId], references: [id])
+    id             String         @id @unique
+    name           String
+    description    String?
+    url            String
+    projectId      Int?
+    labels         String[]
+    timestamps     Timestamp[]
+    recurrenceType RecurrenceType
+    // For recurrenceType === "every_x_days"
+    recurrenceStep Int?
+    // For recurrenceType === "specific_days"
+    recurrenceDays String[]
+    userId         String
+    user           User           @relation(fields: [userId], references: [id])
 
-  @@index([id, userId])
+    @@index([id, userId])
 }
 
 model Timestamp {
-  id      String   @id @default(cuid())
-  time    DateTime @default(now())
-  Habit   Habit?   @relation(fields: [habitId], references: [id])
-  habitId String?
+    id      String   @id @default(cuid())
+    time    DateTime @default(now())
+    Habit   Habit?   @relation(fields: [habitId], references: [id])
+    habitId String
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+    identifier String
+    token      String   @unique
+    expires    DateTime
 
-  @@unique([identifier, token])
+    @@unique([identifier, token])
+}
+
+enum RecurrenceType {
+    every_day
+    every_workday
+    every_x_days
+    specific_days
 }
