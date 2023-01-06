@@ -48,3 +48,5 @@ yarn-error.log*
 
 
 docs.md
+prisma/seed/data.ts
+prisma/seed/index.ts
