@@ -40,13 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# migrations
-/prisma/migrations
+# prisma seed and migrations
+**/seed
+**/migrations
 
-# seed 
-/prisma/seed
-
-
-docs.md
-prisma/seed/data.ts
-prisma/seed/index.ts
+# notes
+*.md
