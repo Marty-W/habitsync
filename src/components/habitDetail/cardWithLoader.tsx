@@ -5,6 +5,7 @@ import HabitDescription from 'components/habitDetail/habitDescription'
 import Streaks from 'components/habitDetail/streaks'
 import TotalCompletions from 'components/habitDetail/completions'
 import { CalendarData, HabitDescriptionData, StreakData } from 'types'
+import SuccessRate from './successRate'
 
 //FIX cleanup the messy types
 
@@ -32,7 +33,12 @@ interface StreakProps extends BaseProps {
 
 interface CompletionProps extends BaseProps {
   cardType: 'completion'
-  data: number
+  data: number | undefined
+}
+
+interface SuccessRateProps extends BaseProps {
+  cardType: 'successRate'
+  data: string | undefined
 }
 
 type Props =
@@ -40,6 +46,7 @@ type Props =
   | HabitDescriptionProps
   | StreakProps
   | CompletionProps
+  | SuccessRateProps
 
 const CardWithLoader = ({
   className,
@@ -67,6 +74,9 @@ const CardWithLoader = ({
       break
     case 'completion':
       content = <TotalCompletions completions={data} />
+      break
+    case 'successRate':
+      content = <SuccessRate rate={data} />
   }
 
   return <Card className={className}>{content}</Card>

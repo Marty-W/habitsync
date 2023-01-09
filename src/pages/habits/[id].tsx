@@ -7,8 +7,6 @@ import { HiOutlineCog } from 'react-icons/hi'
 import { SiTodoist } from 'react-icons/si'
 import { trpc } from 'lib/trpc'
 import CardWithLoader from 'components/habitDetail/cardWithLoader'
-import Card from '@/components/ui/card'
-import Streaks from '@/components/habitDetail/streaks'
 
 const HabitDetail = () => {
   const id = useRouter().query.id as string
@@ -22,6 +20,10 @@ const HabitDetail = () => {
 
   const streaks = trpc.streak.getBest.useQuery({ habitId: id, numStreaks: 5 })
   const totalCompletions = trpc.stats.getTotalHabitCompletions.useQuery({
+    habitId: id,
+  })
+
+  const successRate = trpc.stats.getHabitSuccessRate.useQuery({
     habitId: id,
   })
 
@@ -71,6 +73,13 @@ const HabitDetail = () => {
           cardType='completion'
           data={totalCompletions.data}
           isLoadingSuccess={totalCompletions.isSuccess}
+          lineCount={3}
+          className='mb-8'
+        />
+        <CardWithLoader
+          cardType='successRate'
+          data={successRate.data}
+          isLoadingSuccess={successRate.isSuccess}
           lineCount={3}
           className='mb-8'
         />
