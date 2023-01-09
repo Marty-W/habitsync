@@ -1,5 +1,6 @@
 import { cleanseRecurrenceString } from '@/server/common/todoist'
 import { generateCalendarMonth } from 'lib/date'
+import { RouterOutput } from 'lib/trpc'
 
 // {Year: {Month: [Day]}}
 export interface SortedMonthInterval {
@@ -23,3 +24,13 @@ export type RecurrenceType =
   | 'every_workday'
   | 'every_x_days'
   | 'specific_days'
+
+export type CalendarData =
+  | RouterOutput['timestamp']['getAll']
+  | null
+  | undefined
+export type HabitDescriptionData =
+  | RouterOutput['habit']['getDetail']
+  | null
+  | undefined
+export type StreakData = RouterOutput['streak']['getBest'] | null | undefined
