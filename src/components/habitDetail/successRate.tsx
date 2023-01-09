@@ -7,7 +7,7 @@ const SuccessRate = ({ rate }: Props) => {
   return (
     <div className='text-center'>
       <div className='mb-3 text-xl font-semibold text-zinc-400'>
-        <span>Completed</span>
+        <span>Success Rate</span>
       </div>
       <div className='relative'>
         <Counter
@@ -16,7 +16,7 @@ const SuccessRate = ({ rate }: Props) => {
           className='text-3xl font-black text-zinc-900'
           animationDuration={5}
         />
-        <span className='absolute bottom-0'>%</span>
+        <span className='absolute bottom-0 pl-1'>%</span>
       </div>
     </div>
   )
