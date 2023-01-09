@@ -1,23 +1,18 @@
-import { RouterOutput } from '@/lib/trpc'
 import CardSkeleton from 'components/ui/cardSkeleton'
 import Card from 'components/ui/card'
 import Calendar from 'components/habitDetail/calendar/calendar'
 import HabitDescription from 'components/habitDetail/habitDescription'
 import Streaks from 'components/habitDetail/streaks'
+import TotalCompletions from 'components/habitDetail/completions'
+import { CalendarData, HabitDescriptionData, StreakData } from 'types'
 
 //FIX cleanup the messy types
-
-type CalendarData = RouterOutput['timestamp']['getAll'] | null | undefined
-type HabitDescriptionData =
-  | RouterOutput['habit']['getDetail']
-  | null
-  | undefined
-type StreakData = RouterOutput['streak']['getBest'] | null | undefined
 
 interface BaseProps {
   className?: string
   lineCount: number
   isLoadingSuccess: boolean
+  mock?: boolean
 }
 
 interface CalendarProps extends BaseProps {
@@ -35,7 +30,16 @@ interface StreakProps extends BaseProps {
   data: StreakData
 }
 
-type Props = CalendarProps | HabitDescriptionProps | StreakProps
+interface CompletionProps extends BaseProps {
+  cardType: 'completion'
+  data: number
+}
+
+type Props =
+  | CalendarProps
+  | HabitDescriptionProps
+  | StreakProps
+  | CompletionProps
 
 const CardWithLoader = ({
   className,
@@ -43,8 +47,9 @@ const CardWithLoader = ({
   isLoadingSuccess,
   data,
   cardType,
+  mock,
 }: Props) => {
-  if (!isLoadingSuccess || !data) {
+  if (!isLoadingSuccess || !data || mock) {
     return <CardSkeleton cardClassName={className} count={lineCount} />
   }
 
@@ -59,6 +64,9 @@ const CardWithLoader = ({
       break
     case 'streak':
       content = <Streaks streaks={data} />
+      break
+    case 'completion':
+      content = <TotalCompletions completions={data} />
   }
 
   return <Card className={className}>{content}</Card>

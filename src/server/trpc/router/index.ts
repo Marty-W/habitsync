@@ -5,6 +5,7 @@ import { authRouter } from './auth'
 import { habitRouter } from './habit'
 import { streakRouter } from './streak'
 import { timestampRouter } from './timestamp'
+import { statsRouter } from './stats'
 
 export const appRouter = t.router({
   auth: authRouter,
@@ -12,6 +13,7 @@ export const appRouter = t.router({
   habit: habitRouter,
   timestamp: timestampRouter,
   streak: streakRouter,
+  stats: statsRouter,
 })
 
 // export type definition of API

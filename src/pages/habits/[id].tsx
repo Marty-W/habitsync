@@ -21,6 +21,9 @@ const HabitDetail = () => {
   })
 
   const streaks = trpc.streak.getBest.useQuery({ habitId: id, numStreaks: 5 })
+  const totalCompletions = trpc.stats.getTotalHabitCompletions.useQuery({
+    habitId: id,
+  })
 
   if (description.isError || timestamps.isError) {
     const statusCode =
@@ -33,7 +36,7 @@ const HabitDetail = () => {
   }
 
   return (
-    <div className='flex min-h-screen flex-col bg-slate-200 px-5 py-8'>
+    <div className='flex min-h-screen flex-col bg-slate-200 px-7 py-8'>
       <div className='mb-8 grid grid-cols-3 items-center text-center'>
         <motion.button whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.05 }}>
           <Link href='/habits'>
@@ -63,6 +66,15 @@ const HabitDetail = () => {
         lineCount={4}
         className='mb-8'
       />
+      <div className='grid grid-cols-2 gap-x-5'>
+        <CardWithLoader
+          cardType='completion'
+          data={totalCompletions.data}
+          isLoadingSuccess={totalCompletions.isSuccess}
+          lineCount={3}
+          className='mb-8'
+        />
+      </div>
       <CardWithLoader
         data={timestamps.data}
         lineCount={8}
