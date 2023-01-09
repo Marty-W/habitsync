@@ -70,11 +70,12 @@ export const statsRouter = t.router({
           days: habit.recurrenceDays as Weekday[],
         }
       )
+
       const numOfTimestampsInInterval = getNumberOfTimestampsInInterval(
         habit.timestamps,
         interval
       )
 
-      return getSuccessRate(numOfDaysInInterval, numOfTimestampsInInterval)
+      return getSuccessRate(numOfTimestampsInInterval, numOfDaysInInterval)
     }),
 })

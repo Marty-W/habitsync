@@ -1,6 +1,11 @@
 import { Timestamp } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
-import { eachDayOfInterval, isWeekend, isWithinInterval } from 'date-fns'
+import {
+  eachDayOfInterval,
+  isWeekend,
+  isWithinInterval,
+  startOfDay,
+} from 'date-fns'
 import {
   POSSIBLE_DAY_STEPS_WORDNUMBERS,
   WEEKDAYS_INDEXING,
@@ -118,7 +123,7 @@ export const getNumberOfTimestampsInInterval = (
   interval: Interval
 ) => {
   return timestamps.filter((timestamp) => {
-    return isWithinInterval(timestamp.time, interval)
+    return isWithinInterval(startOfDay(timestamp.time), interval)
   }).length
 }
 
