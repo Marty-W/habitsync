@@ -52,6 +52,8 @@ model User {
 
 model Habit {
     id             String         @id @unique
+    createdAt      DateTime       @default(now())
+    updatedAt      DateTime       @default(now())
     name           String
     description    String?
     url            String
