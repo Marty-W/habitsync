@@ -65,8 +65,10 @@ export const statsRouter = t.router({
       const numOfDaysInInterval = getNumberOfDaysInInterval(
         interval,
         habit.recurrenceType,
-        habit.recurrenceDays as Weekday[],
-        habit.recurrenceStep
+        {
+          step: habit.recurrenceStep || undefined,
+          days: habit.recurrenceDays as Weekday[],
+        }
       )
       const numOfTimestampsInInterval = getNumberOfTimestampsInInterval(
         habit.timestamps,

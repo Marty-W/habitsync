@@ -41,6 +41,16 @@ export const WEEKDAYS_LONG = [
   'sunday',
 ]
 
+export const WEEKDAYS_INDEXING = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+]
+
 export const WEEKDAYS_SHORT = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
 export const WEEKDAY_SHORT_LONG_DICT = {

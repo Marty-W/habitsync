@@ -25,6 +25,11 @@ export type RecurrenceType =
   | 'every_x_days'
   | 'specific_days'
 
+export interface RecurrenceConfig {
+  step?: number
+  days?: Weekday[]
+}
+
 export type CalendarData =
   | RouterOutput['timestamp']['getAll']
   | null

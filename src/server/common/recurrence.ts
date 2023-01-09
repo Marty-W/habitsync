@@ -1,15 +1,15 @@
 import { Timestamp } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { eachDayOfInterval, isWeekend, isWithinInterval } from 'date-fns'
-import eachDayOfIntervalWithOptions from 'date-fns/fp/eachDayOfIntervalWithOptions'
 import {
   POSSIBLE_DAY_STEPS_WORDNUMBERS,
+  WEEKDAYS_INDEXING,
   WEEKDAYS_LONG,
   WEEKDAYS_SHORT,
   WEEKDAY_SHORT_LONG_DICT,
   WORD_NUMBER_DICT,
 } from 'lib/const'
-import { RecurrenceType, Weekday } from 'types'
+import { RecurrenceConfig, RecurrenceType, Weekday } from 'types'
 import { cleanseRecurrenceString, containsWordNumbers } from './todoist'
 
 export const getRecurrenceType = (recurrence: string): RecurrenceType => {
@@ -77,33 +77,32 @@ export const getSpecificRecurrenceDays = (recurrence: string) => {
 //
 
 export const getWeekdayIndexes = (days: Weekday[]) => {
-  return days.map((day) => WEEKDAYS_LONG.indexOf(day))
+  return days.map((day) => WEEKDAYS_INDEXING.indexOf(day))
 }
 
 export const getNumberOfDaysInInterval = (
   interval: Interval,
   recurrenceType: RecurrenceType,
-  recurrenceDays: Weekday[],
-  step: number | null
+  recurrenceConfig?: RecurrenceConfig
 ) => {
   if (recurrenceType === 'every_workday') {
     return eachDayOfInterval(interval).filter((day) => !isWeekend(day)).length
   } else if (recurrenceType === 'every_x_days') {
-    if (step === null) {
+    if (!recurrenceConfig?.step) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Recurrence step is not set',
       })
     }
-    return eachDayOfInterval(interval, { step: step }).length
+    return eachDayOfInterval(interval, { step: recurrenceConfig.step }).length
   } else if (recurrenceType === 'specific_days') {
-    if (recurrenceDays.length === 0) {
+    if (!recurrenceConfig?.days || recurrenceConfig.days.length === 0) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Recurrence days are not set',
       })
     }
-    const indexes = getWeekdayIndexes(recurrenceDays)
+    const indexes = getWeekdayIndexes(recurrenceConfig.days)
 
     return eachDayOfInterval(interval).filter((day) => {
       return indexes.includes(day.getDay())
@@ -124,8 +123,8 @@ export const getNumberOfTimestampsInInterval = (
 }
 
 export const getSuccessRate = (
-  numOfDaysInInterval: number,
-  numOfTimestampsInInterval: number
+  numOfTimestampsInInterval: number,
+  numOfDaysInInterval: number
 ) => {
-  return (numOfTimestampsInInterval / numOfDaysInInterval) * 100
+  return ((numOfTimestampsInInterval / numOfDaysInInterval) * 100).toFixed(1)
 }
