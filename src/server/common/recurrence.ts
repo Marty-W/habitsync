@@ -1,3 +1,7 @@
+import { Timestamp } from '@prisma/client'
+import { TRPCError } from '@trpc/server'
+import { eachDayOfInterval, isWeekend, isWithinInterval } from 'date-fns'
+import eachDayOfIntervalWithOptions from 'date-fns/fp/eachDayOfIntervalWithOptions'
 import {
   POSSIBLE_DAY_STEPS_WORDNUMBERS,
   WEEKDAYS_LONG,
@@ -5,7 +9,7 @@ import {
   WEEKDAY_SHORT_LONG_DICT,
   WORD_NUMBER_DICT,
 } from 'lib/const'
-import { RecurrenceType } from 'types'
+import { RecurrenceType, Weekday } from 'types'
 import { cleanseRecurrenceString, containsWordNumbers } from './todoist'
 
 export const getRecurrenceType = (recurrence: string): RecurrenceType => {
@@ -67,4 +71,61 @@ export const getSpecificRecurrenceDays = (recurrence: string) => {
   }
 
   return onlyDays
+}
+
+// Success Rates
+//
+
+export const getWeekdayIndexes = (days: Weekday[]) => {
+  return days.map((day) => WEEKDAYS_LONG.indexOf(day))
+}
+
+export const getNumberOfDaysInInterval = (
+  interval: Interval,
+  recurrenceType: RecurrenceType,
+  recurrenceDays: Weekday[],
+  step: number | null
+) => {
+  if (recurrenceType === 'every_workday') {
+    return eachDayOfInterval(interval).filter((day) => !isWeekend(day)).length
+  } else if (recurrenceType === 'every_x_days') {
+    if (step === null) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Recurrence step is not set',
+      })
+    }
+    return eachDayOfInterval(interval, { step: step }).length
+  } else if (recurrenceType === 'specific_days') {
+    if (recurrenceDays.length === 0) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Recurrence days are not set',
+      })
+    }
+    const indexes = getWeekdayIndexes(recurrenceDays)
+
+    return eachDayOfInterval(interval).filter((day) => {
+      return indexes.includes(day.getDay())
+    }).length
+  }
+
+  //recurrence is every day
+  return eachDayOfInterval(interval).length
+}
+
+export const getNumberOfTimestampsInInterval = (
+  timestamps: Timestamp[],
+  interval: Interval
+) => {
+  return timestamps.filter((timestamp) => {
+    return isWithinInterval(timestamp.time, interval)
+  }).length
+}
+
+export const getSuccessRate = (
+  numOfDaysInInterval: number,
+  numOfTimestampsInInterval: number
+) => {
+  return (numOfTimestampsInInterval / numOfDaysInInterval) * 100
 }

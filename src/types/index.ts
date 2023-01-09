@@ -34,3 +34,17 @@ export type HabitDescriptionData =
   | null
   | undefined
 export type StreakData = RouterOutput['streak']['getBest'] | null | undefined
+
+export interface Interval {
+  start: Date
+  end: Date
+}
+
+export type Weekday =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday'
