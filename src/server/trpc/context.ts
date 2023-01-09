@@ -5,6 +5,7 @@ import * as trpcNext from '@trpc/server/adapters/next'
 import { Session } from 'next-auth'
 import { getServerAuthSession } from '../common/get-server-auth-session'
 import { prisma } from '../db/client'
+import { env } from 'env/server.mjs'
 
 const createDoistApi = (token: string) => {
     return new TodoistApi(token)
@@ -40,7 +41,7 @@ export const createContext = async (
     const session = await getServerAuthSession({ req, res })
 
     // Doist API, right now hardcoded to my token
-    const doist = createDoistApi(process.env.NEXT_PUBLIC_TEMP_API_TOKEN!)
+  const doist = createDoistApi(env.DOIST_TEMP_API_TOKEN)
 
     return await createContextInner({
         session,
