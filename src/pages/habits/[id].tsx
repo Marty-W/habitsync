@@ -8,6 +8,7 @@ import { SiTodoist } from 'react-icons/si'
 import { trpc } from 'lib/trpc'
 import CardWithLoader from 'components/habitDetail/cardWithLoader'
 import SettingsButton from '@/components/settingsButton'
+import { BackButton } from '@/components/backButton'
 
 const HabitDetail = () => {
   const id = useRouter().query.id as string
@@ -41,11 +42,7 @@ const HabitDetail = () => {
   return (
     <div className='flex min-h-screen flex-col bg-slate-200 px-7 py-8'>
       <div className='mb-8 grid grid-cols-3 items-center text-center'>
-        <motion.button whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.05 }}>
-          <Link href='/habits'>
-            <BsArrowLeft size='1.8rem' className='text-zinc-500' />
-          </Link>
-        </motion.button>
+        <BackButton />
         <div>
           <h1 className='ml-auto justify-self-center text-2xl text-zinc-800'>
             {name}
