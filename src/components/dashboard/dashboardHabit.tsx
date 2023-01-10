@@ -9,19 +9,8 @@ const DashboardHabit = ({ habit }: IDashboardHabitProps) => {
   const { id, labels, name } = habit
   return (
     <Link href={`/habits/${id}?name=${name}`}>
-      <div className='border-2'>
+      <div className='my-1 rounded-lg border-2 bg-slate-100 p-4 hover:ring hover:ring-red-400'>
         <span>{name}</span>
-        {/* displaying only labels that are not called 'habit'  */}
-        <div>
-          {labels.map((label) => {
-            if (label === 'habit') return null
-            return (
-              <span key={label} className='badge badge-primary'>
-                {label}
-              </span>
-            )
-          })}
-        </div>
       </div>
     </Link>
   )
