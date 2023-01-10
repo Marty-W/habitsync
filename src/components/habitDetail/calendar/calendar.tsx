@@ -1,24 +1,24 @@
-import { isToday } from 'date-fns'
-import { animate, motion, useAnimationControls } from 'framer-motion'
+import { addDays, isToday } from 'date-fns'
 import useCalendarData from 'hooks/useCalendar'
 import { DAYS } from 'lib/const'
 import { RouterOutput } from 'lib/trpc'
 import DayCell from './dayCell'
 import MonthSwitcher from './monthSwitcher'
-import { MotionConfig } from 'framer-motion'
 import ResizableSlidePanel from 'components/ui/resizablePanel'
 import { useState } from 'react'
+import { normalizeDate } from '@/lib/date'
 
 interface Props {
-  timestamps: RouterOutput['timestamp']['getAll']
+  data: RouterOutput['timestamp']['getAllWithStreakDays']
 }
 
-const Calendar = ({ timestamps }: Props) => {
+const Calendar = ({ data }: Props) => {
   const { year, month, calendarData, handleAddMonth, handleSubMonth } =
     useCalendarData()
   const [animationDirection, setAnimationDirection] = useState<
     'left' | 'right' | undefined
   >()
+  const { extraStreakDays, timestamps } = data
 
   const handleMonthChange = (type: 'addMonth' | 'subMonth') => {
     if (type === 'addMonth') {
@@ -53,9 +53,14 @@ const Calendar = ({ timestamps }: Props) => {
                 <DayCell
                   date={date.getDate()}
                   isThisMonth={month === date.getMonth()}
-                  hasTimestamp={timestamps.has(date.toDateString())}
+                  hasTimestamp={timestamps.has(normalizeDate(date))}
                   isToday={isToday(date)}
                   key={i}
+                  isExtraStreakDay={
+                    (extraStreakDays &&
+                      extraStreakDays.has(normalizeDate(date))) ||
+                    false
+                  }
                 />
               )
             })}

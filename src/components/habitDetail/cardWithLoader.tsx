@@ -64,7 +64,7 @@ const CardWithLoader = ({
 
   switch (cardType) {
     case 'calendar':
-      content = <Calendar timestamps={data} />
+      content = <Calendar data={data} />
       break
     case 'habitDescription':
       content = <HabitDescription desc={data} />

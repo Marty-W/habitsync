@@ -1,5 +1,8 @@
 import { z } from 'zod'
-import { calculateAllStreaks, calculateCurrentStreak } from 'lib/date'
+import {
+  calculateAllStreaks,
+  calculateCurrentStreak,
+} from 'server/common/streaks'
 import { authedProcedure, t } from '../trpc'
 import { TRPCError } from '@trpc/server'
 

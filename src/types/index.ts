@@ -31,7 +31,7 @@ export interface RecurrenceConfig {
 }
 
 export type CalendarData =
-  | RouterOutput['timestamp']['getAll']
+  | RouterOutput['timestamp']['getAllWithStreakDays']
   | null
   | undefined
 export type HabitDescriptionData =

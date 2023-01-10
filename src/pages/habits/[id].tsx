@@ -11,7 +11,7 @@ import CardWithLoader from 'components/habitDetail/cardWithLoader'
 const HabitDetail = () => {
   const id = useRouter().query.id as string
   const name = useRouter().query.name as string
-  const timestamps = trpc.timestamp.getAll.useQuery({
+  const calendarData = trpc.timestamp.getAllWithStreakDays.useQuery({
     habitId: id,
   })
   const description = trpc.habit.getDetail.useQuery({
@@ -27,12 +27,12 @@ const HabitDetail = () => {
     habitId: id,
   })
 
-  if (description.isError || timestamps.isError) {
+  if (description.isError || calendarData.isError) {
     const statusCode =
       (description.error?.data?.httpStatus ?? 500) ||
-      (timestamps.error?.data?.httpStatus ?? 500)
+      (calendarData.error?.data?.httpStatus ?? 500)
 
-    const title = description.error?.message || timestamps.error?.message
+    const title = description.error?.message || calendarData.error?.message
 
     return <NextError statusCode={statusCode} title={title} />
   }
@@ -85,10 +85,10 @@ const HabitDetail = () => {
         />
       </div>
       <CardWithLoader
-        data={timestamps.data}
+        data={calendarData.data}
         lineCount={8}
         cardType='calendar'
-        isLoadingSuccess={timestamps.isSuccess}
+        isLoadingSuccess={calendarData.isSuccess}
         className='mb-8'
       />
       <CardWithLoader
