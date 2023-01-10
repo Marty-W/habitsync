@@ -1,15 +1,12 @@
+import { RouterOutput } from '@/lib/trpc'
 import { format } from 'date-fns'
 import { motion } from 'framer-motion'
-import { Streak } from 'types'
 
 interface Props {
-  streaks: Streak[]
+  streaks: RouterOutput['streak']['getBest']
 }
 
 const Streaks = ({ streaks }: Props) => {
-  if (!streaks) {
-    return
-  }
   return (
     <div className='text-center'>
       <h1 className='text-lg text-zinc-800'>Your best streaks</h1>
