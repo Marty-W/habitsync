@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { calculateAllStreaks, calculateCurrentStreak } from 'lib/date'
 import { authedProcedure, t } from '../trpc'
+import { TRPCError } from '@trpc/server'
 
 export const streakRouter = t.router({
   getCurrent: authedProcedure
@@ -8,20 +9,31 @@ export const streakRouter = t.router({
     .query(async ({ ctx, input }) => {
       const { habitId } = input
 
-      const timestamps = await ctx.prisma.timestamp.findMany({
+      const habit = await ctx.prisma.habit.findUnique({
         where: {
-          habitId,
+          id: habitId,
         },
-        orderBy: {
-          time: 'desc',
-        },
-        select: {
-          time: true,
+        include: {
+          timestamps: {
+            orderBy: {
+              time: 'desc',
+            },
+            select: {
+              time: true,
+            },
+          },
         },
       })
 
+      if (!habit) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Habit not found',
+        })
+      }
+
       return calculateCurrentStreak(
-        timestamps.map((timestamp) => timestamp.time)
+        habit.timestamps.map((timestamp) => timestamp.time)
       )
     }),
   getBest: authedProcedure
@@ -40,9 +52,6 @@ export const streakRouter = t.router({
           time: true,
         },
       })
-
-      //TODO pagination ????
-      //https://github.com/trpc/examples-next-prisma-starter/blob/main/src/server/routers/post.ts
 
       return calculateAllStreaks(
         timestamps.map((timestamp) => timestamp.time)

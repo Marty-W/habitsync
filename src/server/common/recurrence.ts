@@ -1,3 +1,4 @@
+import { getMidDay } from '@/lib/date'
 import { Timestamp } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import {
@@ -123,7 +124,7 @@ export const getNumberOfTimestampsInInterval = (
   interval: Interval
 ) => {
   return timestamps.filter((timestamp) => {
-    return isWithinInterval(startOfDay(timestamp.time), interval)
+    return isWithinInterval(getMidDay(timestamp.time), interval)
   }).length
 }
 
