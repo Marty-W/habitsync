@@ -2,6 +2,7 @@ import {
   differenceInCalendarDays,
   eachDayOfInterval,
   endOfMonth,
+  format,
   lastDayOfWeek,
   startOfMonth,
   startOfWeek,
@@ -28,4 +29,8 @@ export const getMidDay = (date: Date) => {
   midDay.setHours(12, 0, 0, 0)
 
   return midDay
+}
+
+export const normalizeDate = (date: Date) => {
+  return format(date, 'yyyy-MM-dd')
 }

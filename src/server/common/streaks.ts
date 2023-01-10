@@ -1,6 +1,19 @@
-import { Streak } from 'types'
-import { differenceInDays, isToday, isYesterday } from 'date-fns'
-import { areDaysConsecutive } from 'lib/date'
+import { Streak, Weekday } from 'types'
+import {
+  addDays,
+  differenceInCalendarDays,
+  differenceInDays,
+  eachDayOfInterval,
+  isFriday,
+  isMonday,
+  isToday,
+  isYesterday,
+  nextSaturday,
+  nextSunday,
+  subDays,
+} from 'date-fns'
+import { areDaysConsecutive, normalizeDate } from 'lib/date'
+import { getWeekdayIndexes } from './recurrence'
 
 export const calculateAllStreaks = (dates: Date[]) => {
   return dates
@@ -62,4 +75,81 @@ export const calculateCurrentStreak = (dates: Date[]) => {
   }
 
   return isStreakActive ? null : { start: streakStart, length: currentStreak }
+}
+
+export const getExclusiveInterval = (date1: Date, date2: Date) => {
+  const start = addDays(date1, 1)
+  const end = subDays(date2, 1)
+
+  return eachDayOfInterval({ start, end })
+}
+
+export const getExtraStreakDaysForSpecificDays = (
+  timestamps: Date[],
+  recurrenceDays: Weekday[]
+) => {
+  const extraDays: Date[] = []
+  const completionWeekDayIndexes = getWeekdayIndexes(recurrenceDays)
+
+  const actualCompletionsOnTime = timestamps.filter((timestamp) => {
+    const weekdayIndex = timestamp.getDay()
+    return completionWeekDayIndexes.includes(weekdayIndex)
+  })
+
+  actualCompletionsOnTime.forEach((timestamp, idx, arr) => {
+    if (idx === arr.length - 1) return
+    extraDays.push(...getExclusiveInterval(timestamp, arr[idx + 1]))
+  })
+
+  return extraDays.map((date) => normalizeDate(date))
+}
+
+export const getExtraStreakDaysForWorkdays = (timestamps: Date[]) => {
+  const extraDays: Date[] = []
+  timestamps.forEach((timestamp, idx, arr) => {
+    if (isFriday(timestamp)) {
+      const nextTimestamp = arr[idx + 1]
+
+      if (nextTimestamp && isMonday(nextTimestamp)) {
+        const saturday = nextSaturday(timestamp)
+        const sunday = nextSunday(timestamp)
+        extraDays.push(saturday, sunday)
+      }
+    }
+  })
+
+  return extraDays.map((date) => normalizeDate(date))
+}
+
+export const getExtraStreakDaysForStepDays = (
+  timestamps: Date[],
+  step: number
+) => {
+  const extraDays: Date[] = []
+
+  timestamps.forEach((timestamp, idx, arr) => {
+    const nextTimestamp = arr[idx + 1]
+    if (nextTimestamp && step) {
+      const diffInDays = differenceInCalendarDays(nextTimestamp, timestamp)
+
+      if (diffInDays < step) {
+        const nextDayAccordingToStep = addDays(timestamp, step)
+        const isNextDayInTimestamps = arr.some(
+          (timestamp) =>
+            normalizeDate(timestamp) === normalizeDate(nextDayAccordingToStep)
+        )
+
+        if (isNextDayInTimestamps) {
+          extraDays.push(
+            ...getExclusiveInterval(timestamp, nextDayAccordingToStep)
+          )
+        }
+      }
+      if (diffInDays === step) {
+        extraDays.push(...getExclusiveInterval(timestamp, nextTimestamp))
+      }
+    }
+  })
+
+  return extraDays.map((date) => normalizeDate(date))
 }
