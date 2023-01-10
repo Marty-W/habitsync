@@ -2,6 +2,7 @@ import { NextPage } from 'next'
 import { useEffect } from 'react'
 import DashboardHabit from 'components/dashboard/dashboardHabit'
 import { trpc } from 'lib/trpc'
+import SettingsButton from '@/components/settingsButton'
 
 const Habits: NextPage = () => {
   const allHabits = trpc.habit.getAll.useQuery()
@@ -23,7 +24,12 @@ const Habits: NextPage = () => {
 
   return (
     <div className='flex min-h-screen flex-col bg-slate-200 py-6 px-7'>
-      <h1 className='mb-3 text-center text-2xl text-slate-600'>Your habits</h1>
+      <div className='mb-3 grid grid-cols-3 items-center py-4'>
+        <h1 className='col-start-2 text-center text-2xl text-slate-600'>
+          Your habits
+        </h1>
+        <SettingsButton className='justify-self-end' />
+      </div>
       <div className='flex flex-col'>
         {allHabits.data?.map((habit) => {
           return <DashboardHabit key={habit.id} habit={habit} />

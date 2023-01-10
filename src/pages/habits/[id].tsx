@@ -7,6 +7,7 @@ import { HiOutlineCog } from 'react-icons/hi'
 import { SiTodoist } from 'react-icons/si'
 import { trpc } from 'lib/trpc'
 import CardWithLoader from 'components/habitDetail/cardWithLoader'
+import SettingsButton from '@/components/settingsButton'
 
 const HabitDetail = () => {
   const id = useRouter().query.id as string
@@ -51,14 +52,7 @@ const HabitDetail = () => {
           </h1>
         </div>
         <div className='flex items-center justify-end'>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <Link href='/account'>
-              <HiOutlineCog size='1.8rem' className='text-zinc-500' />
-            </Link>
-          </motion.button>
+          <SettingsButton />
         </div>
       </div>
       <CardWithLoader
