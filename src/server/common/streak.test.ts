@@ -1,5 +1,6 @@
 import { Weekday } from 'types'
 import {
+  calculateAllStreaks,
   getExtraStreakDaysForSpecificDays,
   getExtraStreakDaysForStepDays,
   getExtraStreakDaysForWorkdays,
@@ -161,6 +162,64 @@ describe('getExtraStreakDays for "specific_days"', () => {
       'monday',
       'saturday',
     ])
+
+    expect(result).toHaveLength(0)
+  })
+})
+
+describe('calculateAllStreaks', () => {
+  it('should count streaks for habits that are due daily if there is one streak only', () => {
+    const timestamps = [
+      '2023-01-08',
+      '2023-01-07',
+      '2023-01-06',
+      '2023-01-05',
+      '2023-01-04',
+      '2023-01-03',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, true)
+    const streak = result[0]
+
+    expect(result).toHaveLength(1)
+    expect(streak).toHaveProperty('length', 6)
+    expect(streak).toHaveProperty('start', '2023-01-03')
+    expect(streak).toHaveProperty('end', '2023-01-08')
+  })
+
+  it('should count streaks for habits that are due daily if there are more streaks', () => {
+    const timestamps = [
+      '2023-01-14',
+      '2023-01-13',
+      '2023-01-12',
+      '2023-01-11',
+      '2023-01-08',
+      '2023-01-07',
+      '2023-01-06',
+      '2023-01-05',
+      '2023-01-04',
+      '2023-01-03',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, true)
+    const firstStreak = result[0]
+    const secondStreak = result[1]
+
+    expect(result).toHaveLength(2)
+    expect(firstStreak).toHaveProperty('length', 6)
+    expect(firstStreak).toHaveProperty('start', '2023-01-03')
+    expect(firstStreak).toHaveProperty('end', '2023-01-08')
+    expect(secondStreak).toHaveProperty('length', 4)
+    expect(secondStreak).toHaveProperty('start', '2023-01-11')
+    expect(secondStreak).toHaveProperty('end', '2023-01-14')
+  })
+
+  it('should return empty array when there are no streaks', () => {
+    const timestamps = ['2023-01-14', '2023-01-12', '2023-01-08'].map(
+      (date) => new Date(date)
+    )
+
+    const result = calculateAllStreaks(timestamps, true)
 
     expect(result).toHaveLength(0)
   })
