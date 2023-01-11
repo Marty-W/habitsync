@@ -2,6 +2,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { prisma } from 'server/db/client'
+import { env } from 'env/server.mjs'
 
 // TODO add paswordless auth
 
@@ -16,12 +17,11 @@ export const authOptions: NextAuthOptions = {
     },
   },
   // Configure one or more authentication providers
-  // TODO figure out how to properly pass envs
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
