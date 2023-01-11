@@ -11,7 +11,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from 'date-fns'
-import { RecurrenceConfig, RecurrenceType } from 'types'
+import { RecOpts } from 'types'
 
 export const generateCalendarMonth = (year: number, month: number) => {
   const firstDayOfMonth = startOfMonth(new Date(year, month))
@@ -23,16 +23,12 @@ export const generateCalendarMonth = (year: number, month: number) => {
   })
 }
 
-export const areDaysConsecutive = (
-  date1: Date,
-  date2: Date,
-  recType: RecurrenceType,
-  recConfig?: RecurrenceConfig
-) => {
+export const areDaysConsecutive = (date1: Date, date2: Date, opts: RecOpts) => {
+  const { type } = opts
   let diff
 
-  if (recType === 'specific_days' && recConfig && recConfig.days) {
-    const { days } = recConfig
+  if (type === 'specific_days') {
+    const { days } = opts
 
     if (days.length === 1) {
       return Math.abs(differenceInCalendarDays(date1, date2)) === 7
@@ -64,8 +60,8 @@ export const areDaysConsecutive = (
     return inOneWeek && firstDateOnTime && secondDateOnTime
   }
 
-  if (recType === 'every_x_days' && recConfig && recConfig.step) {
-    const { step } = recConfig
+  if (type === 'every_x_days') {
+    const { step } = opts
 
     diff = Math.abs(differenceInCalendarDays(date1, date2))
 
@@ -73,7 +69,7 @@ export const areDaysConsecutive = (
   }
 
   if (
-    recType === 'every_workday' &&
+    type === 'every_workday' &&
     ((isFriday(date1) && isMonday(date2)) ||
       (isFriday(date2) && isMonday(date1)))
   ) {
@@ -82,7 +78,7 @@ export const areDaysConsecutive = (
     return diff === 3
   }
 
-  if (recType === 'every_day' || recType === 'every_workday') {
+  if (type === 'every_day' || type === 'every_workday') {
     diff = Math.abs(differenceInCalendarDays(date1, date2))
     return diff === 1
   }
@@ -98,3 +94,7 @@ export const getMidDay = (date: Date) => {
 export const normalizeDate = (date: Date) => {
   return format(date, 'yyyy-MM-dd')
 }
+
+// export const splitIntoMonths = (dates: Date[]) => {
+
+// }

@@ -14,7 +14,7 @@ describe('areDaysConsecutive for recType=every_day', () => {
     const today = new Date()
     const tomorrow = new Date(new Date().setDate(today.getDate() + 1))
 
-    const result = areDaysConsecutive(today, tomorrow, 'every_day')
+    const result = areDaysConsecutive(today, tomorrow, { type: 'every_day' })
     expect(result).toBe(true)
   })
 
@@ -22,7 +22,9 @@ describe('areDaysConsecutive for recType=every_day', () => {
     const today = new Date()
     const dayAfterTomorrow = new Date(new Date().setDate(today.getDate() + 2))
 
-    const result = areDaysConsecutive(today, dayAfterTomorrow, 'every_day')
+    const result = areDaysConsecutive(today, dayAfterTomorrow, {
+      type: 'every_day',
+    })
     expect(result).toBe(false)
   })
 })
@@ -32,7 +34,9 @@ describe('areDaysConsecutive for recType=every_workday', () => {
     const today = new Date()
     const tomorrow = new Date(new Date().setDate(today.getDate() + 1))
 
-    const result = areDaysConsecutive(today, tomorrow, 'every_workday')
+    const result = areDaysConsecutive(today, tomorrow, {
+      type: 'every_workday',
+    })
     expect(result).toBe(true)
   })
 
@@ -40,7 +44,7 @@ describe('areDaysConsecutive for recType=every_workday', () => {
     const friday = nextFriday(new Date())
     const monday = nextMonday(new Date())
 
-    const result = areDaysConsecutive(friday, monday, 'every_workday')
+    const result = areDaysConsecutive(friday, monday, { type: 'every_workday' })
     expect(result).toBe(true)
   })
 
@@ -48,7 +52,9 @@ describe('areDaysConsecutive for recType=every_workday', () => {
     const friday = nextFriday(new Date())
     const tuesday = nextTuesday(friday)
 
-    const result = areDaysConsecutive(friday, tuesday, 'every_workday')
+    const result = areDaysConsecutive(friday, tuesday, {
+      type: 'every_workday',
+    })
     expect(result).toBe(false)
   })
 })
@@ -58,7 +64,8 @@ describe('areDaysConsecutive for recType=every_x_days', () => {
     const today = new Date()
     const dayAfterTomorrow = new Date(new Date().setDate(today.getDate() + 2))
 
-    const result = areDaysConsecutive(today, dayAfterTomorrow, 'every_x_days', {
+    const result = areDaysConsecutive(today, dayAfterTomorrow, {
+      type: 'every_x_days',
       step: 2,
     })
     expect(result).toBe(true)
@@ -68,7 +75,8 @@ describe('areDaysConsecutive for recType=every_x_days', () => {
     const today = new Date()
     const tomorrow = new Date(new Date().setDate(today.getDate() + 1))
 
-    const result = areDaysConsecutive(today, tomorrow, 'every_x_days', {
+    const result = areDaysConsecutive(today, tomorrow, {
+      type: 'every_x_days',
       step: 2,
     })
     expect(result).toBe(true)
@@ -78,7 +86,8 @@ describe('areDaysConsecutive for recType=every_x_days', () => {
     const today = new Date()
     const dayAfterWeek = new Date(new Date().setDate(today.getDate() + 7))
 
-    const result = areDaysConsecutive(today, dayAfterWeek, 'every_x_days', {
+    const result = areDaysConsecutive(today, dayAfterWeek, {
+      type: 'every_x_days',
       step: 7,
     })
     expect(result).toBe(true)
@@ -88,7 +97,8 @@ describe('areDaysConsecutive for recType=every_x_days', () => {
     const friday = nextFriday(new Date())
     const tuesday = new Date(new Date().setDate(friday.getDate() + 3))
 
-    const result = areDaysConsecutive(friday, tuesday, 'every_x_days', {
+    const result = areDaysConsecutive(friday, tuesday, {
+      type: 'every_x_days',
       step: 2,
     })
     expect(result).toBe(false)
@@ -100,8 +110,9 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const monday = nextMonday(new Date())
     const friday = nextFriday(monday)
 
-    const result = areDaysConsecutive(monday, friday, 'specific_days', {
-      days: ['monday', 'friday'],
+    const result = areDaysConsecutive(monday, friday, {
+      type: 'specific_days',
+      days: [`monday`, `friday`],
     })
     expect(result).toBe(true)
   })
@@ -110,14 +121,10 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const monday = nextMonday(new Date())
     const mondayAfterWeek = nextMonday(monday)
 
-    const result = areDaysConsecutive(
-      monday,
-      mondayAfterWeek,
-      'specific_days',
-      {
-        days: ['monday'],
-      }
-    )
+    const result = areDaysConsecutive(monday, mondayAfterWeek, {
+      type: 'specific_days',
+      days: [`monday`],
+    })
     expect(result).toBe(true)
   })
 
@@ -125,8 +132,9 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const monday = nextMonday(new Date())
     const friday = nextFriday(monday)
 
-    const result = areDaysConsecutive(monday, friday, 'specific_days', {
-      days: ['tuesday', 'friday'],
+    const result = areDaysConsecutive(monday, friday, {
+      type: 'specific_days',
+      days: [`tuesday`, `friday`],
     })
     expect(result).toBe(false)
   })
@@ -135,14 +143,10 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const monday = nextMonday(new Date())
     const mondayAfterTwoWeeks = addDays(nextMonday(monday), 7)
 
-    const result = areDaysConsecutive(
-      monday,
-      mondayAfterTwoWeeks,
-      'specific_days',
-      {
-        days: ['monday'],
-      }
-    )
+    const result = areDaysConsecutive(monday, mondayAfterTwoWeeks, {
+      type: 'specific_days',
+      days: [`monday`],
+    })
     expect(result).toBe(false)
   })
 
@@ -150,8 +154,9 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const monday = nextMonday(new Date())
     const friday = addDays(nextFriday(monday), 7)
 
-    const result = areDaysConsecutive(monday, friday, 'specific_days', {
-      days: ['tuesday', 'friday'],
+    const result = areDaysConsecutive(monday, friday, {
+      type: 'specific_days',
+      days: [`tuesday`, `friday`],
     })
     expect(result).toBe(false)
   })
@@ -160,8 +165,9 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const wednesday = nextWednesday(new Date())
     const friday = nextFriday(wednesday)
 
-    const result = areDaysConsecutive(wednesday, friday, 'specific_days', {
-      days: ['monday', 'wednesday', 'friday'],
+    const result = areDaysConsecutive(wednesday, friday, {
+      type: 'specific_days',
+      days: [`monday`, `wednesday`, `friday`],
     })
     expect(result).toBe(true)
   })
@@ -170,7 +176,8 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const tuesday = nextTuesday(new Date())
     const saturday = nextSaturday(tuesday)
 
-    const result = areDaysConsecutive(tuesday, saturday, 'specific_days', {
+    const result = areDaysConsecutive(tuesday, saturday, {
+      type: 'specific_days',
       days: ['monday', 'tuesday', 'saturday', 'sunday'],
     })
     expect(result).toBe(true)
@@ -180,7 +187,8 @@ describe('areDaysConsecutive for recType=specific_days', () => {
     const tuesday = nextTuesday(new Date())
     const sunday = nextSunday(tuesday)
 
-    const result = areDaysConsecutive(tuesday, sunday, 'specific_days', {
+    const result = areDaysConsecutive(tuesday, sunday, {
+      type: 'specific_days',
       days: ['monday', 'tuesday', 'saturday', 'sunday'],
     })
     expect(result).toBe(false)

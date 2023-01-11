@@ -19,6 +19,22 @@ export type CleanDoistRecurrenceString = ReturnType<
   typeof cleanseRecurrenceString
 >
 
+export type RecOpts =
+  | {
+      type: 'every_day'
+    }
+  | {
+      type: 'every_workday'
+    }
+  | {
+      type: 'specific_days'
+      days: Weekday[]
+    }
+  | {
+      type: 'every_x_days'
+      step: number
+    }
+
 export type RecurrenceType =
   | 'every_day'
   | 'every_workday'

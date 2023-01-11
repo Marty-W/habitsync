@@ -96,7 +96,7 @@ describe('getNumberOfDaysInInterval', () => {
       end: new Date('2022-01-07'),
     }
 
-    expect(getNumberOfDaysInInterval(interval, 'every_day')).toBe(7)
+    expect(getNumberOfDaysInInterval(interval, { type: 'every_day' })).toBe(7)
   })
 
   test('returns correct number of weekdays', () => {
@@ -105,7 +105,9 @@ describe('getNumberOfDaysInInterval', () => {
       end: new Date('2023-01-31'),
     }
 
-    expect(getNumberOfDaysInInterval(interval, 'every_workday')).toBe(22)
+    expect(getNumberOfDaysInInterval(interval, { type: 'every_workday' })).toBe(
+      22
+    )
   })
 
   test('returns correct number of days for "every two days" habits', () => {
@@ -115,7 +117,7 @@ describe('getNumberOfDaysInInterval', () => {
     }
 
     expect(
-      getNumberOfDaysInInterval(interval, 'every_x_days', { step: 2 })
+      getNumberOfDaysInInterval(interval, { type: 'every_x_days', step: 2 })
     ).toBe(5)
   })
 
@@ -126,39 +128,8 @@ describe('getNumberOfDaysInInterval', () => {
     }
 
     expect(
-      getNumberOfDaysInInterval(interval, 'every_x_days', { step: 5 })
+      getNumberOfDaysInInterval(interval, { type: 'every_x_days', step: 5 })
     ).toBe(7)
-  })
-
-  test('throws an erorr when the habit is "every_x_days" and step is not provided', () => {
-    const interval = {
-      start: new Date('2023-01-01'),
-      end: new Date('2023-01-31'),
-    }
-
-    expect(() => getNumberOfDaysInInterval(interval, 'every_x_days')).toThrow()
-  })
-
-  test('throws an erorr when the habit is "specific_days" and days are not provided', () => {
-    const interval = {
-      start: new Date('2023-01-01'),
-      end: new Date('2023-01-31'),
-    }
-
-    expect(() =>
-      getNumberOfDaysInInterval(interval, 'specific_days', {})
-    ).toThrow()
-  })
-
-  test('throws an erorr when the habit is "specific_days" and days are not empty', () => {
-    const interval = {
-      start: new Date('2023-01-01'),
-      end: new Date('2023-01-31'),
-    }
-
-    expect(() =>
-      getNumberOfDaysInInterval(interval, 'specific_days', { days: [] })
-    ).toThrow()
   })
 
   test('returns correct number of days for "specific_days" habits', () => {
@@ -168,7 +139,8 @@ describe('getNumberOfDaysInInterval', () => {
     }
 
     expect(
-      getNumberOfDaysInInterval(interval, 'specific_days', {
+      getNumberOfDaysInInterval(interval, {
+        type: 'specific_days',
         days: ['monday', 'wednesday', 'friday'],
       })
     ).toBe(13)

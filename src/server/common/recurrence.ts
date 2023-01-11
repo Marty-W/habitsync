@@ -1,12 +1,6 @@
 import { getMidDay } from '@/lib/date'
 import { Timestamp } from '@prisma/client'
-import { TRPCError } from '@trpc/server'
-import {
-  eachDayOfInterval,
-  isWeekend,
-  isWithinInterval,
-  startOfDay,
-} from 'date-fns'
+import { eachDayOfInterval, isWeekend, isWithinInterval } from 'date-fns'
 import {
   POSSIBLE_DAY_STEPS_WORDNUMBERS,
   WEEKDAYS_INDEXING,
@@ -15,7 +9,7 @@ import {
   WEEKDAY_SHORT_LONG_DICT,
   WORD_NUMBER_DICT,
 } from 'lib/const'
-import { RecurrenceConfig, RecurrenceType, Weekday } from 'types'
+import { RecOpts, RecurrenceType, Weekday } from 'types'
 import { cleanseRecurrenceString, containsWordNumbers } from './todoist'
 
 export const getRecurrenceType = (recurrence: string): RecurrenceType => {
@@ -88,27 +82,15 @@ export const getWeekdayIndexes = (days: Weekday[]) => {
 
 export const getNumberOfDaysInInterval = (
   interval: Interval,
-  recurrenceType: RecurrenceType,
-  recurrenceConfig?: RecurrenceConfig
+  opts: RecOpts
 ) => {
-  if (recurrenceType === 'every_workday') {
+  const { type } = opts
+  if (type === 'every_workday') {
     return eachDayOfInterval(interval).filter((day) => !isWeekend(day)).length
-  } else if (recurrenceType === 'every_x_days') {
-    if (!recurrenceConfig?.step) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Recurrence step is not set',
-      })
-    }
-    return eachDayOfInterval(interval, { step: recurrenceConfig.step }).length
-  } else if (recurrenceType === 'specific_days') {
-    if (!recurrenceConfig?.days || recurrenceConfig.days.length === 0) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Recurrence days are not set',
-      })
-    }
-    const indexes = getWeekdayIndexes(recurrenceConfig.days)
+  } else if (type === 'every_x_days') {
+    return eachDayOfInterval(interval, { step: opts.step }).length
+  } else if (type === 'specific_days') {
+    const indexes = getWeekdayIndexes(opts.days)
 
     return eachDayOfInterval(interval).filter((day) => {
       return indexes.includes(day.getDay())

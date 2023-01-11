@@ -179,7 +179,7 @@ describe('calculateAllStreaks, habits that are due daily', () => {
       '2023-01-03',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'every_day', true)
+    const result = calculateAllStreaks(timestamps, { type: 'every_day' }, true)
     const streak = result[0]
 
     expect(result).toHaveLength(1)
@@ -202,7 +202,7 @@ describe('calculateAllStreaks, habits that are due daily', () => {
       '2023-01-03',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'every_day', true)
+    const result = calculateAllStreaks(timestamps, { type: 'every_day' }, true)
     const firstStreak = result[0]
     const secondStreak = result[1]
 
@@ -220,7 +220,7 @@ describe('calculateAllStreaks, habits that are due daily', () => {
       (date) => new Date(date)
     )
 
-    const result = calculateAllStreaks(timestamps, 'every_day', true)
+    const result = calculateAllStreaks(timestamps, { type: 'every_day' }, true)
 
     expect(result).toHaveLength(0)
   })
@@ -235,9 +235,11 @@ describe('calculateAllStreaks, habits that are due every_x_days', () => {
       '2023-01-02',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
-      step: 2,
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'every_x_days', step: 2 },
+      true
+    )
     const streak = result[0]
 
     expect(result).toHaveLength(1)
@@ -257,9 +259,11 @@ describe('calculateAllStreaks, habits that are due every_x_days', () => {
       '2023-01-03',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
-      step: 2,
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'every_x_days', step: 2 },
+      true
+    )
     const firstStreak = result[0]
     const secondStreak = result[1]
 
@@ -283,9 +287,11 @@ describe('calculateAllStreaks, habits that are due every_x_days', () => {
       '2023-01-01',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
-      step: 4,
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'every_x_days', step: 4 },
+      true
+    )
 
     // they are sorted by length, so we need to sort the back by date
     const sortedResult = result.sort((streakA, streakB) => {
@@ -308,9 +314,11 @@ describe('calculateAllStreaks, habits that are due every_x_days', () => {
       (date) => new Date(date)
     )
 
-    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
-      step: 2,
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'every_x_days', step: 2 },
+      true
+    )
 
     expect(result).toHaveLength(0)
   })
@@ -326,7 +334,11 @@ describe('calculateAllStreaks, habits that are due every_workday', () => {
       '2023-01-04',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'every_workday', true)
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'every_workday' },
+      true
+    )
     const streak = result[0]
 
     expect(result).toHaveLength(1)
@@ -353,7 +365,11 @@ describe('calculateAllStreaks, habits that are due every_workday', () => {
       '2023-01-02',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'every_workday', true)
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'every_workday' },
+      true
+    )
 
     //let's sort them by length
 
@@ -378,7 +394,11 @@ describe('calculateAllStreaks, habits that are due every_workday', () => {
       (date) => new Date(date)
     )
 
-    const result = calculateAllStreaks(timestamps, 'every_workday', true)
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'every_workday' },
+      true
+    )
 
     expect(result).toHaveLength(0)
   })
@@ -390,9 +410,11 @@ describe('calculateAllStreaks, habits that are due specific_days', () => {
       (date) => new Date(date)
     )
 
-    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
-      days: ['monday', 'wednesday'],
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'specific_days', days: ['monday', 'wednesday'] },
+      true
+    )
 
     const streak = result[0]
 
@@ -413,9 +435,11 @@ describe('calculateAllStreaks, habits that are due specific_days', () => {
       '2023-01-03',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
-      days: ['tuesday', 'friday', 'sunday'],
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'specific_days', days: ['tuesday', 'friday', 'sunday'] },
+      true
+    )
     const firstStreak = result[0]
     const secondStreak = result[1]
 
@@ -439,9 +463,11 @@ describe('calculateAllStreaks, habits that are due specific_days', () => {
       '2023-01-02',
     ].map((date) => new Date(date))
 
-    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
-      days: ['monday', 'wednesday'],
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'specific_days', days: ['monday', 'wednesday'] },
+      true
+    )
 
     const streak = result[0]
 
@@ -456,9 +482,11 @@ describe('calculateAllStreaks, habits that are due specific_days', () => {
       (date) => new Date(date)
     )
 
-    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
-      days: ['monday', 'wednesday'],
-    })
+    const result = calculateAllStreaks(
+      timestamps,
+      { type: 'specific_days', days: ['monday', 'wednesday'] },
+      true
+    )
 
     expect(result).toHaveLength(0)
   })
