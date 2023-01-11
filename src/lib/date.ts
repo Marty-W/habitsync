@@ -1,12 +1,17 @@
+import { getWeekdayIndexes } from '@/server/common/recurrence'
 import {
   differenceInCalendarDays,
   eachDayOfInterval,
   endOfMonth,
   format,
+  isBefore,
+  isFriday,
+  isMonday,
   lastDayOfWeek,
   startOfMonth,
   startOfWeek,
 } from 'date-fns'
+import { RecurrenceConfig, RecurrenceType } from 'types'
 
 export const generateCalendarMonth = (year: number, month: number) => {
   const firstDayOfMonth = startOfMonth(new Date(year, month))
@@ -18,10 +23,69 @@ export const generateCalendarMonth = (year: number, month: number) => {
   })
 }
 
-export const areDaysConsecutive = (date1: Date, date2: Date) => {
-  const diff = differenceInCalendarDays(date1, date2)
+export const areDaysConsecutive = (
+  date1: Date,
+  date2: Date,
+  recType: RecurrenceType,
+  recConfig?: RecurrenceConfig
+) => {
+  let diff
 
-  return diff === 1 || diff === -1
+  if (recType === 'specific_days' && recConfig && recConfig.days) {
+    const { days } = recConfig
+
+    if (days.length === 1) {
+      return Math.abs(differenceInCalendarDays(date1, date2)) === 7
+    }
+
+    const dayIndexes = getWeekdayIndexes(days)
+    let localDate1 = date1
+    let localDate2 = date2
+
+    if (isBefore(date2, date1)) {
+      localDate1 = date2
+      localDate2 = date1
+    }
+
+    //Find out the index of the first date
+    const firstDateIndex = dayIndexes.indexOf(localDate1.getDay())
+    const firstDateDayIndexShouldBe = dayIndexes[firstDateIndex]
+    // Now i know the position of the second date in the array of days
+    const secondDateDayIndexShouldBe =
+      firstDateIndex === dayIndexes.length - 1
+        ? dayIndexes[0]
+        : dayIndexes[firstDateIndex + 1]
+
+    const inOneWeek =
+      Math.abs(differenceInCalendarDays(localDate1, localDate2)) <= 7
+    const firstDateOnTime = localDate1.getDay() === firstDateDayIndexShouldBe
+    const secondDateOnTime = localDate2.getDay() === secondDateDayIndexShouldBe
+
+    return inOneWeek && firstDateOnTime && secondDateOnTime
+  }
+
+  if (recType === 'every_x_days' && recConfig && recConfig.step) {
+    const { step } = recConfig
+
+    diff = Math.abs(differenceInCalendarDays(date1, date2))
+
+    return diff <= step
+  }
+
+  if (
+    recType === 'every_workday' &&
+    ((isFriday(date1) && isMonday(date2)) ||
+      (isFriday(date2) && isMonday(date1)))
+  ) {
+    diff = Math.abs(differenceInCalendarDays(date1, date2))
+
+    return diff === 3
+  }
+
+  if (recType === 'every_day' || recType === 'every_workday') {
+    diff = Math.abs(differenceInCalendarDays(date1, date2))
+    return diff === 1
+  }
 }
 
 export const getMidDay = (date: Date) => {

@@ -1,11 +1,20 @@
+import {
+  addDays,
+  nextFriday,
+  nextMonday,
+  nextSaturday,
+  nextSunday,
+  nextTuesday,
+  nextWednesday,
+} from 'date-fns'
 import { areDaysConsecutive, generateCalendarMonth } from './date'
 
-describe('areDaysConsecutive', () => {
+describe('areDaysConsecutive for recType=every_day', () => {
   it('should return true if days are consecutive', () => {
     const today = new Date()
     const tomorrow = new Date(new Date().setDate(today.getDate() + 1))
 
-    const result = areDaysConsecutive(today, tomorrow)
+    const result = areDaysConsecutive(today, tomorrow, 'every_day')
     expect(result).toBe(true)
   })
 
@@ -13,26 +22,167 @@ describe('areDaysConsecutive', () => {
     const today = new Date()
     const dayAfterTomorrow = new Date(new Date().setDate(today.getDate() + 2))
 
-    const result = areDaysConsecutive(today, dayAfterTomorrow)
+    const result = areDaysConsecutive(today, dayAfterTomorrow, 'every_day')
     expect(result).toBe(false)
   })
 })
 
-// describe('generateCalendarMonth', () => {
-//   it('should return an array of with the length of the passed month-year', () => {
-//     const month = 0
-//     const year = 2023
-//     const result = generateCalendarMonth(year, month)
-//     expect(result.length).toBe(31)
-//   })
+describe('areDaysConsecutive for recType=every_workday', () => {
+  it('should return true if days are consecutive and there is no weekend', () => {
+    const today = new Date()
+    const tomorrow = new Date(new Date().setDate(today.getDate() + 1))
 
-// it('should return an array of 42 days starting on a Monday', () => {
-//     const result = generateCalendarMonth(2020, 0)
-//     expect(result[0].getDay()).toBe(1)
-// })
+    const result = areDaysConsecutive(today, tomorrow, 'every_workday')
+    expect(result).toBe(true)
+  })
 
-// it('should return an array of 42 days ending on a Sunday', () => {
-//     const result = generateCalendarMonth(2020, 0)
-//     expect(result[41].getDay()).toBe(0)
-// })
-// })
+  it('should return true if days are friday and monday', () => {
+    const friday = nextFriday(new Date())
+    const monday = nextMonday(new Date())
+
+    const result = areDaysConsecutive(friday, monday, 'every_workday')
+    expect(result).toBe(true)
+  })
+
+  it('should return false if days arent consecutive', () => {
+    const friday = nextFriday(new Date())
+    const tuesday = nextTuesday(friday)
+
+    const result = areDaysConsecutive(friday, tuesday, 'every_workday')
+    expect(result).toBe(false)
+  })
+})
+
+describe('areDaysConsecutive for recType=every_x_days', () => {
+  it('should return true if days are split by 2 days and step=2', () => {
+    const today = new Date()
+    const dayAfterTomorrow = new Date(new Date().setDate(today.getDate() + 2))
+
+    const result = areDaysConsecutive(today, dayAfterTomorrow, 'every_x_days', {
+      step: 2,
+    })
+    expect(result).toBe(true)
+  })
+
+  it('should return true if days are one day after another and step=2', () => {
+    const today = new Date()
+    const tomorrow = new Date(new Date().setDate(today.getDate() + 1))
+
+    const result = areDaysConsecutive(today, tomorrow, 'every_x_days', {
+      step: 2,
+    })
+    expect(result).toBe(true)
+  })
+
+  it('should return true if days are 7 days apart and step=7', () => {
+    const today = new Date()
+    const dayAfterWeek = new Date(new Date().setDate(today.getDate() + 7))
+
+    const result = areDaysConsecutive(today, dayAfterWeek, 'every_x_days', {
+      step: 7,
+    })
+    expect(result).toBe(true)
+  })
+
+  it('should return false if days arent consecutive', () => {
+    const friday = nextFriday(new Date())
+    const tuesday = new Date(new Date().setDate(friday.getDate() + 3))
+
+    const result = areDaysConsecutive(friday, tuesday, 'every_x_days', {
+      step: 2,
+    })
+    expect(result).toBe(false)
+  })
+})
+
+describe('areDaysConsecutive for recType=specific_days', () => {
+  it('should return true if days are Monday and Friday and days=[`monday`, `friday`]', () => {
+    const monday = nextMonday(new Date())
+    const friday = nextFriday(monday)
+
+    const result = areDaysConsecutive(monday, friday, 'specific_days', {
+      days: ['monday', 'friday'],
+    })
+    expect(result).toBe(true)
+  })
+
+  it('should return true if days are two Mondays week apart and days=[`monday`]', () => {
+    const monday = nextMonday(new Date())
+    const mondayAfterWeek = nextMonday(monday)
+
+    const result = areDaysConsecutive(
+      monday,
+      mondayAfterWeek,
+      'specific_days',
+      {
+        days: ['monday'],
+      }
+    )
+    expect(result).toBe(true)
+  })
+
+  it('should return false if days are Monday and Friday and days=[`tuesday`, `friday`]', () => {
+    const monday = nextMonday(new Date())
+    const friday = nextFriday(monday)
+
+    const result = areDaysConsecutive(monday, friday, 'specific_days', {
+      days: ['tuesday', 'friday'],
+    })
+    expect(result).toBe(false)
+  })
+
+  it('should return false if days are two Mondays 2 weeks apart and days=[`monday`]', () => {
+    const monday = nextMonday(new Date())
+    const mondayAfterTwoWeeks = addDays(nextMonday(monday), 7)
+
+    const result = areDaysConsecutive(
+      monday,
+      mondayAfterTwoWeeks,
+      'specific_days',
+      {
+        days: ['monday'],
+      }
+    )
+    expect(result).toBe(false)
+  })
+
+  it('should return false if days are Monday and Friday days=[`tuesday`, `friday`], but the dates are not in the same week', () => {
+    const monday = nextMonday(new Date())
+    const friday = addDays(nextFriday(monday), 7)
+
+    const result = areDaysConsecutive(monday, friday, 'specific_days', {
+      days: ['tuesday', 'friday'],
+    })
+    expect(result).toBe(false)
+  })
+
+  it('should return true if there are 3 days on recConfig', () => {
+    const wednesday = nextWednesday(new Date())
+    const friday = nextFriday(wednesday)
+
+    const result = areDaysConsecutive(wednesday, friday, 'specific_days', {
+      days: ['monday', 'wednesday', 'friday'],
+    })
+    expect(result).toBe(true)
+  })
+
+  it('should return true if there are 4 days on recConfig', () => {
+    const tuesday = nextTuesday(new Date())
+    const saturday = nextSaturday(tuesday)
+
+    const result = areDaysConsecutive(tuesday, saturday, 'specific_days', {
+      days: ['monday', 'tuesday', 'saturday', 'sunday'],
+    })
+    expect(result).toBe(true)
+  })
+
+  it('should return false if there is a `skipped day` between days in reConfig', () => {
+    const tuesday = nextTuesday(new Date())
+    const sunday = nextSunday(tuesday)
+
+    const result = areDaysConsecutive(tuesday, sunday, 'specific_days', {
+      days: ['monday', 'tuesday', 'saturday', 'sunday'],
+    })
+    expect(result).toBe(false)
+  })
+})
