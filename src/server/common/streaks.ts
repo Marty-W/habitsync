@@ -1,9 +1,10 @@
-import { Streak, Weekday } from 'types'
+import { RecurrenceConfig, RecurrenceType, Streak, Weekday } from 'types'
 import {
   addDays,
   differenceInCalendarDays,
   differenceInDays,
   eachDayOfInterval,
+  isBefore,
   isFriday,
   isMonday,
   isToday,
@@ -15,12 +16,36 @@ import {
 import { areDaysConsecutive, normalizeDate } from 'lib/date'
 import { getWeekdayIndexes } from './recurrence'
 
-export const calculateAllStreaks = (dates: Date[]) => {
-  return dates
+export const calculateAllStreaks = (
+  dates: Date[],
+  recType: RecurrenceType,
+  normalized?: boolean,
+  recConfig?: RecurrenceConfig
+) => {
+  const areSortedAsc = isBefore(dates[0], dates[dates.length - 1])
+  let localDates = dates
+
+  if (areSortedAsc) {
+    localDates = dates.reverse()
+  }
+
+  if (recType === 'specific_days') {
+    const completionWeekDayIndexes = getWeekdayIndexes(recConfig?.days || [])
+    //filter out days timestamps that are not on days specified in RecurrenceConfig
+    localDates = localDates.filter((date) => {
+      const weekDayIndex = date.getDay()
+      return completionWeekDayIndexes.includes(weekDayIndex)
+    })
+  }
+
+  const result = localDates
     .reduce((streaks: Streak[], timestamp, idx, arr) => {
       const prevTimestamp = arr[idx - 1]
 
-      if (idx === 0 || !areDaysConsecutive(prevTimestamp, timestamp)) {
+      if (
+        idx === 0 ||
+        !areDaysConsecutive(prevTimestamp, timestamp, recType, recConfig)
+      ) {
         streaks.push({
           start: timestamp.toString(),
           end: timestamp.toString(),
@@ -31,7 +56,7 @@ export const calculateAllStreaks = (dates: Date[]) => {
 
       const lastStreak = streaks[streaks.length - 1]
 
-      if (areDaysConsecutive(prevTimestamp, timestamp)) {
+      if (areDaysConsecutive(prevTimestamp, timestamp, recType, recConfig)) {
         lastStreak.length++
         lastStreak.start = timestamp.toString()
       } else {
@@ -43,6 +68,16 @@ export const calculateAllStreaks = (dates: Date[]) => {
     }, [])
     .filter((streak) => streak.length > 1)
     .sort((a, b) => b.length - a.length)
+
+  return normalized
+    ? result.map((streak) => {
+        return {
+          ...streak,
+          start: normalizeDate(new Date(streak.start)),
+          end: normalizeDate(new Date(streak.end)),
+        }
+      })
+    : result
 }
 
 export const calculateCurrentStreak = (dates: Date[]) => {

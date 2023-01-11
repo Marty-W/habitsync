@@ -1,5 +1,7 @@
+import { isBefore } from 'date-fns'
 import { Weekday } from 'types'
 import {
+  calculateAllStreaks,
   getExtraStreakDaysForSpecificDays,
   getExtraStreakDaysForStepDays,
   getExtraStreakDaysForWorkdays,
@@ -161,6 +163,302 @@ describe('getExtraStreakDays for "specific_days"', () => {
       'monday',
       'saturday',
     ])
+
+    expect(result).toHaveLength(0)
+  })
+})
+
+describe('calculateAllStreaks, habits that are due daily', () => {
+  it('should count streaks if there is one streak only', () => {
+    const timestamps = [
+      '2023-01-08',
+      '2023-01-07',
+      '2023-01-06',
+      '2023-01-05',
+      '2023-01-04',
+      '2023-01-03',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'every_day', true)
+    const streak = result[0]
+
+    expect(result).toHaveLength(1)
+    expect(streak).toHaveProperty('length', 6)
+    expect(streak).toHaveProperty('start', '2023-01-03')
+    expect(streak).toHaveProperty('end', '2023-01-08')
+  })
+
+  it('should count streaks if there are more streaks', () => {
+    const timestamps = [
+      '2023-01-14',
+      '2023-01-13',
+      '2023-01-12',
+      '2023-01-11',
+      '2023-01-08',
+      '2023-01-07',
+      '2023-01-06',
+      '2023-01-05',
+      '2023-01-04',
+      '2023-01-03',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'every_day', true)
+    const firstStreak = result[0]
+    const secondStreak = result[1]
+
+    expect(result).toHaveLength(2)
+    expect(firstStreak).toHaveProperty('length', 6)
+    expect(firstStreak).toHaveProperty('start', '2023-01-03')
+    expect(firstStreak).toHaveProperty('end', '2023-01-08')
+    expect(secondStreak).toHaveProperty('length', 4)
+    expect(secondStreak).toHaveProperty('start', '2023-01-11')
+    expect(secondStreak).toHaveProperty('end', '2023-01-14')
+  })
+
+  it('should return empty array when there are no streaks', () => {
+    const timestamps = ['2023-01-14', '2023-01-12', '2023-01-08'].map(
+      (date) => new Date(date)
+    )
+
+    const result = calculateAllStreaks(timestamps, 'every_day', true)
+
+    expect(result).toHaveLength(0)
+  })
+})
+
+describe('calculateAllStreaks, habits that are due every_x_days', () => {
+  it('should count streaks if there is one streak only', () => {
+    const timestamps = [
+      '2023-01-08',
+      '2023-01-06',
+      '2023-01-04',
+      '2023-01-02',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
+      step: 2,
+    })
+    const streak = result[0]
+
+    expect(result).toHaveLength(1)
+    expect(streak).toHaveProperty('length', 4)
+    expect(streak).toHaveProperty('start', '2023-01-02')
+    expect(streak).toHaveProperty('end', '2023-01-08')
+  })
+
+  it('should count streaks if there are more streaks', () => {
+    const timestamps = [
+      '2023-01-17',
+      '2023-01-15',
+      '2023-01-13',
+      '2023-01-09',
+      '2023-01-07',
+      '2023-01-05',
+      '2023-01-03',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
+      step: 2,
+    })
+    const firstStreak = result[0]
+    const secondStreak = result[1]
+
+    expect(result).toHaveLength(2)
+    expect(firstStreak).toHaveProperty('length', 4)
+    expect(firstStreak).toHaveProperty('start', '2023-01-03')
+    expect(firstStreak).toHaveProperty('end', '2023-01-09')
+    expect(secondStreak).toHaveProperty('length', 3)
+    expect(secondStreak).toHaveProperty('start', '2023-01-13')
+    expect(secondStreak).toHaveProperty('end', '2023-01-17')
+  })
+
+  it('should count streaks if there are more streaks with extra days in between', () => {
+    const timestamps = [
+      '2023-01-23',
+      '2023-01-19',
+      '2023-01-15',
+      '2023-01-11',
+      '2023-01-06',
+      '2023-01-05',
+      '2023-01-01',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
+      step: 4,
+    })
+
+    // they are sorted by length, so we need to sort the back by date
+    const sortedResult = result.sort((streakA, streakB) => {
+      return isBefore(new Date(streakA.start), new Date(streakB.start)) ? -1 : 1
+    })
+    const firstStreak = sortedResult[0]
+    const secondStreak = sortedResult[1]
+
+    expect(result).toHaveLength(2)
+    expect(firstStreak).toHaveProperty('length', 3)
+    expect(firstStreak).toHaveProperty('start', '2023-01-01')
+    expect(firstStreak).toHaveProperty('end', '2023-01-06')
+    expect(secondStreak).toHaveProperty('length', 4)
+    expect(secondStreak).toHaveProperty('start', '2023-01-11')
+    expect(secondStreak).toHaveProperty('end', '2023-01-23')
+  })
+
+  it('should return empty array when there are no streaks', () => {
+    const timestamps = ['2023-01-14', '2023-01-10', '2023-01-05'].map(
+      (date) => new Date(date)
+    )
+
+    const result = calculateAllStreaks(timestamps, 'every_x_days', true, {
+      step: 2,
+    })
+
+    expect(result).toHaveLength(0)
+  })
+})
+
+describe('calculateAllStreaks, habits that are due every_workday', () => {
+  it('should count streaks if there is one streak only', () => {
+    const timestamps = [
+      '2023-01-10',
+      '2023-01-09',
+      '2023-01-06',
+      '2023-01-05',
+      '2023-01-04',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'every_workday', true)
+    const streak = result[0]
+
+    expect(result).toHaveLength(1)
+    expect(streak).toHaveProperty('length', 5)
+    expect(streak).toHaveProperty('start', '2023-01-04')
+    expect(streak).toHaveProperty('end', '2023-01-10')
+  })
+
+  it('should count streaks if there are more streaks', () => {
+    const timestamps = [
+      '2023-01-20',
+      '2023-01-19',
+      '2023-01-18',
+      '2023-01-17',
+      '2023-01-14',
+      '2023-01-13',
+      '2023-01-12',
+      '2023-01-10',
+      '2023-01-09',
+      '2023-01-06',
+      '2023-01-05',
+      '2023-01-04',
+      '2023-01-03',
+      '2023-01-02',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'every_workday', true)
+
+    //let's sort them by length
+
+    const longestStreak = result[0]
+    const secondLongestStreak = result[1]
+    const shortedStreak = result[2]
+
+    expect(result).toHaveLength(3)
+    expect(longestStreak).toHaveProperty('length', 7)
+    expect(longestStreak).toHaveProperty('start', '2023-01-02')
+    expect(longestStreak).toHaveProperty('end', '2023-01-10')
+    expect(secondLongestStreak).toHaveProperty('length', 4)
+    expect(secondLongestStreak).toHaveProperty('start', '2023-01-17')
+    expect(secondLongestStreak).toHaveProperty('end', '2023-01-20')
+    expect(shortedStreak).toHaveProperty('length', 3)
+    expect(shortedStreak).toHaveProperty('start', '2023-01-12')
+    expect(shortedStreak).toHaveProperty('end', '2023-01-14')
+  })
+
+  it('should return empty array when there are no streaks', () => {
+    const timestamps = ['2023-01-16', '2023-01-19', '2023-01-25'].map(
+      (date) => new Date(date)
+    )
+
+    const result = calculateAllStreaks(timestamps, 'every_workday', true)
+
+    expect(result).toHaveLength(0)
+  })
+})
+
+describe('calculateAllStreaks, habits that are due specific_days', () => {
+  it('should count streaks if there is one streak only', () => {
+    const timestamps = ['2023-01-02', '2023-01-04', '2023-01-09'].map(
+      (date) => new Date(date)
+    )
+
+    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
+      days: ['monday', 'wednesday'],
+    })
+
+    const streak = result[0]
+
+    expect(result).toHaveLength(1)
+    expect(streak).toHaveProperty('length', 3)
+    expect(streak).toHaveProperty('start', '2023-01-02')
+    expect(streak).toHaveProperty('end', '2023-01-09')
+  })
+
+  it('should count streaks if there are more streaks', () => {
+    const timestamps = [
+      '2023-01-27',
+      '2023-01-24',
+      '2023-01-13',
+      '2023-01-10',
+      '2023-01-08',
+      '2023-01-06',
+      '2023-01-03',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
+      days: ['tuesday', 'friday', 'sunday'],
+    })
+    const firstStreak = result[0]
+    const secondStreak = result[1]
+
+    expect(result).toHaveLength(2)
+    expect(firstStreak).toHaveProperty('length', 5)
+    expect(firstStreak).toHaveProperty('start', '2023-01-03')
+    expect(firstStreak).toHaveProperty('end', '2023-01-13')
+    expect(secondStreak).toHaveProperty('length', 2)
+    expect(secondStreak).toHaveProperty('start', '2023-01-24')
+    expect(secondStreak).toHaveProperty('end', '2023-01-27')
+  })
+
+  it('should count streaks if there are  extra days in between and omit them from count', () => {
+    const timestamps = [
+      '2023-01-17',
+      '2023-01-16',
+      '2023-01-11',
+      '2023-01-10',
+      '2023-01-09',
+      '2023-01-04',
+      '2023-01-02',
+    ].map((date) => new Date(date))
+
+    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
+      days: ['monday', 'wednesday'],
+    })
+
+    const streak = result[0]
+
+    expect(result).toHaveLength(1)
+    expect(streak).toHaveProperty('length', 5)
+    expect(streak).toHaveProperty('start', '2023-01-02')
+    expect(streak).toHaveProperty('end', '2023-01-16')
+  })
+
+  it('should return empty array when there are no streaks', () => {
+    const timestamps = ['2023-01-03', '2023-01-06', '2023-01-07'].map(
+      (date) => new Date(date)
+    )
+
+    const result = calculateAllStreaks(timestamps, 'specific_days', true, {
+      days: ['monday', 'wednesday'],
+    })
 
     expect(result).toHaveLength(0)
   })
