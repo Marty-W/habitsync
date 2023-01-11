@@ -9,6 +9,7 @@ import {
   getSuccessRate,
   getWeekdayIndexes,
 } from './recurrence'
+import { describe, it, expect } from 'vitest'
 
 describe('getRecurrenceType', () => {
   it('should return "every_day" if the input is "every day"', () => {
@@ -90,7 +91,7 @@ describe('getWeekdayIndexes', () => {
 })
 
 describe('getNumberOfDaysInInterval', () => {
-  test('returns correct number of days for daily habits', () => {
+  it('returns correct number of days for daily habits', () => {
     const interval = {
       start: new Date('2022-01-01'),
       end: new Date('2022-01-07'),
@@ -99,7 +100,7 @@ describe('getNumberOfDaysInInterval', () => {
     expect(getNumberOfDaysInInterval(interval, { type: 'every_day' })).toBe(7)
   })
 
-  test('returns correct number of weekdays', () => {
+  it('returns correct number of weekdays', () => {
     const interval = {
       start: new Date('2023-01-01'),
       end: new Date('2023-01-31'),
@@ -110,7 +111,7 @@ describe('getNumberOfDaysInInterval', () => {
     )
   })
 
-  test('returns correct number of days for "every two days" habits', () => {
+  it('returns correct number of days for "every two days" habits', () => {
     const interval = {
       start: new Date('2023-01-01'),
       end: new Date('2023-01-09'),
@@ -121,7 +122,7 @@ describe('getNumberOfDaysInInterval', () => {
     ).toBe(5)
   })
 
-  test('returns correct number of days for "every 5 days" habits', () => {
+  it('returns correct number of days for "every 5 days" habits', () => {
     const interval = {
       start: new Date('2023-01-01'),
       end: new Date('2023-01-31'),
@@ -132,7 +133,7 @@ describe('getNumberOfDaysInInterval', () => {
     ).toBe(7)
   })
 
-  test('returns correct number of days for "specific_days" habits', () => {
+  it('returns correct number of days for "specific_days" habits', () => {
     const interval = {
       start: new Date('2023-01-01'),
       end: new Date('2023-01-31'),
@@ -148,7 +149,7 @@ describe('getNumberOfDaysInInterval', () => {
 })
 
 describe('getNumberOfTimestampsInInterval', () => {
-  test('returns correct number of timestamps', () => {
+  it('returns correct number of timestamps', () => {
     const interval = {
       start: new Date('2023-01-01'),
       end: new Date('2023-01-31'),
@@ -174,7 +175,7 @@ describe('getNumberOfTimestampsInInterval', () => {
 })
 
 describe('getSuccessRate', () => {
-  test('returns correct success rate', () => {
+  it('returns correct success rate', () => {
     const interval = {
       start: new Date('2023-01-01'),
       end: new Date('2023-01-31'),

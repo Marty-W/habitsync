@@ -6,6 +6,7 @@ import {
   getExtraStreakDaysForStepDays,
   getExtraStreakDaysForWorkdays,
 } from './streaks'
+import { describe, it, expect } from 'vitest'
 
 describe('getExtraStreakDays for "every_workday"', () => {
   it('should return weekend in extra days if timestamps include friday and monday', () => {

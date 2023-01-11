@@ -7,7 +7,8 @@ import {
   nextTuesday,
   nextWednesday,
 } from 'date-fns'
-import { areDaysConsecutive, generateCalendarMonth } from './date'
+import { areDaysConsecutive } from './date'
+import { describe, it, expect } from 'vitest'
 
 describe('areDaysConsecutive for recType=every_day', () => {
   it('should return true if days are consecutive', () => {
