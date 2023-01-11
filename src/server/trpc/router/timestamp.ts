@@ -4,7 +4,6 @@ import {
   getExtraStreakDaysForWorkdays,
   getExtraStreakDaysForSpecificDays,
 } from '@/server/common/streaks'
-import { RecurrenceType } from '@prisma/client'
 import { TRPCError } from '@trpc/server'
 import { Weekday } from 'types'
 import { z } from 'zod'
@@ -68,7 +67,13 @@ export const timestampRouter = t.router({
       )
       const timestampsOnly = habit.timestamps.map((timestamp) => timestamp.time)
 
-      if (habit.recurrenceType === 'every_x_days' && habit.recurrenceStep) {
+      if (habit.recurrenceType === 'every_x_days') {
+        if (!habit.recurrenceStep) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: "Recurrence step wasn't provided",
+          })
+        }
         return {
           timestamps: normalizedTimestamps,
           extraStreakDays: new Set(
@@ -85,7 +90,13 @@ export const timestampRouter = t.router({
           ),
         }
       }
-      if (habit.recurrenceType === 'specific_days' && habit.recurrenceDays) {
+      if (habit.recurrenceType === 'specific_days') {
+        if (!habit.recurrenceDays) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: "Recurrence days weren't provided",
+          })
+        }
         return {
           timestamps: normalizedTimestamps,
           extraStreakDays: new Set(
