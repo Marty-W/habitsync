@@ -15,8 +15,9 @@ import {
 import { areDaysConsecutive, normalizeDate } from 'lib/date'
 import { getWeekdayIndexes } from './recurrence'
 
-export const calculateAllStreaks = (dates: Date[]) => {
-  return dates
+export const calculateAllStreaks = (dates: Date[], normalized?: boolean) => {
+  // TODO sort dates if not already sorted
+  const result = dates
     .reduce((streaks: Streak[], timestamp, idx, arr) => {
       const prevTimestamp = arr[idx - 1]
 
@@ -43,6 +44,16 @@ export const calculateAllStreaks = (dates: Date[]) => {
     }, [])
     .filter((streak) => streak.length > 1)
     .sort((a, b) => b.length - a.length)
+
+  return normalized
+    ? result.map((streak) => {
+        return {
+          ...streak,
+          start: normalizeDate(new Date(streak.start)),
+          end: normalizeDate(new Date(streak.end)),
+        }
+      })
+    : result
 }
 
 export const calculateCurrentStreak = (dates: Date[]) => {
