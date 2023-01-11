@@ -396,8 +396,6 @@ describe('calculateAllStreaks, habits that are due specific_days', () => {
 
     const streak = result[0]
 
-    console.log(result)
-
     expect(result).toHaveLength(1)
     expect(streak).toHaveProperty('length', 3)
     expect(streak).toHaveProperty('start', '2023-01-02')

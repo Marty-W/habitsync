@@ -5,6 +5,7 @@ import {
 } from 'server/common/streaks'
 import { authedProcedure, t } from '../trpc'
 import { TRPCError } from '@trpc/server'
+import { Weekday } from 'types'
 
 export const streakRouter = t.router({
   getCurrent: authedProcedure
@@ -44,20 +45,54 @@ export const streakRouter = t.router({
     .query(async ({ ctx, input }) => {
       const { habitId } = input
 
-      const timestamps = await ctx.prisma.timestamp.findMany({
+      const habit = await ctx.prisma.habit.findUnique({
         where: {
-          habitId,
-        },
-        orderBy: {
-          time: 'desc',
+          id: habitId,
         },
         select: {
-          time: true,
+          timestamps: {
+            orderBy: {
+              time: 'desc',
+            },
+            select: {
+              time: true,
+            },
+          },
+          recurrenceDays: true,
+          recurrenceStep: true,
+          recurrenceType: true,
         },
       })
 
+      if (!habit || !habit.recurrenceType) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Habit not found',
+        })
+      }
+      if (habit.recurrenceType === 'every_x_days' && !habit.recurrenceStep) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'Habit is set to repeat every x days, but no recurrence step is set',
+        })
+      }
+      if (habit.recurrenceType === 'specific_days' && !habit.recurrenceDays) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'Habit is set to repeat on specific days, but they are no set',
+        })
+      }
+
       return calculateAllStreaks(
-        timestamps.map((timestamp) => timestamp.time)
+        habit.timestamps.map((timestamp) => timestamp.time),
+        habit.recurrenceType,
+        false,
+        {
+          days: habit.recurrenceDays as Weekday[],
+          step: habit.recurrenceStep as number,
+        }
       ).slice(0, input.numStreaks)
     }),
 })
