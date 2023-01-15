@@ -70,6 +70,7 @@ export const statsRouter = t.router({
           days: habit.recurrenceDays as Weekday[],
         }
       )
+      //FIX rewrite the type casts
 
       const numOfTimestampsInInterval = getNumberOfTimestampsInInterval(
         habit.timestamps,

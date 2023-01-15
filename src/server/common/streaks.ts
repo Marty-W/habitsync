@@ -78,6 +78,7 @@ export const calculateAllStreaks = (
 }
 
 export const calculateCurrentStreak = (dates: Date[]) => {
+  //TODO Adapt for every_x_days, specific_days, every_workday + tests
   let isStreakActive = true
   let currentStreak = 0
   let streakStart
