@@ -40,10 +40,9 @@ describe('areDaysConsecutive for recType=every_workday', () => {
     })
     expect(result).toBe(true)
   })
-
   it('should return true if days are friday and monday', () => {
     const friday = nextFriday(new Date())
-    const monday = nextMonday(new Date())
+    const monday = nextMonday(friday)
 
     const result = areDaysConsecutive(friday, monday, { type: 'every_workday' })
     expect(result).toBe(true)

@@ -10,7 +10,8 @@
         "lint": "next lint",
         "start": "next start",
         "test": "vitest",
-        "coverage": "vitest --coverage",
+        "test:ui": "vitest --ui",
+        "test:coverage": "vitest --coverage",
         "prepare": "husky install"
     },
     "dependencies": {
@@ -44,6 +45,8 @@
         "@types/react-dom": "18.0.9",
         "@typescript-eslint/eslint-plugin": "^5.46.1",
         "@typescript-eslint/parser": "^5.46.1",
+        "@vitest/coverage-c8": "^0.27.1",
+        "@vitest/ui": "^0.27.1",
         "autoprefixer": "^10.4.13",
         "eslint": "^8.30.0",
         "eslint-config-next": "13.0.7",
