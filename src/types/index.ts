@@ -35,6 +35,11 @@ export type RecOpts =
 
 export type RecurrenceType = RecOpts['type']
 
+export interface RecurrenceConfig {
+  step?: number
+  days?: Weekday[]
+}
+
 export type CalendarData = RouterOutput['timestamp']['getAllWithStreakDays'] | null | undefined
 export type HabitDescriptionData = RouterOutput['habit']['getDetail'] | null | undefined
 export type StreakData = RouterOutput['streak']['getBest'] | null | undefined

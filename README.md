@@ -1,18 +1,26 @@
 # Create T3 App
 
-This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
+This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the
+T3-Stack.
 
 ## Why are there `.js` files in here?
 
-As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional), we take typesafety as a first class citizen. Unfortunately, not all frameworks and plugins support TypeScript which means some of the configuration files have to be `.js` files.
+As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional),
+we take typesafety as a first class citizen. Unfortunately, not all frameworks and plugins support
+TypeScript which means some of the configuration files have to be `.js` files.
 
-We try to emphasize that these files are javascript for a reason, by explicitly declaring its type (`cjs` or `mjs`) depending on what's supported by the library it is used by. Also, all the `js` files in this project are still typechecked using a `@ts-check` comment at the top.
+We try to emphasize that these files are javascript for a reason, by explicitly declaring its type
+(`cjs` or `mjs`) depending on what's supported by the library it is used by. Also, all the `js`
+files in this project are still typechecked using a `@ts-check` comment at the top.
 
 ## What's next? How do I make an app with this?
 
-We try to keep this project as simple as possible, so you can start with the most basic configuration and then move on to more advanced configuration.
+We try to keep this project as simple as possible, so you can start with the most basic
+configuration and then move on to more advanced configuration.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+If you are not familiar with the different technologies used in this project, please refer to the
+respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and
+ask for help.
 
 - [Next-Auth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
@@ -30,20 +38,26 @@ Also checkout these awesome tutorials on `create-t3-app`.
 
 ### Vercel
 
-We recommend deploying to [Vercel](https://vercel.com/?utm_source=t3-oss&utm_campaign=oss). It makes it super easy to deploy NextJs apps.
+We recommend deploying to [Vercel](https://vercel.com/?utm_source=t3-oss&utm_campaign=oss). It makes
+it super easy to deploy NextJs apps.
 
 - Push your code to a GitHub repository.
 - Go to [Vercel](https://vercel.com/?utm_source=t3-oss&utm_campaign=oss) and sign up with GitHub.
 - Create a Project and import the repository you pushed your code to.
 - Add your environment variables.
 - Click **Deploy**
-- Now whenever you push a change to your repository, Vercel will automatically redeploy your website!
+- Now whenever you push a change to your repository, Vercel will automatically redeploy your
+  website!
 
 ### Docker
 
 You can also dockerize this stack and deploy a container.
 
-Please note that Next.js requires a different process for buildtime (available in the frontend, prefixed by `NEXT_PUBLIC`) and runtime environment, server-side only, variables. In this demo we are using two variables, `DATABASE_URL` (used by the server) and `NEXT_PUBLIC_CLIENTVAR` (used by the client). Pay attention to their positions in the `Dockerfile`, command-line arguments, and `docker-compose.yml`.
+Please note that Next.js requires a different process for buildtime (available in the frontend,
+prefixed by `NEXT_PUBLIC`) and runtime environment, server-side only, variables. In this demo we are
+using two variables, `DATABASE_URL` (used by the server) and `NEXT_PUBLIC_CLIENTVAR` (used by the
+client). Pay attention to their positions in the `Dockerfile`, command-line arguments, and
+`docker-compose.yml`.
 
 1. In your [next.config.mjs](./next.config.mjs), add the `standalone` output-option to your config:
 
@@ -177,7 +191,8 @@ Please note that Next.js requires a different process for buildtime (available i
    docker run -p 3000:3000 -e DATABASE_URL="database_url_goes_here" ct3a
    ```
 
-6. You can also use a PaaS such as [Railway's](https://railway.app) automated [Dockerfile deployments](https://docs.railway.app/deploy/dockerfiles) to deploy your app.
+6. You can also use a PaaS such as [Railway's](https://railway.app) automated
+   [Dockerfile deployments](https://docs.railway.app/deploy/dockerfiles) to deploy your app.
 
 ### Docker Compose
 
@@ -191,18 +206,18 @@ You can also use docker compose to build the image and run the container.
    <summary>docker-compose.yml</summary>
 
    ```yaml
-   version: "3.9"
+   version: '3.9'
    services:
      app:
-       platform: "linux/amd64"
+       platform: 'linux/amd64'
        build:
          context: .
          dockerfile: Dockerfile
          args:
-           NEXT_PUBLIC_CLIENTVAR: "clientvar"
+           NEXT_PUBLIC_CLIENTVAR: 'clientvar'
        working_dir: /app
        ports:
-         - "3000:3000"
+         - '3000:3000'
        image: t3-app
        environment:
          - DATABASE_URL=database_url_goes_here

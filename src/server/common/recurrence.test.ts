@@ -84,9 +84,7 @@ describe('getSpecificRecurrenceDays', () => {
 
 describe('getWeekdayIndexes', () => {
   it('should return the correct indexes', () => {
-    expect(getWeekdayIndexes(['monday', 'wednesday', 'friday'])).toStrictEqual([
-      1, 3, 5,
-    ])
+    expect(getWeekdayIndexes(['monday', 'wednesday', 'friday'])).toStrictEqual([1, 3, 5])
   })
 })
 
@@ -106,9 +104,7 @@ describe('getNumberOfDaysInInterval', () => {
       end: new Date('2023-01-31'),
     }
 
-    expect(getNumberOfDaysInInterval(interval, { type: 'every_workday' })).toBe(
-      22
-    )
+    expect(getNumberOfDaysInInterval(interval, { type: 'every_workday' })).toBe(22)
   })
 
   it('returns correct number of days for "every two days" habits', () => {
@@ -117,9 +113,7 @@ describe('getNumberOfDaysInInterval', () => {
       end: new Date('2023-01-09'),
     }
 
-    expect(
-      getNumberOfDaysInInterval(interval, { type: 'every_x_days', step: 2 })
-    ).toBe(5)
+    expect(getNumberOfDaysInInterval(interval, { type: 'every_x_days', step: 2 })).toBe(5)
   })
 
   it('returns correct number of days for "every 5 days" habits', () => {
@@ -128,9 +122,7 @@ describe('getNumberOfDaysInInterval', () => {
       end: new Date('2023-01-31'),
     }
 
-    expect(
-      getNumberOfDaysInInterval(interval, { type: 'every_x_days', step: 5 })
-    ).toBe(7)
+    expect(getNumberOfDaysInInterval(interval, { type: 'every_x_days', step: 5 })).toBe(7)
   })
 
   it('returns correct number of days for "specific_days" habits', () => {
@@ -143,7 +135,7 @@ describe('getNumberOfDaysInInterval', () => {
       getNumberOfDaysInInterval(interval, {
         type: 'specific_days',
         days: ['monday', 'wednesday', 'friday'],
-      })
+      }),
     ).toBe(13)
   })
 })
@@ -154,22 +146,18 @@ describe('getNumberOfTimestampsInInterval', () => {
       start: new Date('2023-01-01'),
       end: new Date('2023-01-31'),
     }
-    const mockedTimestampsInInterval = createRandomTimestamps(
-      interval.start,
-      interval.end,
-      20
-    )
+    const mockedTimestampsInInterval = createRandomTimestamps(interval.start, interval.end, 20)
     const mockedTimestampsOutsideOfInterval = createRandomTimestamps(
       new Date('2023-02-01'),
       new Date('2023-02-28'),
-      20
+      20,
     )
 
     expect(
       getNumberOfTimestampsInInterval(
         [...mockedTimestampsInInterval, ...mockedTimestampsOutsideOfInterval],
-        interval
-      )
+        interval,
+      ),
     ).toBe(20)
   })
 })
@@ -184,8 +172,6 @@ describe('getSuccessRate', () => {
     const numberOfDays = eachDayOfInterval(interval).length
     const expectedSuccessRate = ((20 / 31) * 100).toFixed(1)
 
-    expect(getSuccessRate(numberOfTimestamps, numberOfDays)).toBe(
-      expectedSuccessRate
-    )
+    expect(getSuccessRate(numberOfTimestamps, numberOfDays)).toBe(expectedSuccessRate)
   })
 })

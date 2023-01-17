@@ -4,12 +4,9 @@ import { generateCalendarMonth } from 'lib/date'
 
 const useCalendarData = (initialYear?: number, initialMonth?: number) => {
   const [displayedDate, setDisplayedDate] = useState(() => {
-    return initialYear && initialMonth
-      ? new Date(initialYear, initialMonth)
-      : new Date()
+    return initialYear && initialMonth ? new Date(initialYear, initialMonth) : new Date()
   })
-  const [calendarData, setCalendarData] =
-    useState<ReturnType<typeof generateCalendarMonth>>()
+  const [calendarData, setCalendarData] = useState<ReturnType<typeof generateCalendarMonth>>()
 
   useEffect(() => {
     const year = displayedDate.getFullYear()

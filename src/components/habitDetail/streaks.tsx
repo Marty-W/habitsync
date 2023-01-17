@@ -41,9 +41,7 @@ const Streaks = ({ streaks }: Props) => {
                   <span className='text-slate-100'>{streak.length}</span>
                 </motion.div>
                 {index === 0 && (
-                  <span className='absolute right-2 text-xs text-slate-100'>
-                    days
-                  </span>
+                  <span className='absolute right-2 text-xs text-slate-100'>days</span>
                 )}
               </div>
               <span>{formattedEnd}</span>

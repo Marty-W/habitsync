@@ -9,9 +9,7 @@ interface Props {
 const Tag = ({ tag, className }: Props) => {
   return (
     <div className={clsx(className, 'p-2')}>
-      <span className='rounded-md bg-red-400 px-2 py-1 text-slate-100'>
-        {tag}
-      </span>
+      <span className='rounded-md bg-red-400 px-2 py-1 text-slate-100'>{tag}</span>
     </div>
   )
 }

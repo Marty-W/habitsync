@@ -13,7 +13,7 @@ const HabitDescription = ({ desc }: Props) => (
       <p className='flex-1 text-lg text-zinc-500'>{desc?.description}</p>
     </div>
     <div className='flex justify-center'>
-      {desc?.labels.map((label) => {
+      {desc?.labels.map(label => {
         if (label === 'habit') return null
         return <Tag key={label} tag={label} className='' />
       })}

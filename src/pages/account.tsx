@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { trpc } from 'lib/trpc'
 
 const AccountPage: NextPage = () => {
-  const { data: labelData, refetch: labelRefetch } =
-    trpc.acc.getUserLabels.useQuery(undefined, { enabled: false })
+  const { data: labelData, refetch: labelRefetch } = trpc.acc.getUserLabels.useQuery(undefined, {
+    enabled: false,
+  })
   const { data: avatarUrl } = trpc.acc.getUserImgUrl.useQuery()
   const { mutate: fetchUserHabits } = trpc.habit.syncWithTodoist.useMutation()
   const [localLabel, setLocalLabel] = useState('')
@@ -31,10 +32,10 @@ const AccountPage: NextPage = () => {
             className='select-primary select max-w-xs'
             disabled={!labelData}
             defaultValue='placeholder'
-            onChange={(e) => setLocalLabel(e.currentTarget.value)}
+            onChange={e => setLocalLabel(e.currentTarget.value)}
           >
             <option value='placeholder'>Your habit label</option>
-            {labelData?.map((label) => {
+            {labelData?.map(label => {
               return (
                 <option key={label.id} value={label.name}>
                   {label.name}

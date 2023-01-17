@@ -15,10 +15,7 @@ const Home: NextPage = () => {
     <div>
       <Head>
         <title>HabitSync</title>
-        <meta
-          name='description'
-          content='Enrich your todoist experience with habit tracking'
-        />
+        <meta name='description' content='Enrich your todoist experience with habit tracking' />
         {/* TODO add favicon */}
         <link rel='icon' href='/favicon.ico' />
       </Head>
@@ -33,10 +30,7 @@ const Home: NextPage = () => {
               </button>
               {authed && (
                 <>
-                  <button
-                    className='btn'
-                    onClick={() => router.push('/habits')}
-                  >
+                  <button className='btn' onClick={() => router.push('/habits')}>
                     Go to dashboard
                   </button>
 
@@ -48,10 +42,7 @@ const Home: NextPage = () => {
             </div>
             {/* TODO replace with your own screenshot */}
             <div className='flex w-full justify-center'>
-              <img
-                src='https://via.placeholder.com/300'
-                alt='product screenshot'
-              />
+              <img src='https://via.placeholder.com/300' alt='product screenshot' />
             </div>
           </div>
         </div>

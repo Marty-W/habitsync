@@ -23,8 +23,7 @@ export const habitRouter = t.router({
       if (!fetchedHabits) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message:
-            'No tasks with the specified query found. Please check Todoist',
+          message: 'No tasks with the specified query found. Please check Todoist',
         })
       }
 
@@ -40,7 +39,7 @@ export const habitRouter = t.router({
         },
       })
 
-      const formattedHabitsForDb = fetchedHabits.map((habit) => {
+      const formattedHabitsForDb = fetchedHabits.map(habit => {
         const { id, content, description, labels, url, due } = habit
 
         // TODO there should be a partial completion (filter those that don't match and still write the good ones)
@@ -113,23 +112,21 @@ export const habitRouter = t.router({
 
     return habits
   }),
-  getDetail: authedProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const { id } = input
+  getDetail: authedProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    const { id } = input
 
-      const habit = await ctx.prisma.habit.findUnique({
-        where: {
-          id,
-        },
-        select: {
-          description: true,
-          labels: true,
-          name: true,
-          url: true,
-        },
-      })
+    const habit = await ctx.prisma.habit.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        description: true,
+        labels: true,
+        name: true,
+        url: true,
+      },
+    })
 
-      return habit
-    }),
+    return habit
+  }),
 })

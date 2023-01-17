@@ -8,11 +8,7 @@ interface Props {
   slideDirection: 'left' | 'right' | undefined
 }
 
-const ResizableSlidePanel = ({
-  children,
-  duration,
-  slideDirection,
-}: PropsWithChildren<Props>) => {
+const ResizableSlidePanel = ({ children, duration, slideDirection }: PropsWithChildren<Props>) => {
   const [ref, { height, width }] = useMeasure()
 
   const variants = {

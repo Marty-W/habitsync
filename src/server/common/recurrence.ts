@@ -24,7 +24,7 @@ export const getRecurrenceType = (recurrence: string): RecurrenceType => {
   const safeElements = cleanseRecurrenceString(recurrence)
 
   //check if there are any numbers in the string
-  const containsNumber = safeElements.some((el) => {
+  const containsNumber = safeElements.some(el => {
     return !isNaN(Number(el)) || POSSIBLE_DAY_STEPS_WORDNUMBERS.includes(el)
   })
 
@@ -43,31 +43,24 @@ export const getRecurrenceStep = (recurence: string): number => {
   }
 
   if (containsWordNumbers(safeElements)) {
-    const wordNumber = safeElements.find((el) =>
-      POSSIBLE_DAY_STEPS_WORDNUMBERS.includes(el)
-    )
+    const wordNumber = safeElements.find(el => POSSIBLE_DAY_STEPS_WORDNUMBERS.includes(el))
 
     return WORD_NUMBER_DICT[wordNumber as keyof typeof WORD_NUMBER_DICT]
   }
 
-  return Number(safeElements.find((el) => !isNaN(Number(el))))
+  return Number(safeElements.find(el => !isNaN(Number(el))))
 }
 
 export const getSpecificRecurrenceDays = (recurrence: string) => {
   const safeElements = cleanseRecurrenceString(recurrence)
   const onlyDays = safeElements.filter(
-    (el) => WEEKDAYS_LONG.includes(el) || WEEKDAYS_SHORT.includes(el)
+    el => WEEKDAYS_LONG.includes(el) || WEEKDAYS_SHORT.includes(el),
   )
 
-  const hasShortWeekdays = safeElements.some((el) =>
-    WEEKDAYS_SHORT.includes(el)
-  )
+  const hasShortWeekdays = safeElements.some(el => WEEKDAYS_SHORT.includes(el))
 
   if (hasShortWeekdays) {
-    return onlyDays.map(
-      (el) =>
-        WEEKDAY_SHORT_LONG_DICT[el as keyof typeof WEEKDAY_SHORT_LONG_DICT]
-    )
+    return onlyDays.map(el => WEEKDAY_SHORT_LONG_DICT[el as keyof typeof WEEKDAY_SHORT_LONG_DICT])
   }
 
   return onlyDays
@@ -77,22 +70,19 @@ export const getSpecificRecurrenceDays = (recurrence: string) => {
 //
 
 export const getWeekdayIndexes = (days: Weekday[]) => {
-  return days.map((day) => WEEKDAYS_INDEXING.indexOf(day))
+  return days.map(day => WEEKDAYS_INDEXING.indexOf(day))
 }
 
-export const getNumberOfDaysInInterval = (
-  interval: Interval,
-  opts: RecOpts
-) => {
+export const getNumberOfDaysInInterval = (interval: Interval, opts: RecOpts) => {
   const { type } = opts
   if (type === 'every_workday') {
-    return eachDayOfInterval(interval).filter((day) => !isWeekend(day)).length
+    return eachDayOfInterval(interval).filter(day => !isWeekend(day)).length
   } else if (type === 'every_x_days') {
     return eachDayOfInterval(interval, { step: opts.step }).length
   } else if (type === 'specific_days') {
     const indexes = getWeekdayIndexes(opts.days)
 
-    return eachDayOfInterval(interval).filter((day) => {
+    return eachDayOfInterval(interval).filter(day => {
       return indexes.includes(day.getDay())
     }).length
   }
@@ -101,18 +91,12 @@ export const getNumberOfDaysInInterval = (
   return eachDayOfInterval(interval).length
 }
 
-export const getNumberOfTimestampsInInterval = (
-  timestamps: Timestamp[],
-  interval: Interval
-) => {
-  return timestamps.filter((timestamp) => {
+export const getNumberOfTimestampsInInterval = (timestamps: Timestamp[], interval: Interval) => {
+  return timestamps.filter(timestamp => {
     return isWithinInterval(getMidDay(timestamp.time), interval)
   }).length
 }
 
-export const getSuccessRate = (
-  numOfTimestampsInInterval: number,
-  numOfDaysInInterval: number
-) => {
+export const getSuccessRate = (numOfTimestampsInInterval: number, numOfDaysInInterval: number) => {
   return ((numOfTimestampsInInterval / numOfDaysInInterval) * 100).toFixed(1)
 }
