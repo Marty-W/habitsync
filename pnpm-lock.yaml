@@ -28,7 +28,8 @@ specifiers:
   next: 13.0.7
   next-auth: ~4.18.6
   postcss: ^8.4.20
-  prettier: ^2.8.1
+  prettier: ^2.8.3
+  prettier-plugin-organize-imports: ^3.2.2
   prettier-plugin-prisma: ^4.4.0
   prettier-plugin-tailwindcss: ^0.2.1
   prisma: ^4.7.1
@@ -83,9 +84,10 @@ devDependencies:
   eslint: 8.30.0
   eslint-config-next: 13.0.7_lzzuuodtsqwxnvqeq4g4likcqa
   postcss: 8.4.20
-  prettier: 2.8.1
-  prettier-plugin-prisma: 4.4.0_prettier@2.8.1
-  prettier-plugin-tailwindcss: 0.2.1_prettier@2.8.1
+  prettier: 2.8.3
+  prettier-plugin-organize-imports: 3.2.2_uhxzhaxu465qzax2tftpee5s7i
+  prettier-plugin-prisma: 4.4.0_prettier@2.8.3
+  prettier-plugin-tailwindcss: 0.2.1_prettier@2.8.3
   prisma: 4.7.1
   tailwindcss: 3.2.4_ra2vnoek4vhbzktaezawwqbin4
   ts-node: 10.9.1_moeqx3xmzxqxagf2sz6mqkbb7m
@@ -2985,27 +2987,44 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier-plugin-prisma/4.4.0_prettier@2.8.1:
+  /prettier-plugin-organize-imports/3.2.2_uhxzhaxu465qzax2tftpee5s7i:
+    resolution: {integrity: sha512-e97lE6odGSiHonHJMTYC0q0iLXQyw0u5z/PJpvP/3vRy6/Zi9kLBwFAbEGjDzIowpjQv8b+J04PDamoUSQbzGA==}
+    peerDependencies:
+      '@volar/vue-language-plugin-pug': ^1.0.4
+      '@volar/vue-typescript': ^1.0.4
+      prettier: '>=2.0'
+      typescript: '>=2.9'
+    peerDependenciesMeta:
+      '@volar/vue-language-plugin-pug':
+        optional: true
+      '@volar/vue-typescript':
+        optional: true
+    dependencies:
+      prettier: 2.8.3
+      typescript: 4.9.4
+    dev: true
+
+  /prettier-plugin-prisma/4.4.0_prettier@2.8.3:
     resolution: {integrity: sha512-631zwtvHUjcuS+i83wkxE3LqizazojWie4Pkha9GL6r1UsochNUedvxfvWPCdw6Dpyawvc5UKkmxcb9aT9+xfg==}
     engines: {node: '>=12', npm: '>=7'}
     peerDependencies:
       prettier: '>=2'
     dependencies:
       '@prisma/prisma-fmt-wasm': 4.4.0-66.f352a33b70356f46311da8b00d83386dd9f145d6
-      prettier: 2.8.1
+      prettier: 2.8.3
     dev: true
 
-  /prettier-plugin-tailwindcss/0.2.1_prettier@2.8.1:
+  /prettier-plugin-tailwindcss/0.2.1_prettier@2.8.3:
     resolution: {integrity: sha512-aIO8IguumORyRsmT+E7JfJ3A9FEoyhqZR7Au7TBOege3VZkgMvHJMkufeYp4zjnDK2iq4ktkvGMNOQR9T8lisQ==}
     engines: {node: '>=12.17.0'}
     peerDependencies:
       prettier: '>=2.2.0'
     dependencies:
-      prettier: 2.8.1
+      prettier: 2.8.3
     dev: true
 
-  /prettier/2.8.1:
-    resolution: {integrity: sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==}
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
