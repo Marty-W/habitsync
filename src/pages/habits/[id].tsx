@@ -31,8 +31,7 @@ const HabitDetail = () => {
 
   if (description.isError || calendarData.isError) {
     const statusCode =
-      (description.error?.data?.httpStatus ?? 500) ||
-      (calendarData.error?.data?.httpStatus ?? 500)
+      (description.error?.data?.httpStatus ?? 500) || (calendarData.error?.data?.httpStatus ?? 500)
 
     const title = description.error?.message || calendarData.error?.message
 
@@ -44,9 +43,7 @@ const HabitDetail = () => {
       <div className='mb-8 grid grid-cols-3 items-center text-center'>
         <BackButton />
         <div>
-          <h1 className='ml-auto justify-self-center text-2xl text-zinc-800'>
-            {name}
-          </h1>
+          <h1 className='ml-auto justify-self-center text-2xl text-zinc-800'>{name}</h1>
         </div>
         <div className='flex items-center justify-end'>
           <SettingsButton />

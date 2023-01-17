@@ -13,11 +13,8 @@ interface Props {
 }
 
 const Calendar = ({ data }: Props) => {
-  const { year, month, calendarData, handleAddMonth, handleSubMonth } =
-    useCalendarData()
-  const [animationDirection, setAnimationDirection] = useState<
-    'left' | 'right' | undefined
-  >()
+  const { year, month, calendarData, handleAddMonth, handleSubMonth } = useCalendarData()
+  const [animationDirection, setAnimationDirection] = useState<'left' | 'right' | undefined>()
   const { extraStreakDays, timestamps } = data
 
   const handleMonthChange = (type: 'addMonth' | 'subMonth') => {
@@ -32,11 +29,7 @@ const Calendar = ({ data }: Props) => {
 
   return (
     <div className='flex flex-col'>
-      <MonthSwitcher
-        month={month}
-        year={year}
-        handleMonthChange={handleMonthChange}
-      />
+      <MonthSwitcher month={month} year={year} handleMonthChange={handleMonthChange} />
       <div className='grid h-10 grid-cols-7 justify-items-center'>
         {DAYS.map((day, key) => (
           <span key={`${day}-${key}`} className='text-zinc-300'>
@@ -57,9 +50,7 @@ const Calendar = ({ data }: Props) => {
                   isToday={isToday(date)}
                   key={i}
                   isExtraStreakDay={
-                    (extraStreakDays &&
-                      extraStreakDays.has(normalizeDate(date))) ||
-                    false
+                    (extraStreakDays && extraStreakDays.has(normalizeDate(date))) || false
                   }
                 />
               )

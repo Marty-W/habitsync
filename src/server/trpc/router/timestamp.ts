@@ -10,27 +10,23 @@ import { z } from 'zod'
 import { authedProcedure, t } from '../trpc'
 
 export const timestampRouter = t.router({
-  getAll: authedProcedure
-    .input(z.object({ habitId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const { habitId } = input
+  getAll: authedProcedure.input(z.object({ habitId: z.string() })).query(async ({ ctx, input }) => {
+    const { habitId } = input
 
-      const timestamps = await ctx.prisma.timestamp.findMany({
-        where: {
-          habitId,
-        },
-        orderBy: {
-          time: 'asc',
-        },
-        select: {
-          time: true,
-        },
-      })
+    const timestamps = await ctx.prisma.timestamp.findMany({
+      where: {
+        habitId,
+      },
+      orderBy: {
+        time: 'asc',
+      },
+      select: {
+        time: true,
+      },
+    })
 
-      return new Set(
-        timestamps.map((timestamp) => timestamp.time.toDateString())
-      )
-    }),
+    return new Set(timestamps.map(timestamp => timestamp.time.toDateString()))
+  }),
   getAllWithStreakDays: authedProcedure
     .input(z.object({ habitId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -63,9 +59,9 @@ export const timestampRouter = t.router({
       }
 
       const normalizedTimestamps = new Set(
-        habit.timestamps.map((timestamp) => normalizeDate(timestamp.time))
+        habit.timestamps.map(timestamp => normalizeDate(timestamp.time)),
       )
-      const timestampsOnly = habit.timestamps.map((timestamp) => timestamp.time)
+      const timestampsOnly = habit.timestamps.map(timestamp => timestamp.time)
 
       if (habit.recurrenceType === 'every_x_days') {
         if (!habit.recurrenceStep) {
@@ -77,7 +73,7 @@ export const timestampRouter = t.router({
         return {
           timestamps: normalizedTimestamps,
           extraStreakDays: new Set(
-            getExtraStreakDaysForStepDays(timestampsOnly, habit.recurrenceStep)
+            getExtraStreakDaysForStepDays(timestampsOnly, habit.recurrenceStep),
           ),
         }
       }
@@ -85,9 +81,7 @@ export const timestampRouter = t.router({
       if (habit.recurrenceType === 'every_workday') {
         return {
           timestamps: normalizedTimestamps,
-          extraStreakDays: new Set(
-            getExtraStreakDaysForWorkdays(timestampsOnly)
-          ),
+          extraStreakDays: new Set(getExtraStreakDaysForWorkdays(timestampsOnly)),
         }
       }
       if (habit.recurrenceType === 'specific_days') {
@@ -100,10 +94,7 @@ export const timestampRouter = t.router({
         return {
           timestamps: normalizedTimestamps,
           extraStreakDays: new Set(
-            getExtraStreakDaysForSpecificDays(
-              timestampsOnly,
-              habit.recurrenceDays as Weekday[]
-            )
+            getExtraStreakDaysForSpecificDays(timestampsOnly, habit.recurrenceDays as Weekday[]),
           ),
         }
       }

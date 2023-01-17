@@ -21,7 +21,7 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
       transformer: superjson,
       links: [
         loggerLink({
-          enabled: (opts) =>
+          enabled: opts =>
             process.env.NODE_ENV === 'development' ||
             (opts.direction === 'down' && opts.result instanceof Error),
         }),
@@ -44,8 +44,7 @@ export const trpc = createTRPCNext<AppRouter, SSRContext>({
       queryClientConfig: {
         defaultOptions: {
           queries: {
-            refetchOnWindowFocus:
-              process.env.NODE_ENV === 'development' ? false : true,
+            refetchOnWindowFocus: process.env.NODE_ENV === 'development' ? false : true,
           },
         },
       },

@@ -8,13 +8,7 @@ interface Props {
   isExtraStreakDay: boolean
 }
 
-const DayCell = ({
-  date,
-  hasTimestamp,
-  isToday,
-  isThisMonth,
-  isExtraStreakDay,
-}: Props) => {
+const DayCell = ({ date, hasTimestamp, isToday, isThisMonth, isExtraStreakDay }: Props) => {
   return (
     <div
       className={clsx(
@@ -25,7 +19,7 @@ const DayCell = ({
           'text-red-200': !isThisMonth && hasTimestamp,
           'bg-red-400 text-zinc-100': hasTimestamp && isThisMonth,
           'bg-red-200 text-zinc-100': isExtraStreakDay && isThisMonth,
-        }
+        },
       )}
     >
       <span>{date}</span>

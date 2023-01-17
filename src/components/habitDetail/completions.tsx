@@ -16,9 +16,7 @@ const TotalCompletions = ({ completions }: Props) => {
           className='text-3xl font-black text-zinc-900'
           animationDuration={5}
         />
-        <span className='absolute bottom-0 pl-1'>
-          {completions > 1 ? 'times' : 'time'}
-        </span>
+        <span className='absolute bottom-0 pl-1'>{completions > 1 ? 'times' : 'time'}</span>
       </div>
     </div>
   )

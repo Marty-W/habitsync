@@ -48,12 +48,9 @@ export const areDaysConsecutive = (date1: Date, date2: Date, opts: RecOpts) => {
     const firstDateDayIndexShouldBe = dayIndexes[firstDateIndex]
     // Now i know the position of the second date in the array of days
     const secondDateDayIndexShouldBe =
-      firstDateIndex === dayIndexes.length - 1
-        ? dayIndexes[0]
-        : dayIndexes[firstDateIndex + 1]
+      firstDateIndex === dayIndexes.length - 1 ? dayIndexes[0] : dayIndexes[firstDateIndex + 1]
 
-    const inOneWeek =
-      Math.abs(differenceInCalendarDays(localDate1, localDate2)) <= 7
+    const inOneWeek = Math.abs(differenceInCalendarDays(localDate1, localDate2)) <= 7
     const firstDateOnTime = localDate1.getDay() === firstDateDayIndexShouldBe
     const secondDateOnTime = localDate2.getDay() === secondDateDayIndexShouldBe
 
@@ -70,8 +67,7 @@ export const areDaysConsecutive = (date1: Date, date2: Date, opts: RecOpts) => {
 
   if (
     type === 'every_workday' &&
-    ((isFriday(date1) && isMonday(date2)) ||
-      (isFriday(date2) && isMonday(date1)))
+    ((isFriday(date1) && isMonday(date2)) || (isFriday(date2) && isMonday(date1)))
   ) {
     diff = Math.abs(differenceInCalendarDays(date1, date2))
 

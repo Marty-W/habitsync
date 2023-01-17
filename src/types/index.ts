@@ -15,9 +15,7 @@ export type Streak = {
   length: number
 }
 
-export type CleanDoistRecurrenceString = ReturnType<
-  typeof cleanseRecurrenceString
->
+export type CleanDoistRecurrenceString = ReturnType<typeof cleanseRecurrenceString>
 
 export type RecOpts =
   | {
@@ -35,25 +33,15 @@ export type RecOpts =
       step: number
     }
 
-export type RecurrenceType =
-  | 'every_day'
-  | 'every_workday'
-  | 'every_x_days'
-  | 'specific_days'
+export type RecurrenceType = 'every_day' | 'every_workday' | 'every_x_days' | 'specific_days'
 
 export interface RecurrenceConfig {
   step?: number
   days?: Weekday[]
 }
 
-export type CalendarData =
-  | RouterOutput['timestamp']['getAllWithStreakDays']
-  | null
-  | undefined
-export type HabitDescriptionData =
-  | RouterOutput['habit']['getDetail']
-  | null
-  | undefined
+export type CalendarData = RouterOutput['timestamp']['getAllWithStreakDays'] | null | undefined
+export type HabitDescriptionData = RouterOutput['habit']['getDetail'] | null | undefined
 export type StreakData = RouterOutput['streak']['getBest'] | null | undefined
 
 export interface Interval {

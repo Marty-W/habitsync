@@ -7,11 +7,9 @@ export const cleanseRecurrenceString = (humanString: string) => {
     .toLowerCase()
     .trim()
     .split(/[, ]/)
-    .filter((el) => !UNSAFE_ELEMENTS.includes(el))
+    .filter(el => !UNSAFE_ELEMENTS.includes(el))
 }
 
-export const containsWordNumbers = (
-  safeEl: ReturnType<typeof cleanseRecurrenceString>
-) => {
-  return safeEl.some((el) => POSSIBLE_DAY_STEPS_WORDNUMBERS.includes(el))
+export const containsWordNumbers = (safeEl: ReturnType<typeof cleanseRecurrenceString>) => {
+  return safeEl.some(el => POSSIBLE_DAY_STEPS_WORDNUMBERS.includes(el))
 }
