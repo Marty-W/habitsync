@@ -10,76 +10,76 @@ import SuccessRate from './successRate'
 //FIX cleanup the messy types
 
 interface BaseProps {
-  className?: string
-  lineCount: number
-  isLoadingSuccess: boolean
-  mock?: boolean
+    className?: string
+    lineCount: number
+    isLoadingSuccess: boolean
+    mock?: boolean
 }
 
 interface CalendarProps extends BaseProps {
-  cardType: 'calendar'
-  data: CalendarData
+    cardType: 'calendar'
+    data: CalendarData
 }
 
 interface HabitDescriptionProps extends BaseProps {
-  cardType: 'habitDescription'
-  data: HabitDescriptionData
+    cardType: 'habitDescription'
+    data: HabitDescriptionData
 }
 
 interface StreakProps extends BaseProps {
-  cardType: 'streak'
-  data: StreakData
+    cardType: 'streak'
+    data: StreakData
 }
 
 interface CompletionProps extends BaseProps {
-  cardType: 'completion'
-  data: number | undefined
+    cardType: 'completion'
+    data: number | undefined
 }
 
 interface SuccessRateProps extends BaseProps {
-  cardType: 'successRate'
-  data: string | undefined
+    cardType: 'successRate'
+    data: string | undefined
 }
 
 type Props =
-  | CalendarProps
-  | HabitDescriptionProps
-  | StreakProps
-  | CompletionProps
-  | SuccessRateProps
+    | CalendarProps
+    | HabitDescriptionProps
+    | StreakProps
+    | CompletionProps
+    | SuccessRateProps
 
 const CardWithLoader = ({
-  className,
-  lineCount,
-  isLoadingSuccess,
-  data,
-  cardType,
-  mock,
+    className,
+    lineCount,
+    isLoadingSuccess,
+    data,
+    cardType,
+    mock,
 }: Props) => {
-  if (!isLoadingSuccess || !data || mock) {
-    return <CardSkeleton cardClassName={className} count={lineCount} />
-  }
+    if (!isLoadingSuccess || !data || mock) {
+        return <CardSkeleton cardClassName={className} count={lineCount} />
+    }
 
-  let content
+    let content
 
-  switch (cardType) {
-    case 'calendar':
-      content = <Calendar data={data} />
-      break
-    case 'habitDescription':
-      content = <HabitDescription desc={data} />
-      break
-    case 'streak':
-      content = <Streaks streaks={data} />
-      break
-    case 'completion':
-      content = <TotalCompletions completions={data} />
-      break
-    case 'successRate':
-      content = <SuccessRate rate={data} />
-  }
+    switch (cardType) {
+        case 'calendar':
+            content = <Calendar data={data} />
+            break
+        case 'habitDescription':
+            content = <HabitDescription desc={data} />
+            break
+        case 'streak':
+            content = <Streaks streaks={data} />
+            break
+        case 'completion':
+            content = <TotalCompletions completions={data} />
+            break
+        case 'successRate':
+            content = <SuccessRate rate={data} />
+    }
 
-  return <Card className={className}>{content}</Card>
+    return <Card className={className}>{content}</Card>
 }
 
 export default CardWithLoader

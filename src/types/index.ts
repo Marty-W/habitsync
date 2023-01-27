@@ -19,25 +19,25 @@ export type CleanDoistRecurrenceString = ReturnType<typeof cleanseRecurrenceStri
 
 export type RecOpts =
     | {
-        type: 'every_day'
-    }
+          type: 'every_day'
+      }
     | {
-        type: 'every_workday'
-    }
+          type: 'every_workday'
+      }
     | {
-        type: 'specific_days'
-        days: Weekday[]
-    }
+          type: 'specific_days'
+          days: Weekday[]
+      }
     | {
-        type: 'every_x_days'
-        step: number
-    }
+          type: 'every_x_days'
+          step: number
+      }
 
 export type RecurrenceType = RecOpts['type']
 
 export interface RecurrenceConfig {
-  step?: number
-  days?: Weekday[]
+    step?: number
+    days?: Weekday[]
 }
 
 export type CalendarData = RouterOutput['timestamp']['getAllWithStreakDays'] | null | undefined
@@ -49,4 +49,11 @@ export interface Interval {
     end: Date
 }
 
-export type Weekday = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
+export type Weekday =
+    | 'monday'
+    | 'tuesday'
+    | 'wednesday'
+    | 'thursday'
+    | 'friday'
+    | 'saturday'
+    | 'sunday'

@@ -64,12 +64,12 @@ export const calculateAllStreaks = (dates: Date[], recOpts: RecOpts, normalized?
 
     return normalized
         ? result.map(streak => {
-            return {
-                ...streak,
-                start: normalizeDate(new Date(streak.start)),
-                end: normalizeDate(new Date(streak.end)),
-            }
-        })
+              return {
+                  ...streak,
+                  start: normalizeDate(new Date(streak.start)),
+                  end: normalizeDate(new Date(streak.end)),
+              }
+          })
         : result
 }
 

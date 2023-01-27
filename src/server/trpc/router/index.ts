@@ -8,12 +8,12 @@ import { timestampRouter } from './timestamp'
 import { statsRouter } from './stats'
 
 export const appRouter = t.router({
-  auth: authRouter,
-  acc: accRouter,
-  habit: habitRouter,
-  timestamp: timestampRouter,
-  streak: streakRouter,
-  stats: statsRouter,
+    auth: authRouter,
+    acc: accRouter,
+    habit: habitRouter,
+    timestamp: timestampRouter,
+    streak: streakRouter,
+    stats: statsRouter,
 })
 
 // export type definition of API

@@ -5,15 +5,15 @@ import { appRouter } from 'server/trpc/router'
 
 // export API handler
 export default createNextApiHandler({
-  router: appRouter,
-  createContext,
-  onError({ error }) {
-    if (error.code === 'INTERNAL_SERVER_ERROR') {
-      //TODO add bug reporting
-      console.error(`Internal server error: ${error}`)
-    }
-  },
-  batching: {
-    enabled: true,
-  },
+    router: appRouter,
+    createContext,
+    onError({ error }) {
+        if (error.code === 'INTERNAL_SERVER_ERROR') {
+            //TODO add bug reporting
+            console.error(`Internal server error: ${error}`)
+        }
+    },
+    batching: {
+        enabled: true,
+    },
 })
