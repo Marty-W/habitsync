@@ -4,15 +4,24 @@ import { appRouter } from '@/server/trpc/router'
 import { DoistWebhookReqBodyShape } from 'types'
 import crypto from 'crypto'
 import { env } from 'env/server.mjs'
+import getRawBody from 'raw-body'
 
-const validateHeaders = (req: NextApiRequest) => {
+export const config = {
+    api: {
+        bodyParser: false,
+    },
+}
+
+const validateHeaders = async (req: NextApiRequest) => {
+    const rawBody = await getRawBody(req)
+
     const isAllowedMethod = req.method === 'POST'
     const isFromDoist = req.headers['user-agent'] === 'Todoist-Webhooks'
     const todoistHash = req.headers['x-todoist-hmac-sha256']
 
     const hash = crypto
         .createHmac('sha256', env.DOIST_CLIENT_SECRET)
-        .update(JSON.stringify(req.body))
+        .update(rawBody)
         .digest('base64')
 
     return isAllowedMethod && isFromDoist && hash === todoistHash
