@@ -1,6 +1,7 @@
 import { cleanseRecurrenceString } from '@/server/common/todoist'
 import { generateCalendarMonth } from 'lib/date'
 import { RouterOutput } from 'lib/trpc'
+import { z } from 'zod'
 
 // {Year: {Month: [Day]}}
 export interface SortedMonthInterval {
@@ -57,3 +58,13 @@ export type Weekday =
     | 'friday'
     | 'saturday'
     | 'sunday'
+
+export const DoistWebhookReqBodyShape = z.object({
+    event_name: z.literal('item:completed'),
+    event_data: z.object({
+        due: z.object({
+            is_recurring: z.literal(true),
+        }),
+        id: z.string(),
+    }),
+})
