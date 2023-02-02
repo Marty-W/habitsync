@@ -12,7 +12,7 @@ const validateHeaders = (req: NextApiRequest) => {
 
     const hash = crypto
         .createHmac('sha256', env.DOIST_CLIENT_SECRET)
-        .update(req.body)
+        .update(JSON.stringify(req.body))
         .digest('base64')
 
     return isAllowedMethod && isFromDoist && hash === todoistHash
