@@ -30,9 +30,6 @@ const addHabitTimestampHandler = async (req: NextApiRequest, res: NextApiRespons
 
     const body = JSON.parse(rawBody.toString())
 
-    // const ctx = await createContext({ req, res })
-    // const caller = appRouter.createCaller(ctx)
-
     const parsedBody = DoistWebhookReqBodyShape.passthrough().safeParse(body)
 
     if (!parsedBody.success) {
@@ -44,9 +41,14 @@ const addHabitTimestampHandler = async (req: NextApiRequest, res: NextApiRespons
     // TODO add aditional check for userID, parsedBody is ready
 
     try {
-        await prisma.timestamp.create({
+        await prisma.habit.update({
+            where: {
+                id: event_data.id,
+            },
             data: {
-                habitId: event_data.id,
+                timestamps: {
+                    create: {},
+                },
             },
         })
 
