@@ -2,7 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { DoistWebhookReqBodyShape } from 'types'
 import { checkIfDoist, validateSig } from 'server/common/todoist'
 import { buffer } from 'micro'
-import { prisma } from 'server/db/client'
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 export const config = {
     api: {
