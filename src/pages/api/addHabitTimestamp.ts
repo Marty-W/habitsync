@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createContext } from 'server/trpc/context'
-import { appRouter } from '@/server/trpc/router'
 import { DoistWebhookReqBodyShape } from 'types'
 import { checkIfDoist, validateSig } from 'server/common/todoist'
 import { buffer } from 'micro'
+import { prisma } from 'server/db/client'
 
 export const config = {
     api: {
@@ -31,8 +30,8 @@ const addHabitTimestampHandler = async (req: NextApiRequest, res: NextApiRespons
 
     const body = JSON.parse(rawBody.toString())
 
-    const ctx = await createContext({ req, res })
-    const caller = appRouter.createCaller(ctx)
+    // const ctx = await createContext({ req, res })
+    // const caller = appRouter.createCaller(ctx)
 
     const parsedBody = DoistWebhookReqBodyShape.passthrough().safeParse(body)
 
@@ -45,8 +44,10 @@ const addHabitTimestampHandler = async (req: NextApiRequest, res: NextApiRespons
     // TODO add aditional check for userID, parsedBody is ready
 
     try {
-        await caller.timestamp.add({
-            habitId: event_data.id,
+        await prisma.timestamp.create({
+            data: {
+                habitId: event_data.id,
+            },
         })
 
         res.status(200).json({ message: 'Success' })

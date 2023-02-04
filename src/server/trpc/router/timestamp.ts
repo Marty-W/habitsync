@@ -108,26 +108,4 @@ export const timestampRouter = t.router({
                 timestamps: normalizedTimestamps,
             }
         }),
-    add: t.procedure.input(z.object({ habitId: z.string() })).mutation(async ({ ctx, input }) => {
-        const { habitId } = input
-
-        const habit = await ctx.prisma.habit.findUnique({
-            where: {
-                id: habitId,
-            },
-        })
-
-        if (!habit) {
-            throw new TRPCError({
-                code: 'NOT_FOUND',
-                message: 'Habit not found',
-            })
-        }
-
-        await ctx.prisma.timestamp.create({
-            data: {
-                habitId,
-            },
-        })
-    }),
 })
