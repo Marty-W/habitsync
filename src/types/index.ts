@@ -67,4 +67,5 @@ export const DoistWebhookReqBodyShape = z.object({
         }),
         id: z.string(),
     }),
+    user_id: z.string(),
 })

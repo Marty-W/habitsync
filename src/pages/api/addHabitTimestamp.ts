@@ -2,9 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { createContext } from 'server/trpc/context'
 import { appRouter } from '@/server/trpc/router'
 import { DoistWebhookReqBodyShape } from 'types'
-import crypto from 'crypto'
-import { env } from 'env/server.mjs'
-import getRawBody from 'raw-body'
+import { checkIfDoist, validateSig } from 'server/common/todoist'
+import { buffer } from 'micro'
 
 export const config = {
     api: {
@@ -12,38 +11,38 @@ export const config = {
     },
 }
 
-const validateHeaders = async (req: NextApiRequest) => {
-    const rawBody = await getRawBody(req)
-
-    const isAllowedMethod = req.method === 'POST'
-    const isFromDoist = req.headers['user-agent'] === 'Todoist-Webhooks'
-    const todoistHash = req.headers['x-todoist-hmac-sha256']
-
-    const hash = crypto
-        .createHmac('sha256', env.DOIST_CLIENT_SECRET)
-        .update(rawBody)
-        .digest('base64')
-
-    return isAllowedMethod && isFromDoist && hash === todoistHash
-}
+// handler has to return 200 if its coming from doist to prevent them from retrying
 
 const addHabitTimestampHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const isValid = validateHeaders(req)
+    const isDoist = checkIfDoist(req)
 
-    if (!isValid) {
+    if (!isDoist) {
         return res.status(405).json({ message: 'Not allowed' })
     }
+
+    const rawBody = await buffer(req)
+    const sigHeader = req.headers['x-todoist-hmac-sha256'] || ''
+
+    const isValid = await validateSig(sigHeader, rawBody)
+
+    if (!isValid) {
+        return res.status(200).json({ message: 'Invalid signature' })
+    }
+
+    const body = JSON.parse(rawBody.toString())
 
     const ctx = await createContext({ req, res })
     const caller = appRouter.createCaller(ctx)
 
-    const parsedBody = DoistWebhookReqBodyShape.safeParse(JSON.parse(req.body))
+    const parsedBody = DoistWebhookReqBodyShape.passthrough().safeParse(body)
 
     if (!parsedBody.success) {
         return res.status(200).json({ message: 'Invalid request body', error: parsedBody.error })
     }
 
     const { event_data } = parsedBody.data
+
+    // TODO add aditional check for userID, parsedBody is ready
 
     try {
         await caller.timestamp.add({

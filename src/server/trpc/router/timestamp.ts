@@ -124,12 +124,10 @@ export const timestampRouter = t.router({
             })
         }
 
-        const timestamp = await ctx.prisma.timestamp.create({
+        await ctx.prisma.timestamp.create({
             data: {
                 habitId,
             },
         })
-
-        return timestamp
     }),
 })
