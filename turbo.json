@@ -1,0 +1,49 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "globalDependencies": ["**/.env", "tsconfig.json"],
+  "pipeline": {
+    "db:generate": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
+    "db:push": {
+      "inputs": ["prisma/schema.prisma"],
+      "cache": false
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["^build", "^db:generate"],
+      "outputs": [".next/**", ".expo/**"]
+    },
+    "lint": {},
+    "lint:fix": {},
+    "test": {},
+    "clean": {
+      "cache": false
+    },
+    "type-check": {
+      "dependsOn": ["^db:generate"],
+      "cache": false
+    }
+  },
+  "globalEnv": [
+    "CI",
+    "DATABASE_URL",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "DOIST_CLIENT_ID",
+    "DOIST_CLIENT_SECRET",
+    "DOIST_VERIF_TOKEN",
+    "DOIST_TEMP_API_TOKEN",
+    "EXPO_ROUTER_APP_ROOT",
+    "NEXTAUTH_SECRET",
+    "NEXTAUTH_URL",
+    "NODE_ENV",
+    "SKIP_ENV_VALIDATION",
+    "VERCEL",
+    "VERCEL_URL"
+  ]
+}

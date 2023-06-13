@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/**/node_modules
+
 /.pnp
 .pnp.js
 
@@ -13,9 +15,13 @@
 /prisma/db.sqlite-journal
 
 # next.js
-/.next/
+**/.next/
 /out/
 next-env.d.ts
+
+# expo 
+**/.expo/
+**/.expo-shared/
 
 # production
 /build
@@ -46,3 +52,6 @@ yarn-error.log*
 
 # notes
 *.md
+
+# turbo 
+.turbo
