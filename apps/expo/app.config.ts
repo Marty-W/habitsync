@@ -1,4 +1,4 @@
-import type { ExpoConfig } from "@expo/config";
+import type { ExpoConfig } from "@expo/config"
 
 const defineConfig = (): ExpoConfig => ({
   name: "expo",
@@ -33,6 +33,6 @@ const defineConfig = (): ExpoConfig => ({
     },
   },
   plugins: ["./expo-plugins/with-modify-gradle.js"],
-});
+})
 
-export default defineConfig;
+export default defineConfig

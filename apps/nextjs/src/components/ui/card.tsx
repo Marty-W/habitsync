@@ -1,10 +1,18 @@
-import clsx from 'clsx'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren } from "react"
+import clsx from "clsx"
 
-const Card = ({ children, className }: PropsWithChildren<{ className?: string }>) => (
-    <div className={clsx('flex flex-col rounded-2xl bg-slate-100 p-5 shadow-sm', `${className}`)}>
-        {children}
-    </div>
+const Card = ({
+  children,
+  className,
+}: PropsWithChildren<{ className?: string }>) => (
+  <div
+    className={clsx(
+      "flex flex-col rounded-2xl bg-slate-100 p-5 shadow-sm",
+      `${className}`,
+    )}
+  >
+    {children}
+  </div>
 )
 
 export default Card

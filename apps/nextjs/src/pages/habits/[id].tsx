@@ -1,44 +1,44 @@
-import NextError from "next/error";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { SiTodoist } from "react-icons/si";
+import NextError from "next/error"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { SiTodoist } from "react-icons/si"
 
-import { api } from "~/utils/trpc";
-import { BackButton } from "~/components/backButton";
-import CardWithLoader from "~/components/habitDetail/cardWithLoader";
-import SettingsButton from "~/components/settingsButton";
+import { api } from "~/utils/trpc"
+import { BackButton } from "~/components/backButton"
+import CardWithLoader from "~/components/habitDetail/cardWithLoader"
+import SettingsButton from "~/components/settingsButton"
 
 const HabitDetail = () => {
-  const id = useRouter().query.id as string;
-  const name = useRouter().query.name as string;
+  const id = useRouter().query.id as string
+  const name = useRouter().query.name as string
   const calendarData = api.timestamp.getAllWithStreakDays.useQuery({
     habitId: id,
-  });
+  })
   const description = api.habit.getDetail.useQuery({
     id: id,
-  });
+  })
 
-  const streaks = api.streak.getBest.useQuery({ habitId: id, numStreaks: 5 });
+  const streaks = api.streak.getBest.useQuery({ habitId: id, numStreaks: 5 })
   const totalCompletions = api.stats.getTotalHabitCompletions.useQuery({
     habitId: id,
-  });
+  })
 
   const successRate = api.stats.getHabitSuccessRate.useQuery({
     habitId: id,
-  });
+  })
 
   const timestampSummaryCounts = api.timestamp.getSummaryCounts.useQuery({
     habitId: id,
-  });
+  })
 
   if (description.isError || calendarData.isError) {
     const statusCode =
       (description.error?.data?.httpStatus ?? 500) ||
-      (calendarData.error?.data?.httpStatus ?? 500);
+      (calendarData.error?.data?.httpStatus ?? 500)
 
-    const title = description.error?.message || calendarData.error?.message;
+    const title = description.error?.message || calendarData.error?.message
 
-    return <NextError statusCode={statusCode} title={title} />;
+    return <NextError statusCode={statusCode} title={title} />
   }
 
   return (
@@ -108,7 +108,7 @@ const HabitDetail = () => {
         <span>Open in Todoist</span>
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default HabitDetail;
+export default HabitDetail

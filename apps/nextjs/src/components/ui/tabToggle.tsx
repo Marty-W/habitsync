@@ -1,7 +1,7 @@
 interface Props {
-  options: string[];
-  activeOption: string;
-  onToggleChange: (option: string) => void;
+  options: string[]
+  activeOption: string
+  onToggleChange: (option: string) => void
 }
 
 const TabToggle = ({ options, onToggleChange, activeOption }: Props) => {
@@ -19,7 +19,7 @@ const TabToggle = ({ options, onToggleChange, activeOption }: Props) => {
         </button>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default TabToggle;
+export default TabToggle

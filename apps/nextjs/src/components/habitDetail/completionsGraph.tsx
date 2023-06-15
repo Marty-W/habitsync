@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import colors from "tailwindcss/colors";
+import React, { useState } from "react"
+import colors from "tailwindcss/colors"
 
-import "chartjs-adapter-date-fns";
+import "chartjs-adapter-date-fns"
 
-import type { RouterOutputs } from "@habitsync/api";
-import { getLabelsForCompletionGraph } from "@habitsync/lib";
+import type { RouterOutputs } from "@habitsync/api"
+import { getLabelsForCompletionGraph } from "@habitsync/lib"
 import {
   BarElement,
   CategoryScale,
@@ -14,10 +14,10 @@ import {
   TimeScale,
   Title,
   Tooltip,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+} from "chart.js"
+import { Bar } from "react-chartjs-2"
 
-import TabToggle from "../ui/tabToggle";
+import TabToggle from "../ui/tabToggle"
 
 ChartJS.register(
   Tooltip,
@@ -27,29 +27,29 @@ ChartJS.register(
   CategoryScale,
   Title,
   TimeScale,
-);
+)
 
 type Props = {
-  timestamps: RouterOutputs["timestamp"]["getSummaryCounts"];
-};
+  timestamps: RouterOutputs["timestamp"]["getSummaryCounts"]
+}
 
-export type ActivePeriod = "week" | "month" | "year";
+export type ActivePeriod = "week" | "month" | "year"
 
 const CompletionsGraph = ({ timestamps }: Props) => {
-  const [toggledPeriod, setTogglePeriod] = useState<ActivePeriod>("week");
+  const [toggledPeriod, setTogglePeriod] = useState<ActivePeriod>("week")
 
   const handlePeriodChange = (period: string) => {
-    setTogglePeriod(period as ActivePeriod);
-  };
+    setTogglePeriod(period as ActivePeriod)
+  }
 
-  const { groupedByWeek, groupedByMonth, groupedByYear } = timestamps;
+  const { groupedByWeek, groupedByMonth, groupedByYear } = timestamps
 
   const activeOption =
     toggledPeriod === "week"
       ? groupedByWeek
       : toggledPeriod === "month"
       ? groupedByMonth
-      : groupedByYear;
+      : groupedByYear
 
   const data = {
     labels: getLabelsForCompletionGraph(timestamps, toggledPeriod),
@@ -62,7 +62,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
         tension: 0.1,
       },
     ],
-  };
+  }
 
   return (
     <div>
@@ -123,7 +123,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
         data={data}
       />
     </div>
-  );
-};
+  )
+}
 
-export default CompletionsGraph;
+export default CompletionsGraph
