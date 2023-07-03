@@ -128,6 +128,7 @@ export const habitRouter = createTRPCRouter({
           labels: true,
           name: true,
           url: true,
+          createdAt: true,
         },
       })
 
