@@ -1,4 +1,4 @@
-import { NextPage } from "next"
+import { type NextPage } from "next"
 
 import { api } from "~/utils/trpc"
 import DashboardHabit from "~/components/dashboard/dashboardHabit"
@@ -23,9 +23,9 @@ const Habits: NextPage = () => {
   // }, [allHabits.data, utils])
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-200 px-7 py-6">
+    <div className="bg-primary flex min-h-screen flex-col px-7 py-6">
       <div className="mb-3 grid grid-cols-3 items-center py-4">
-        <h1 className="col-start-2 text-center text-2xl text-slate-600">
+        <h1 className="text-primary-foreground col-start-2 text-center text-2xl">
           Your habits
         </h1>
         <SettingsButton className="justify-self-end" />

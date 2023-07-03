@@ -1,17 +1,20 @@
 import Link from "next/link"
 
-import { RouterOutputs } from "~/utils/trpc"
+import { type RouterOutputs } from "~/utils/trpc"
+import CompletionsRow from "./completionsRow"
+import DayCompletionStatus from "./dayCompletionStatus"
 
-interface IDashboardHabitProps {
+interface Props {
   habit: RouterOutputs["habit"]["getAll"][0]
 }
 
-const DashboardHabit = ({ habit }: IDashboardHabitProps) => {
+const DashboardHabit = ({ habit }: Props) => {
   const { id, labels, name } = habit
   return (
     <Link href={`/habits/${id}?name=${name}`}>
-      <div className="my-1 rounded-lg border-2 bg-slate-100 p-4 hover:ring hover:ring-red-400">
-        <span>{name}</span>
+      <div className="bg-card my-1 flex rounded-lg border-2 p-4">
+        <span className="text-card-foreground">{name}</span>
+        <CompletionsRow habitId={id} />
       </div>
     </Link>
   )
