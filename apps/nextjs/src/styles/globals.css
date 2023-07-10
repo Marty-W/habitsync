@@ -7,20 +7,48 @@
     font-family: Inter, system-ui, sans-serif;
   }
 }
+/* const mauve = { */
+/* mauve1: 'hsl(300, 20.0%, 99.0%)', */
+/*   mauve2: 'hsl(300, 7.7%, 97.5%)', */
+/*   mauve3: 'hsl(294, 5.5%, 95.3%)', */
+/*   mauve4: 'hsl(289, 4.7%, 93.3%)', */
+/*   mauve5: 'hsl(283, 4.4%, 91.3%)', */
+/*   mauve6: 'hsl(278, 4.1%, 89.1%)', */
+/*   mauve7: 'hsl(271, 3.9%, 86.3%)', */
+/*   mauve8: 'hsl(255, 3.7%, 78.8%)', */
+/*   mauve9: 'hsl(252, 4.0%, 57.3%)', */
+/*   mauve10: 'hsl(253, 3.5%, 53.5%)', */
+/*   mauve11: 'hsl(252, 4.0%, 44.8%)', */
+/*   mauve12: 'hsl(260, 25.0%, 11.0%)', */
+/* } */
+/* const violet = { */
+/*   violet1: 'hsl(255, 65.0%, 99.4%)', */
+/*   violet2: 'hsl(252, 100%, 99.0%)', */
+/*   violet3: 'hsl(252, 96.9%, 97.4%)', */
+/*   violet4: 'hsl(252, 91.5%, 95.5%)', */
+/*   violet5: 'hsl(252, 85.1%, 93.0%)', */
+/*   violet6: 'hsl(252, 77.8%, 89.4%)', */
+/*   violet7: 'hsl(252, 71.0%, 83.7%)', */
+/*   violet8: 'hsl(252, 68.6%, 76.3%)', */
+/*   violet9: 'hsl(252, 56.0%, 57.5%)', */
+/*   violet10: 'hsl(251, 48.1%, 53.5%)', */
+/*   violet11: 'hsl(250, 43.0%, 48.0%)', */
+/*   violet12: 'hsl(254, 60.0%, 18.5%)', */
+/* } */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    --background: 300 20% 99%;
+    --foreground: 260 25% 11%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 300 7.7% 97.5%;
+    --muted-foreground: 252 4% 44.8%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 47.4% 11.2%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card: 294 5.5% 95.3%;
+    --card-foreground: 253 3.5% 53.5%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -42,33 +70,112 @@
     --radius: 0.5rem;
   }
 
+  /* const mauveDark = { */
+  /*     mauve1: 'hsl(246, 6.0%, 9.0%)', */
+  /*         mauve2: 'hsl(240, 5.1%, 11.6%)', */
+  /*         mauve3: 'hsl(241, 5.0%, 14.3%)', */
+  /*         mauve4: 'hsl(242, 4.9%, 16.5%)', */
+  /*         mauve5: 'hsl(243, 4.9%, 18.8%)', */
+  /*         mauve6: 'hsl(244, 4.9%, 21.5%)', */
+  /*         mauve7: 'hsl(245, 4.9%, 25.4%)', */
+  /*         mauve8: 'hsl(247, 4.8%, 32.5%)', */
+  /*         mauve9: 'hsl(252, 4.0%, 45.2%)', */
+  /*         mauve10: 'hsl(247, 3.4%, 50.7%)', */
+  /*         mauve11: 'hsl(253, 4.0%, 63.7%)', */
+  /*         mauve12: 'hsl(256, 6.0%, 93.2%)', */
+  /* } */
+  /* const violetDark = { */
+  /*   violet1: 'hsl(250, 20.0%, 10.2%)', */
+  /*   violet2: 'hsl(255, 30.3%, 12.9%)', */
+  /*   violet3: 'hsl(253, 37.0%, 18.4%)', */
+  /*   violet4: 'hsl(252, 40.1%, 22.5%)', */
+  /*   violet5: 'hsl(252, 42.2%, 26.2%)', */
+  /*   violet6: 'hsl(251, 44.3%, 31.1%)', */
+  /*   violet7: 'hsl(250, 46.8%, 38.9%)', */
+  /*   violet8: 'hsl(250, 51.8%, 51.2%)', */
+  /*   violet9: 'hsl(252, 56.0%, 57.5%)', */
+  /*   violet10: 'hsl(251, 63.2%, 63.2%)', */
+  /*   violet11: 'hsl(250, 95.0%, 76.8%)', */
+  /*   violet12: 'hsl(252, 87.0%, 96.4%)', */
+  /* } */
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    /* mauve1 */
+    --background: 246 6% 9%;
+    /* mauve12 */
+    --foreground: 256 6% 93.2%;
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
+    /* mauve2 */
+    --muted: 240 5.1% 11.6%;
+    /* mauve11 */
+    --muted-foreground: 253 4% 63.7%;
 
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
+    --popover: 246 6% 9%;
+    --popover-foreground: 256 6% 93.2%;
 
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
+    --card: 240 5.1% 11.6%;
+    --card-foreground: 256 6% 93.2%;
 
-    --border: 216 34% 17%;
+    --border: 244 4.9% 25.4%;
     --input: 216 34% 17%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    --primary: 252 56% 57.5%;
+    --primary-foreground: 252 87% 96.4%;
 
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 242 4.9% 16.5%;
+    --secondary-foreground: 256 6% 93.2%;
 
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
+    /* violet4 */
+    --accent: 253 42.2% 26.2%;
+    --accent-foreground: 252 87% 96.4%;
 
-    --destructive: 0 63% 31%;
+    /* const redDark = { */
+    /*   red1: 'hsl(353, 23.0%, 9.8%)', */
+    /*   red2: 'hsl(357, 34.4%, 12.0%)', */
+    /*   red3: 'hsl(356, 43.4%, 16.4%)', */
+    /*   red4: 'hsl(356, 47.6%, 19.2%)', */
+    /*   red5: 'hsl(356, 51.1%, 21.9%)', */
+    /*   red6: 'hsl(356, 55.2%, 25.9%)', */
+    /*   red7: 'hsl(357, 60.2%, 31.8%)', */
+    /*   red8: 'hsl(358, 65.0%, 40.4%)', */
+    /*   red9: 'hsl(358, 75.0%, 59.0%)', */
+    /*   red10: 'hsl(358, 85.3%, 64.0%)', */
+    /*   red11: 'hsl(358, 100%, 69.5%)', */
+    /*   red12: 'hsl(351, 89.0%, 96.0%)', */
+    /* } */
+    --destructive: 358 75% 59%;
     --destructive-foreground: 210 40% 98%;
+    /* const grassDark = { */
+    /*   grass1: 'hsl(146, 30.0%, 7.4%)', */
+    /*   grass2: 'hsl(136, 33.3%, 8.8%)', */
+    /*   grass3: 'hsl(137, 36.0%, 11.4%)', */
+    /*   grass4: 'hsl(137, 37.6%, 13.7%)', */
+    /*   grass5: 'hsl(136, 38.7%, 16.0%)', */
+    /*   grass6: 'hsl(135, 39.6%, 19.1%)', */
+    /*   grass7: 'hsl(134, 40.3%, 23.8%)', */
+    /*   grass8: 'hsl(131, 40.1%, 30.8%)', */
+    /*   grass9: 'hsl(131, 41.0%, 46.5%)', */
+    /*   grass10: 'hsl(131, 39.0%, 52.1%)', */
+    /*   grass11: 'hsl(131, 43.0%, 57.2%)', */
+    /*   grass12: 'hsl(137, 72.0%, 94.0%)', */
+    /* } */
+    --success: 131 41.3% 46.5%;
+    --success-foreground: 252 87% 96.4%;
+
+    /* const yellowDark = { */
+    /*   yellow1: 'hsl(45, 100%, 5.5%)', */
+    /*   yellow2: 'hsl(46, 100%, 6.7%)', */
+    /*   yellow3: 'hsl(45, 100%, 8.7%)', */
+    /*   yellow4: 'hsl(45, 100%, 10.4%)', */
+    /*   yellow5: 'hsl(47, 100%, 12.1%)', */
+    /*   yellow6: 'hsl(49, 100%, 14.3%)', */
+    /*   yellow7: 'hsl(49, 90.3%, 18.4%)', */
+    /*   yellow8: 'hsl(50, 100%, 22.0%)', */
+    /*   yellow9: 'hsl(53, 92.0%, 50.0%)', */
+    /*   yellow10: 'hsl(54, 100%, 68.0%)', */
+    /*   yellow11: 'hsl(48, 100%, 47.0%)', */
+    /*   yellow12: 'hsl(53, 100%, 91.0%)', */
+    /* } */
+    --void: 53 92% 50%;
 
     --ring: 216 34% 17%;
 
