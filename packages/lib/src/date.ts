@@ -9,6 +9,7 @@ import {
   lastDayOfWeek,
   startOfMonth,
   startOfWeek,
+  subDays,
 } from "date-fns"
 
 import { WEEKDAYS_INDEXING } from "./const"
@@ -155,4 +156,12 @@ export const getLabelsForCompletionGraph = (
   }
 
   return Object.keys(timestamps.groupedByYear)
+}
+
+export const getPastDays = (numOfDays: number) => {
+  const today = new Date()
+  return eachDayOfInterval({
+    start: subDays(today, numOfDays),
+    end: today,
+  }).reverse()
 }

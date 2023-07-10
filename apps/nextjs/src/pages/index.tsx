@@ -22,8 +22,8 @@ const Home: NextPage = () => {
         {/* TODO add favicon */}
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div className="hero min-h-screen bg-slate-200">
+      <main className="">
+        <div className="hero min-h-screen">
           <div className="hero-content h-full w-full flex-col lg:flex-row-reverse">
             <div className="h-1/2">
               <h1 className="text-5xl font-bold">HabitSync</h1>

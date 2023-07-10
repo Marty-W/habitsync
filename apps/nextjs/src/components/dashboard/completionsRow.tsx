@@ -1,55 +1,68 @@
 import { normalizeDate } from "@habitsync/lib"
-import { eachDayOfInterval, isBefore, subDays } from "date-fns"
+import { isBefore } from "date-fns"
 
-import { api } from "~/utils/trpc"
+import useCompletionPillsData from "~/hooks/useCompletionPillsData"
+import usePills from "~/hooks/usePills"
+import FetchError from "../ui/fetchError"
+import { Skeleton } from "../ui/loadingSkeleton"
 import DayCompletionStatus from "./dayCompletionStatus"
-
-//TODO make this configurable based on the screen width
-const MAX_NUM_DAYS = 15
 
 interface Props {
   habitId: string
 }
 
 const CompletionsRow = ({ habitId }: Props) => {
-  const { data, isLoading } = api.timestamp.getAllWithStreakDays.useQuery({
-    habitId,
-  })
-  const { data: detailData, isLoading: detailLoading } =
-    api.habit.getDetail.useQuery({ id: habitId })
+  const { ref, pills } = usePills()
+  const { timestamps, habitDetail } = useCompletionPillsData({ habitId })
 
-  const today = new Date()
-  const daysToDisplay = eachDayOfInterval({
-    start: subDays(today, MAX_NUM_DAYS),
-    end: today,
-  }).reverse()
+  const refetchQueries = async () => {
+    await Promise.all([timestamps.refetch(), habitDetail.refetch()])
+  }
 
-  if (isLoading && detailLoading) {
-    return <span>Loading...</span>
+  if (timestamps.isLoading || habitDetail.isLoading || !pills) {
+    return (
+      <div className="flex">
+        {Array.from(Array(7).keys()).map((i) => (
+          <Skeleton
+            key={i}
+            className="bg-card-foreground/10 mx-1 h-8 w-[10px] rounded-lg"
+          />
+        ))}
+      </div>
+    )
+  }
+
+  if (timestamps.error || habitDetail.error) {
+    return (
+      <FetchError
+        refetch={refetchQueries}
+        isRefetching={timestamps.isRefetching || habitDetail.isRefetching}
+      >
+        <span>Try again</span>
+      </FetchError>
+    )
   }
 
   return (
-    <div className="flex flex-1 justify-end">
-      {data &&
-        detailData &&
-        daysToDisplay.map((day, index) => {
-          return (
-            <DayCompletionStatus
-              key={index}
-              date={day}
-              isSuccessful={data.timestamps.has(normalizeDate(day))}
-              isExtraStreakDay={
-                data.extraStreakDays
-                  ? data.extraStreakDays.has(normalizeDate(day))
-                  : false
-              }
-              isBeforeHabitStarted={isBefore(
-                day,
-                new Date(detailData.createdAt),
-              )}
-            />
-          )
-        })}
+    <div className="flex flex-1 justify-end" ref={ref}>
+      {pills.map((day, index) => {
+        return (
+          <DayCompletionStatus
+            key={index}
+            date={day}
+            isSuccessful={timestamps.data.timestamps.has(normalizeDate(day))}
+            isExtraStreakDay={
+              timestamps.data.extraStreakDays
+                ? timestamps.data.extraStreakDays.has(normalizeDate(day))
+                : false
+            }
+            isBeforeHabitStarted={isBefore(
+              day,
+              new Date(habitDetail.data.createdAt),
+            )}
+          />
+        )
+      })}
     </div>
   )
 }

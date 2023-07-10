@@ -1,5 +1,4 @@
 import { format } from "date-fns"
-import is from "date-fns/locale/is"
 
 import Pill from "../ui/pill"
 import {

@@ -1,17 +1,20 @@
 import Link from "next/link"
-import clsx from "clsx"
-import { motion } from "framer-motion"
-import { HiOutlineCog } from "react-icons/hi"
+import { type ClassValue } from "clsx"
+import { Settings } from "lucide-react"
 
-const SettingsButton = ({ className }: { className?: string }) => (
-  <motion.button whileTap={{ scale: 0.95 }} className={className}>
+import { cn } from "~/utils/tailwind"
+import { Button } from "./ui/button"
+
+interface Props {
+  className: ClassValue
+}
+
+const SettingsButton = ({ className }: Props) => (
+  <Button variant="outline" size="icon" className={cn(className)}>
     <Link href="/account">
-      <HiOutlineCog
-        size="1.8rem"
-        className="text-slate-500 hover:text-slate-700"
-      />
+      <Settings size="1.2rem" />
     </Link>
-  </motion.button>
+  </Button>
 )
 
 export default SettingsButton

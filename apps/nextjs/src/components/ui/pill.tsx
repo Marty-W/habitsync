@@ -1,32 +1,24 @@
-interface Props {
-  variant: "success" | "void" | "failure" | "blank"
-}
+import { cva, type VariantProps } from "class-variance-authority"
 
-const Pill = ({ variant }: Props) => {
-  let color
+import { cn } from "~/utils/tailwind"
 
-  switch (variant) {
-    case "success":
-      color = "bg-green-500"
-      break
-    case "void":
-      color = "bg-yellow-500"
-      break
-    case "failure":
-      color = "bg-red-500"
-      break
-    case "blank":
-      color = "bg-white"
-      break
-  }
+const pillVariants = cva("mx-1 h-8 w-[10px] rounded-lg", {
+  variants: {
+    variant: {
+      success: "bg-success",
+      void: "bg-void",
+      failure: "bg-destructive",
+      blank: "bg-muted border",
+    },
+  },
+})
 
-  return (
-    <div
-      className={`mx-1 h-full w-[0.6rem] rounded-lg ${color} ${
-        variant === "blank" && "border"
-      }`}
-    />
-  )
+interface Props
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof pillVariants> {}
+
+const Pill = ({ variant, className }: Props) => {
+  return <div className={cn(pillVariants({ variant, className }))} />
 }
 
 export default Pill

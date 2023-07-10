@@ -132,6 +132,13 @@ export const habitRouter = createTRPCRouter({
         },
       })
 
+      if (!habit) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `Habit with id ${id} not found`,
+        })
+      }
+
       return habit
     }),
 })

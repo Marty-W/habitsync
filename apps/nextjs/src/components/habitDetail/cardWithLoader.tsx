@@ -10,7 +10,7 @@ import TotalCompletions from "~/components/habitDetail/completions"
 import HabitDescription from "~/components/habitDetail/habitDescription"
 import Streaks from "~/components/habitDetail/streaks"
 import Card from "~/components/ui/card"
-import CardSkeleton from "~/components/ui/cardSkeleton"
+import { Skeleton } from "../ui/loadingSkeleton"
 import CompletionsGraph from "./completionsGraph"
 import SuccessRate from "./successRate"
 
@@ -71,7 +71,7 @@ const CardWithLoader = ({
 }: Props) => {
   // FIX weird, refactor
   if (!isLoadingSuccess || !data || mock) {
-    return <CardSkeleton cardClassName={className} count={lineCount} />
+    return <Skeleton />
   }
 
   let content
