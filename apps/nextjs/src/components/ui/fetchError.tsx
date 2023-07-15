@@ -1,6 +1,5 @@
-import { RotateCw } from "lucide-react"
-
 import { cn } from "~/utils/tailwind"
+import Spinner from "./spinner"
 
 interface Props {
   className?: string
@@ -17,7 +16,7 @@ const FetchError = ({ className, refetch, isRefetching, children }: Props) => {
   return (
     <div className={cn("text-muted-foreground flex justify-center", className)}>
       <button onClick={handleRedoClick}>
-        <RotateCw className={`mr-3 ${isRefetching ? "animate-spin" : ""}`} />
+        <Spinner isActive={isRefetching} className="mr-3" />
       </button>
       {children}
     </div>
