@@ -1,3 +1,7 @@
+import { useState, type ReactNode } from "react"
+import { useRouter } from "next/router"
+
+import { api } from "~/utils/trpc"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,9 +13,32 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alertDialog"
+import Spinner from "../ui/spinner"
 import SettingsItem from "./settingsItem"
 
 const DeleteAccountItem = () => {
+  const router = useRouter()
+  const [mutationOutput, setMutationOutput] = useState<ReactNode | null>(null)
+  const deleteAcc = api.acc.deleteAcc.useMutation({
+    onMutate: () => {
+      setMutationOutput(<Spinner isActive />)
+    },
+    onSuccess: () => {
+      setMutationOutput(<span>Acount deleted. Redirecting...</span>)
+      setTimeout(() => {
+        void router.push("/")
+      }, 2000)
+    },
+    onError: (err) => {
+      setMutationOutput(<span>Something went wrong: {err.message}</span>)
+    },
+  })
+
+  const handleAccDelete = (e: React.MouseEvent) => {
+    e.preventDefault()
+    deleteAcc.mutate()
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -26,8 +53,18 @@ const DeleteAccountItem = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
+          {!mutationOutput ? (
+            <>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleAccDelete}>
+                Continue
+              </AlertDialogAction>
+            </>
+          ) : (
+            <div className="flex items-center justify-center">
+              {mutationOutput}
+            </div>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

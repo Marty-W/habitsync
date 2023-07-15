@@ -66,7 +66,7 @@ model Habit {
     // For recurrenceType === "specific_days"
     recurrenceDays String[]
     userId         String
-    user           User           @relation(fields: [userId], references: [id])
+    user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([id, userId])
 }
@@ -74,7 +74,7 @@ model Habit {
 model Timestamp {
     id      String   @id @default(cuid())
     time    DateTime @default(now())
-    Habit   Habit?   @relation(fields: [habitId], references: [id])
+    Habit   Habit?   @relation(fields: [habitId], references: [id], onDelete: Cascade)
     habitId String
 }
 
