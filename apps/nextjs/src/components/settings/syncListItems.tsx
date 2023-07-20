@@ -1,11 +1,11 @@
-import { useState, type Dispatch, type SetStateAction } from "react"
-import { CircleSlash, Link } from "lucide-react"
+import { type Dispatch, type SetStateAction } from "react"
 
 import { api } from "~/utils/trpc"
+import usePicker from "~/hooks/usePicker"
 import { Button } from "../ui/button"
+import HabitListItem from "../ui/habitListItem"
 import SyncEmpty from "./syncEmpty"
 import { type SyncListWorkflowPhase, type SyncSourceType } from "./syncList"
-import SyncListItem from "./syncListItem"
 import SyncProgressStatus from "./syncProgressStatus"
 
 interface Props {
@@ -23,13 +23,7 @@ const SyncListItems = ({
   handleNextPhase,
   setNumOfHabitsCreated,
 }: Props) => {
-  const [selectedTasks, setSelectedTasks] = useState<string[]>([])
-
-  const handleAddTasks = (id: string) => {
-    setSelectedTasks((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    )
-  }
+  const { items, editItems } = usePicker()
   const todoistTasks = api.habit.getNewTasksFromTodoist.useQuery(
     {
       type,
@@ -70,23 +64,24 @@ const SyncListItems = ({
       )}
       {todoistTasks.data?.map((task) => {
         return (
-          <SyncListItem
+          <HabitListItem
+            kind="active"
             name={task.name}
             key={task.id}
-            isSelected={selectedTasks.includes(task.id)}
+            isSelected={items.includes(task.id)}
             id={task.id}
-            handleAddTask={handleAddTasks}
+            handleSelect={editItems}
           />
         )
       })}
       {todoistTasks.isSuccess && (
         <div className="mx-auto mt-10 flex justify-center">
           <Button
-            disabled={!selectedTasks.length}
+            disabled={!items.length}
             onClick={() =>
               todoistSync.mutate({
                 type,
-                taskIds: selectedTasks,
+                taskIds: items,
                 sourceId: selectedSource,
               })
             }
