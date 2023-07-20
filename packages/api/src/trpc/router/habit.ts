@@ -6,22 +6,43 @@ import {
   getRecurrenceType,
   getSpecificRecurrenceDays,
 } from "../../common/recurrence"
+import { filterNonRecurringFromArr } from "../../common/todoist"
 import { createTRPCRouter, protectedProcedure } from "../trpc"
 
 export const habitRouter = createTRPCRouter({
   syncWithTodoist: protectedProcedure
-    .input(z.object({ labelName: z.string() }))
+    .input(
+      z.discriminatedUnion("type", [
+        z.object({
+          type: z.literal("label"),
+          sourceId: z.string(),
+          taskIds: z.array(z.string()),
+        }),
+        z.object({
+          type: z.literal("project"),
+          sourceId: z.string(),
+          taskIds: z.array(z.string()),
+        }),
+      ]),
+    )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id
-      const { labelName } = input
+      const { sourceId, taskIds } = input
+      let fetchedTodos
 
-      //TODO add option to fetch tasks based on project_id, and also todoist filters
+      if (input.type === "label") {
+        fetchedTodos = await ctx.doist.getTasks({
+          label: sourceId,
+        })
+      }
 
-      const fetchedHabits = await ctx.doist.getTasks({
-        label: labelName,
-      })
+      if (input.type === "project") {
+        fetchedTodos = await ctx.doist.getTasks({
+          projectId: sourceId,
+        })
+      }
 
-      if (!fetchedHabits) {
+      if (!fetchedTodos) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message:
@@ -29,9 +50,7 @@ export const habitRouter = createTRPCRouter({
         })
       }
 
-      //TODO diffenerentiate between initial and subsequent syncs (this wont be needed in subsequent)
-
-      const todoistId = fetchedHabits[0].creatorId
+      const todoistId = fetchedTodos[0].creatorId
       await ctx.prisma.user.update({
         where: {
           id: userId,
@@ -41,10 +60,13 @@ export const habitRouter = createTRPCRouter({
         },
       })
 
-      const formattedHabitsForDb = fetchedHabits.map((habit) => {
+      const filteredSelected = fetchedTodos.filter((todo) =>
+        taskIds.includes(todo.id),
+      )
+
+      const formattedHabitsForDb = filteredSelected.map((habit) => {
         const { id, content, description, labels, url, due } = habit
 
-        // TODO there should be a partial completion (filter those that don't match and still write the good ones)
         if (!due || !due.isRecurring) {
           throw new TRPCError({
             code: "BAD_REQUEST",
@@ -96,6 +118,11 @@ export const habitRouter = createTRPCRouter({
         data: formattedHabitsForDb,
         skipDuplicates: true,
       })
+
+      return {
+        status: "ok",
+        numberOfHabitsCreated: formattedHabitsForDb.length,
+      }
     }),
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session?.user?.id
@@ -140,5 +167,66 @@ export const habitRouter = createTRPCRouter({
       }
 
       return habit
+    }),
+  getNewTasksFromTodoist: protectedProcedure
+    .input(
+      z.discriminatedUnion("type", [
+        z.object({ type: z.literal("label"), id: z.string() }),
+        z.object({ type: z.literal("project"), id: z.string() }),
+      ]),
+    )
+    .query(async ({ ctx, input }) => {
+      let fetchedTodos
+      const { type, id } = input
+
+      if (type === "label") {
+        fetchedTodos = await ctx.doist.getTasks({
+          label: id,
+        })
+      }
+
+      if (type === "project") {
+        fetchedTodos = await ctx.doist.getTasks({
+          projectId: id,
+        })
+      }
+
+      if (!fetchedTodos) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "No tasks with the specified query found. Please check Todoist.",
+        })
+      }
+
+      const onlyRecurring = filterNonRecurringFromArr(fetchedTodos)
+
+      if (onlyRecurring.length === 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message:
+            "No recurring tasks found. Please check Todoist or pick a different label.",
+        })
+      }
+
+      const alreadySyncedIds = await ctx.prisma.habit
+        .findMany({
+          where: {
+            userId: ctx.session?.user?.id,
+          },
+        })
+        .then((habits) => habits.map((habit) => habit.id))
+
+      return onlyRecurring
+        .filter((todo) => !alreadySyncedIds.includes(todo.id))
+        .map((todo) => {
+          return {
+            id: todo.id,
+            name: todo.content,
+            labels: todo.labels,
+            projectId: todo.projectId,
+            recurrence: todo.due?.string,
+          }
+        })
     }),
 })

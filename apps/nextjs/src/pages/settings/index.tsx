@@ -12,8 +12,19 @@ const Settings: NextPage = () => {
       <div className="my-5 flex h-1/5 flex-col justify-end">
         <h1 className="text-accent text-4xl">Settings</h1>
       </div>
+      <SettingsSection title="Sync">
+        <SettingsItem
+          title="From Projects"
+          as={Link}
+          href="/settings/sync-new-habits/projects"
+        />
+        <SettingsItem
+          title="From Labels"
+          as={Link}
+          href="/settings/sync-new-habits/labels"
+        />
+      </SettingsSection>
       <SettingsSection title="Habits">
-        <SettingsItem title="Sync new" as={Link} href="/settings/sync-new" />
         <SettingsItem
           title="Edit current"
           as={Link}

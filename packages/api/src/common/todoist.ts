@@ -1,5 +1,6 @@
 import crypto from "crypto"
 import { type NextApiRequest } from "next"
+import { type Task } from "@doist/todoist-api-typescript"
 import { env, POSSIBLE_DAY_STEPS_WORDNUMBERS } from "@habitsync/lib"
 
 const UNSAFE_ELEMENTS = ["ev", "every", "day", "", "and"]
@@ -32,4 +33,8 @@ export const validateSig = async (sig: string | string[], buffer: Buffer) => {
     .digest("base64")
 
   return hash === sig
+}
+
+export const filterNonRecurringFromArr = (tasks: Task[]) => {
+  return tasks.filter((todo) => todo.due && todo.due.isRecurring)
 }

@@ -9,6 +9,9 @@ export const accRouter = createTRPCRouter({
   getUserLabels: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.doist.getLabels()
   }),
+  getUserProjects: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.doist.getProjects()
+  }),
   deleteAcc: protectedProcedure.mutation(async ({ ctx }) => {
     const { prisma, session } = ctx
 

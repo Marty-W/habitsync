@@ -1,4 +1,6 @@
-import type { AppType } from "next/app"
+import type { ReactElement, ReactNode } from "react"
+import type { NextPage } from "next"
+import type { AppProps, AppType } from "next/app"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import type { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
