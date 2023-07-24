@@ -6,7 +6,8 @@ import { Button } from "../ui/button"
 import HabitListItem from "../ui/habitListItem"
 import SyncEmpty from "./syncEmpty"
 import { type SyncListWorkflowPhase, type SyncSourceType } from "./syncList"
-import SyncProgressStatus from "./syncProgressStatus"
+import WorkflowError from "./workflowError"
+import WorkflowProgressStatus from "./workflowProgressStatus"
 
 interface Props {
   selectedSource: string
@@ -43,8 +44,12 @@ const SyncListItems = ({
     },
   })
 
+  if (todoistTasks.isError) {
+    return <WorkflowError errorMessage={todoistTasks.error.message} />
+  }
+
   if (phase === "fetching-tasks") {
-    return <SyncProgressStatus phase={phase} />
+    return <WorkflowProgressStatus phase={phase} />
   }
 
   const noTasksToSync = todoistTasks.isSuccess && !todoistTasks.data?.length
@@ -55,17 +60,10 @@ const SyncListItems = ({
 
   return (
     <div className="bg-muted flex-1 rounded-t-lg px-6 py-2">
-      {todoistTasks.isError && (
-        <div className="mt-10 text-center">
-          <span className="text-muted-foreground text-sm">
-            {todoistTasks.error.message}
-          </span>
-        </div>
-      )}
       {todoistTasks.data?.map((task) => {
         return (
           <HabitListItem
-            kind="active"
+            kind="add"
             name={task.name}
             key={task.id}
             isSelected={items.includes(task.id)}

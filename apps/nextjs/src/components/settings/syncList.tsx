@@ -2,9 +2,9 @@ import { useState } from "react"
 
 import { type SyncSources } from "~/pages/settings/sync-new-habits/labels"
 import SyncListItems from "./syncListItems"
-import SyncProgressStatus from "./syncProgressStatus"
 import SyncSource from "./syncSource"
 import SyncSuccess from "./syncSuccess"
+import WorkflowProgressStatus from "./workflowProgressStatus"
 
 export type SyncListWorkflowPhase =
   | "select-source"
@@ -53,7 +53,7 @@ const SyncList = ({ syncSources, type }: Props) => {
           type={type}
         />
       )}
-      {phase === "syncing-tasks" && <SyncProgressStatus phase={phase} />}
+      {phase === "syncing-tasks" && <WorkflowProgressStatus phase={phase} />}
       {phase === "synced" && (
         <SyncSuccess
           numOfHabitsCreated={numOfHabitsCreated}

@@ -1,42 +1,40 @@
+import { CalendarCheck } from "lucide-react"
+
 import { Checkbox } from "../ui/checkbox"
 
 interface CommonProps {
   name: string
-}
-
-interface PassiveProps extends CommonProps {
-  kind: "passive"
-}
-
-interface ActiveProps extends CommonProps {
-  kind: "active"
   id: string
   isSelected: boolean
   handleSelect: (id: string) => void
 }
 
+interface PassiveProps extends CommonProps {
+  kind: "add"
+}
+
+interface ActiveProps extends CommonProps {
+  kind: "edit"
+  numOfTimestamps: number
+}
+
 type Props = PassiveProps | ActiveProps
 
 const HabitListItem = (props: Props) => {
-  if (props.kind === "passive") {
-    const { name } = props
-    return (
-      <div className="bg/95 border-muted-foreground flex h-16 w-full items-center ">
-        <span className="mr-3 text-xl">{name}</span>
-      </div>
-    )
-  }
-
-  const { name, id, isSelected, handleSelect } = props
-
   return (
-    <div className="bg/95 border-muted-foreground flex h-16 w-full items-center ">
+    <div className="bg/95 border-muted-foreground flex h-16 w-full items-center">
       <Checkbox
-        className="mr-4"
-        checked={isSelected}
-        onCheckedChange={() => handleSelect(id)}
+        className="mr-4 h-6 w-6"
+        checked={props.isSelected}
+        onCheckedChange={() => props.handleSelect(props.id)}
       />
-      <span className="mr-3 text-xl">{name}</span>
+      <span className="text-xl">{props.name}</span>
+      {props.kind === "edit" && (
+        <div className="ml-auto flex items-center">
+          <CalendarCheck className="mr-2 inline-block" size={16} />
+          <span className="text-sm">{props.numOfTimestamps}</span>
+        </div>
+      )}
     </div>
   )
 }

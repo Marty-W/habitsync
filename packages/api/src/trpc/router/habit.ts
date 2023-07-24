@@ -136,10 +136,24 @@ export const habitRouter = createTRPCRouter({
         labels: true,
         name: true,
         projectId: true,
+        timestamps: true,
       },
     })
 
-    return habits
+    if (!habits.length) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: `No habits found. Please sync with Todoist first.`,
+      })
+    }
+
+    return habits.map((habit) => ({
+      id: habit.id,
+      labels: habit.labels,
+      name: habit.name,
+      projectId: habit.projectId,
+      numOfTimestamps: habit.timestamps.length,
+    }))
   }),
   getDetail: protectedProcedure
     .input(z.object({ id: z.string() }))
@@ -228,5 +242,41 @@ export const habitRouter = createTRPCRouter({
             recurrence: todo.due?.string,
           }
         })
+    }),
+  deleteMany: protectedProcedure
+    .input(z.object({ ids: z.array(z.string()) }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id
+      const { ids } = input
+
+      const habits = await ctx.prisma.habit.findMany({
+        where: {
+          id: {
+            in: ids,
+          },
+          userId,
+        },
+      })
+
+      if (habits.length === 0) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: `No habits with the specified ids found`,
+        })
+      }
+
+      await ctx.prisma.habit.deleteMany({
+        where: {
+          id: {
+            in: ids,
+          },
+          userId,
+        },
+      })
+
+      return {
+        status: "ok",
+        numberOfHabitsDeleted: habits.length,
+      }
     }),
 })

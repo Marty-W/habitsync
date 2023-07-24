@@ -4,7 +4,7 @@ interface Props {
   children: React.ReactNode
 }
 
-const SyncRecap = ({ icon, children, text }: Props) => {
+const Recap = ({ icon, children, text }: Props) => {
   return (
     <div>
       <div className="my-5 flex w-full flex-col items-center">
@@ -16,4 +16,4 @@ const SyncRecap = ({ icon, children, text }: Props) => {
   )
 }
 
-export default SyncRecap
+export default Recap

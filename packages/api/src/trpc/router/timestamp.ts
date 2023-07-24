@@ -176,4 +176,22 @@ export const timestampRouter = createTRPCRouter({
         groupedByYear,
       }
     }),
+  deleteMany: protectedProcedure
+    .input(z.object({ habitIds: z.array(z.string()) }))
+    .mutation(async ({ ctx, input }) => {
+      const { habitIds } = input
+
+      const timestamps = await ctx.prisma.timestamp.deleteMany({
+        where: {
+          habitId: {
+            in: habitIds,
+          },
+        },
+      })
+
+      return {
+        deletedCount: timestamps.count,
+        status: "ok",
+      }
+    }),
 })

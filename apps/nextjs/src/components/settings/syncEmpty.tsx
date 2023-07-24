@@ -2,8 +2,8 @@ import Link from "next/link"
 import { CircleSlash } from "lucide-react"
 
 import { Button } from "../ui/button"
+import Recap from "./recap"
 import { type SyncSourceType } from "./syncList"
-import SyncRecap from "./syncRecap"
 
 interface Props {
   sourceType: SyncSourceType
@@ -12,7 +12,7 @@ interface Props {
 const SyncEmpty = ({ sourceType }: Props) => {
   const otherSyncType = sourceType === "project" ? "label" : "project"
   return (
-    <SyncRecap
+    <Recap
       icon={<CircleSlash size={50} className="text-primary" />}
       text="There are no new tasks to sync."
     >
@@ -24,7 +24,7 @@ const SyncEmpty = ({ sourceType }: Props) => {
       <Button>
         <Link href="/habits">Go to dashboard</Link>
       </Button>
-    </SyncRecap>
+    </Recap>
   )
 }
 

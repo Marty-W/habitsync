@@ -5,14 +5,26 @@ import { signOut } from "next-auth/react"
 import DeleteAccountItem from "~/components/settings/deleteAccountItem"
 import SettingsItem from "~/components/settings/settingsItem"
 import SettingsSection from "~/components/settings/settingsSection"
+import GoBackButton from "~/components/ui/goBackButton"
+import InfoDialog from "~/components/ui/infoDialog"
+import ThemeSelect from "~/components/ui/themeSelect"
 
 const Settings: NextPage = () => {
   return (
     <div className="cotainer flex h-screen min-h-screen flex-col px-4">
-      <div className="my-5 flex h-1/5 flex-col justify-end">
-        <h1 className="text-accent text-4xl">Settings</h1>
+      <div className="my-5 grid h-1/5 grid-rows-2">
+        <GoBackButton href="/habits" className="self-start" />
+        <h1 className="text-accent self-end text-4xl">Settings</h1>
       </div>
-      <SettingsSection title="Sync">
+      <SettingsSection
+        title="Sync"
+        dialog={
+          <InfoDialog
+            header="Sync from Projects or Labels"
+            text="Effortlessly import tasks from Todoist projects or labels. Select a project or label, and we'll fetch your tasks. Handpick the ones you want as habits, and we'll save them to your dashboard for easy tracking with insightful graphs."
+          />
+        }
+      >
         <SettingsItem
           title="From Projects"
           as={Link}
@@ -24,17 +36,15 @@ const Settings: NextPage = () => {
           href="/settings/sync-new-habits/labels"
         />
       </SettingsSection>
-      <SettingsSection title="Habits">
+      <SettingsSection title="App">
         <SettingsItem
-          title="Edit current"
+          title="Delete timestamps or habits"
           as={Link}
-          href="/settings/edit-current"
+          href="/settings/edit-habits"
         />
-        <SettingsItem
-          title="Delete timestamps"
-          as={Link}
-          href="/settings/delete-timestamps"
-        />
+        <SettingsItem title="Prefered theme" as="button">
+          <ThemeSelect />
+        </SettingsItem>
       </SettingsSection>
       <SettingsSection title="Account">
         <SettingsItem
@@ -43,14 +53,6 @@ const Settings: NextPage = () => {
           onClick={() => signOut({ callbackUrl: "/" })}
         />
         <DeleteAccountItem />
-      </SettingsSection>
-      <SettingsSection title="App">
-        <SettingsItem
-          title="Hide detail sections"
-          as={Link}
-          href="/settings/edit-detail-section"
-        />
-        <SettingsItem title="Prefered theme" as="button" />
       </SettingsSection>
     </div>
   )
