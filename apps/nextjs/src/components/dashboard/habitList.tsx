@@ -13,7 +13,9 @@ const HabitList = () => {
       <FetchError
         isRefetching={allHabits.isRefetching}
         refetch={allHabits.refetch}
-      />
+      >
+        <span>{allHabits.error.message}</span>
+      </FetchError>
     )
 
   return (
