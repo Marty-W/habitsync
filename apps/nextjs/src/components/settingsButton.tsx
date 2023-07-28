@@ -6,7 +6,7 @@ import { cn } from "~/utils/tailwind"
 import { Button } from "./ui/button"
 
 interface Props {
-  className: ClassValue
+  className?: ClassValue
 }
 
 const SettingsButton = ({ className }: Props) => (

@@ -1,5 +1,4 @@
-import { useState } from "react"
-import { Sub } from "@radix-ui/react-dropdown-menu"
+import { useEffect, useState } from "react"
 
 import { api } from "~/utils/trpc"
 import EditSuccess from "~/components/settings/editSuccess"

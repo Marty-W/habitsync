@@ -26,8 +26,8 @@ const HabitListItems = ({
       setMutationType("delete-habits")
     },
     onSuccess: ({ numberOfHabitsDeleted }) => {
-      setPhase("synced")
       setNumberOfEdits(numberOfHabitsDeleted)
+      setPhase("synced")
     },
   })
   const deleteTimestamps = api.timestamp.deleteMany.useMutation({

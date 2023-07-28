@@ -13,7 +13,7 @@ const Settings: NextPage = () => {
   return (
     <div className="cotainer flex h-screen min-h-screen flex-col px-4">
       <div className="my-5 grid h-1/5 grid-rows-2">
-        <GoBackButton href="/habits" className="self-start" />
+        <GoBackButton className="self-start" />
         <h1 className="text-accent self-end text-4xl">Settings</h1>
       </div>
       <SettingsSection

@@ -24,6 +24,7 @@ const getEditTypeText = (type: EditHabitType, numOfMutations: number) => {
 
 const EditSuccess = ({ numOfMutations, handleEditMore, type }: Props) => {
   const text = getEditTypeText(type, numOfMutations)
+
   return (
     <Recap icon={<BadgeCheck size={50} className="text-success" />} text={text}>
       <Button size="sm" onClick={handleEditMore} variant="link">

@@ -1,19 +1,19 @@
-import router from "next/router"
+import { useRouter } from "next/router"
 import { ChevronLeft } from "lucide-react"
 
 import { Button } from "./button"
 
 interface Props {
-  href: string
   className?: string
   iconSize?: number
 }
-const GoBackButton = ({ href, className, iconSize = 24 }: Props) => {
+const GoBackButton = ({ className, iconSize = 24 }: Props) => {
+  const router = useRouter()
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={() => router.push(href)}
+      onClick={() => router.back()}
       className={className}
     >
       <ChevronLeft size={iconSize} />
