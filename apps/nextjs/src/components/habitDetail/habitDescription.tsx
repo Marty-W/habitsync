@@ -1,24 +1,21 @@
-import { RouterOutputs } from "~/utils/trpc"
+import { type RouterOutputs } from "~/utils/trpc"
 import Tag from "../ui/tag"
 
 type Props = {
   desc: RouterOutputs["habit"]["getDetail"]
 }
 
-//TODO still needs a redesign, after current streak implemetation, maybe add it?
-
 const HabitDescription = ({ desc }: Props) => (
-  <>
-    <div className="mb-2 flex flex-col">
-      <p className="flex-1 text-lg text-zinc-500">{desc?.description}</p>
+  <div className="flex flex-col items-center">
+    <div className="mb-2">
+      <p className="text-card-foreground flex-1 text-lg">{desc.description}</p>
     </div>
     <div className="flex justify-center">
-      {desc?.labels.map((label) => {
-        if (label === "habit") return null
-        return <Tag key={label} tag={label} className="" />
+      {desc.labels.map((label) => {
+        return <Tag key={label} tag={label} />
       })}
     </div>
-  </>
+  </div>
 )
 
 export default HabitDescription

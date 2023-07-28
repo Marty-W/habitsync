@@ -14,9 +14,14 @@ const FetchError = ({ className, refetch, isRefetching, children }: Props) => {
   }
 
   return (
-    <div className={cn("text-muted-foreground flex justify-center", className)}>
-      <button onClick={handleRedoClick}>
-        <Spinner isActive={isRefetching} className="mr-3" />
+    <div
+      className={cn(
+        "text-muted-foreground flex flex-col items-center justify-center",
+        className,
+      )}
+    >
+      <button onClick={handleRedoClick} className="mb-3">
+        <Spinner isActive={isRefetching} className="h-8 w-8" />
       </button>
       {children}
     </div>

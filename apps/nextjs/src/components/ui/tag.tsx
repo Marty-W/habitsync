@@ -1,5 +1,4 @@
-import { displayValue } from "@tanstack/react-query-devtools/build/lib/utils"
-import clsx from "clsx"
+import { cn } from "~/utils/tailwind"
 
 interface Props {
   className?: string
@@ -8,8 +7,8 @@ interface Props {
 
 const Tag = ({ tag, className }: Props) => {
   return (
-    <div className={clsx(className, "p-2")}>
-      <span className="rounded-md bg-red-400 px-2 py-1 text-slate-100">
+    <div className={cn(className, "p-2")}>
+      <span className="text-muted-foreground select-none rounded-md border-2 px-2 py-1 text-sm">
         {tag}
       </span>
     </div>

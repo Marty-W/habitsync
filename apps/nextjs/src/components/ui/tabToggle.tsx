@@ -12,7 +12,7 @@ const TabToggle = ({ options, onToggleChange, activeOption }: Props) => {
           key={`${option}_${index}`}
           onClick={() => onToggleChange(option)}
           className={`${
-            activeOption === option ? "font-bold text-red-400" : ""
+            activeOption === option ? "text-accent-focus font-bold" : ""
           }`}
         >
           <span>{option}</span>

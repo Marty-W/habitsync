@@ -7,6 +7,7 @@ import { api } from "~/utils/trpc"
 import { BackButton } from "~/components/backButton"
 import CardWithLoader from "~/components/habitDetail/cardWithLoader"
 import SettingsButton from "~/components/settingsButton"
+import GoBackButton from "~/components/ui/goBackButton"
 
 const HabitDetail = () => {
   const id = useRouter().query.id as string
@@ -42,14 +43,10 @@ const HabitDetail = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-200 px-7 py-8">
-      <div className="mb-8 grid grid-cols-3 items-center text-center">
-        <BackButton />
-        <div>
-          <h1 className="ml-auto justify-self-center text-2xl text-zinc-800">
-            {name}
-          </h1>
-        </div>
+    <div className="flex min-h-screen flex-col px-7 py-8">
+      <div className="mb-8 grid grid-cols-[0.2fr_1fr_0.2fr] place-items-center">
+        <GoBackButton href="/habits" />
+        <h1 className="text-foreground text-2xl">{name}</h1>
         <div className="flex items-center justify-end">
           <SettingsButton />
         </div>
@@ -61,7 +58,6 @@ const HabitDetail = () => {
         lineCount={4}
         className="mb-8"
       />
-      {/* TODO delete after mock stage */}
       <CardWithLoader
         cardType="completionGraph"
         lineCount={8}

@@ -2,7 +2,7 @@ import { useState } from "react"
 import { DAYS, normalizeDate } from "@habitsync/lib"
 import { isToday } from "date-fns"
 
-import { RouterOutputs } from "~/utils/trpc"
+import { type RouterOutputs } from "~/utils/trpc"
 import ResizableSlidePanel from "~/components/ui/resizablePanel"
 import useCalendarData from "~/hooks/useCalendar"
 import DayCell from "./dayCell"

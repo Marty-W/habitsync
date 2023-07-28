@@ -18,7 +18,7 @@ const MonthSwitcher = ({ month, year, handleMonthChange }: Props) => {
           size="1em"
         />
       </motion.button>
-      <span className="px-4 text-lg text-zinc-800">
+      <span className="text-muted-foreground px-4 text-lg">
         <span>
           {MONTHS[month]} {year}
         </span>

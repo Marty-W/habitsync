@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import colors from "tailwindcss/colors"
 
 import "chartjs-adapter-date-fns"
 
@@ -73,7 +72,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
       />
       <Bar
         options={{
-          color: colors.zinc[400],
+          color: "var(--primary)",
           font: {
             family: "Inter",
           },
@@ -92,9 +91,8 @@ const CompletionsGraph = ({ timestamps }: Props) => {
                 display: false,
               },
               grid: {
+                display: false,
                 drawTicks: false,
-                color: colors.zinc[200],
-                offset: false,
               },
             },
           },
@@ -105,7 +103,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
           },
           elements: {
             bar: {
-              backgroundColor: colors.red[400],
+              backgroundColor: "hsla(222.2, 47.4%, 11.2%)",
               borderRadius: {
                 topLeft: 4,
                 topRight: 4,

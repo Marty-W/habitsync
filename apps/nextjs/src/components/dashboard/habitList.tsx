@@ -4,7 +4,9 @@ import HabitLoadingSkeleton from "../ui/habitLoadingSkeleton"
 import DashboardHabit from "./dashboardHabit"
 
 const HabitList = () => {
-  const allHabits = api.habit.getAll.useQuery()
+  const allHabits = api.habit.getAll.useQuery(undefined, {
+    retry: 0,
+  })
 
   if (allHabits.isLoading) return <HabitLoadingSkeleton count={3} />
 

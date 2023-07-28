@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react"
+import { type PropsWithChildren } from "react"
 import clsx from "clsx"
 
 const Card = ({
@@ -7,7 +7,7 @@ const Card = ({
 }: PropsWithChildren<{ className?: string }>) => (
   <div
     className={clsx(
-      "flex flex-col rounded-2xl bg-slate-100 p-5 shadow-sm",
+      "bg-card flex flex-col rounded-2xl p-5 shadow-sm",
       `${className}`,
     )}
   >
