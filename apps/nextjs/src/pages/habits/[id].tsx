@@ -6,7 +6,9 @@ import { SiTodoist } from "react-icons/si"
 import { api } from "~/utils/trpc"
 import { BackButton } from "~/components/backButton"
 import CardWithLoader from "~/components/habitDetail/cardWithLoader"
+import DetailHeader from "~/components/habitDetail/detailHeader"
 import SettingsButton from "~/components/settingsButton"
+import { Button } from "~/components/ui/button"
 import GoBackButton from "~/components/ui/goBackButton"
 
 const HabitDetail = () => {
@@ -44,20 +46,7 @@ const HabitDetail = () => {
 
   return (
     <div className="flex min-h-screen flex-col px-7 py-8">
-      <div className="mb-8 grid grid-cols-[0.2fr_1fr_0.2fr] place-items-center">
-        <GoBackButton href="/habits" />
-        <h1 className="text-foreground text-2xl">{name}</h1>
-        <div className="flex items-center justify-end">
-          <SettingsButton />
-        </div>
-      </div>
-      <CardWithLoader
-        cardType="habitDescription"
-        data={description.data}
-        isLoadingSuccess={description.isSuccess}
-        lineCount={4}
-        className="mb-8"
-      />
+      <DetailHeader title={name} />
       <CardWithLoader
         cardType="completionGraph"
         lineCount={8}
@@ -95,14 +84,23 @@ const HabitDetail = () => {
         isLoadingSuccess={streaks.isSuccess}
         className="mb-8"
       />
-      <Link
-        href={`${description.data?.url}`}
-        target="_blank"
-        className="mt-4 flex items-center justify-center hover:text-zinc-400"
-      >
-        <SiTodoist size="1rem" className="mr-1" />
-        <span>Open in Todoist</span>
-      </Link>
+      <CardWithLoader
+        cardType="habitDescription"
+        data={description.data}
+        isLoadingSuccess={description.isSuccess}
+        lineCount={4}
+        className="mb-8"
+      />
+      <Button variant="link">
+        <Link
+          href={`${description.data?.url}`}
+          target="_blank"
+          className="mt-4 flex items-center justify-center"
+        >
+          <SiTodoist size="1rem" className="mr-1" />
+          <span>Open in Todoist</span>
+        </Link>
+      </Button>
     </div>
   )
 }

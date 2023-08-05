@@ -18,11 +18,10 @@ const MonthSwitcher = ({ month, year, handleMonthChange }: Props) => {
           size="1em"
         />
       </motion.button>
-      <span className="text-muted-foreground px-4 text-lg">
-        <span>
-          {MONTHS[month]} {year}
-        </span>
-      </span>
+      <div className="px-4 text-xl">
+        <span className="text-foreground mr-1 font-bold">{MONTHS[month]}</span>
+        <span className="text-muted-foreground/30">{year}</span>
+      </div>
       <motion.button whileTap={{ scale: 0.85 }}>
         <GoChevronRight
           className="rounded-full"

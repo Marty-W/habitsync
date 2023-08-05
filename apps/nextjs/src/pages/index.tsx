@@ -9,6 +9,7 @@ const Home: NextPage = () => {
 
   //TODO show landing page/dashboard components based on auth state, right now hardcoding to authed
   // TODO check if this imperative usage of router for authed pages is ok
+
   const authed = session.status === "authenticated"
 
   return (

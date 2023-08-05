@@ -14,9 +14,11 @@ import {
   Title,
   Tooltip,
 } from "chart.js"
+import { BarChart2 } from "lucide-react"
 import { Bar } from "react-chartjs-2"
 
 import TabToggle from "../ui/tabToggle"
+import CompletionsGraphSelect from "./completionsGraphSelect"
 
 ChartJS.register(
   Tooltip,
@@ -37,8 +39,8 @@ export type ActivePeriod = "week" | "month" | "year"
 const CompletionsGraph = ({ timestamps }: Props) => {
   const [toggledPeriod, setTogglePeriod] = useState<ActivePeriod>("week")
 
-  const handlePeriodChange = (period: string) => {
-    setTogglePeriod(period as ActivePeriod)
+  const handlePeriodChange = (period: ActivePeriod) => {
+    setTogglePeriod(period)
   }
 
   const { groupedByWeek, groupedByMonth, groupedByYear } = timestamps
@@ -57,24 +59,27 @@ const CompletionsGraph = ({ timestamps }: Props) => {
         label: "Completions",
         data: Object.values(activeOption),
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.1,
       },
     ],
   }
 
   return (
-    <div>
-      <TabToggle
-        options={["week", "month", "year"]}
-        activeOption={toggledPeriod}
-        onToggleChange={handlePeriodChange}
-      />
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-muted-foreground text-lg">Completions overview</h1>
+        <CompletionsGraphSelect
+          activePeriod={toggledPeriod}
+          setPeriod={handlePeriodChange}
+        />
+      </div>
       <Bar
         options={{
           color: "var(--primary)",
           font: {
             family: "Inter",
+          },
+          animation: {
+            duration: 2000,
           },
           scales: {
             x: {
@@ -85,6 +90,11 @@ const CompletionsGraph = ({ timestamps }: Props) => {
                 display: false,
                 drawTicks: false,
               },
+              ticks: {
+                font: {
+                  size: 13,
+                },
+              },
             },
             y: {
               border: {
@@ -93,6 +103,14 @@ const CompletionsGraph = ({ timestamps }: Props) => {
               grid: {
                 display: false,
                 drawTicks: false,
+              },
+              ticks: {
+                callback: (value) => {
+                  return value.toString()
+                },
+                font: {
+                  size: 13,
+                },
               },
             },
           },
@@ -103,16 +121,33 @@ const CompletionsGraph = ({ timestamps }: Props) => {
           },
           elements: {
             bar: {
-              backgroundColor: "hsla(222.2, 47.4%, 11.2%)",
+              backgroundColor: "hsla(253, 42.2%, 26.2%)",
               borderRadius: {
-                topLeft: 4,
-                topRight: 4,
+                topLeft: 20,
+                topRight: 20,
               },
             },
           },
           normalized: true,
           plugins: {
-            tooltip: {},
+            tooltip: {
+              enabled: true,
+              displayColors: false,
+              titleAlign: "center",
+              titleMarginBottom: 10,
+              backgroundColor: "hsla(253, 42.2%, 26.2%)",
+              callbacks: {
+                title: (context) => {
+                  if (toggledPeriod === "week") {
+                    return `Week ${context[0]?.label}`
+                  }
+                  return `${context[0]?.label}`
+                },
+                label: (context) => {
+                  return `Completed ${context.parsed.y} times`
+                },
+              },
+            },
             legend: {
               display: false,
             },
@@ -120,7 +155,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
         }}
         data={data}
       />
-    </div>
+    </>
   )
 }
 

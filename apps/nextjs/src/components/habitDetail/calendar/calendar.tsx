@@ -1,23 +1,25 @@
 import { useState } from "react"
-import { DAYS, normalizeDate } from "@habitsync/lib"
-import { isToday } from "date-fns"
+import { normalizeDate } from "@habitsync/lib"
 
 import { type RouterOutputs } from "~/utils/trpc"
+import Loader from "~/components/ui/activeLoader"
 import ResizableSlidePanel from "~/components/ui/resizablePanel"
 import useCalendarData from "~/hooks/useCalendar"
 import DayCell from "./dayCell"
 import MonthSwitcher from "./monthSwitcher"
+import WeekRow from "./weekRow"
 
 interface Props {
   data: RouterOutputs["timestamp"]["getAllWithStreakDays"]
 }
 
+export type AnimationDirection = "left" | "right" | null
+
 const Calendar = ({ data }: Props) => {
   const { year, month, calendarData, handleAddMonth, handleSubMonth } =
     useCalendarData()
-  const [animationDirection, setAnimationDirection] = useState<
-    "left" | "right" | undefined
-  >()
+  const [animationDirection, setAnimationDirection] =
+    useState<AnimationDirection>(null)
   const { extraStreakDays, timestamps } = data
 
   const handleMonthChange = (type: "addMonth" | "subMonth") => {
@@ -30,6 +32,10 @@ const Calendar = ({ data }: Props) => {
     }
   }
 
+  if (!calendarData) {
+    return <Loader />
+  }
+
   return (
     <div className="flex flex-col">
       <MonthSwitcher
@@ -37,33 +43,51 @@ const Calendar = ({ data }: Props) => {
         year={year}
         handleMonthChange={handleMonthChange}
       />
-      <div className="grid h-10 grid-cols-7 justify-items-center">
-        {DAYS.map((day, key) => (
-          <span key={`${day}-${key}`} className="text-zinc-300">
-            {day}
-          </span>
-        ))}
-      </div>
+      <WeekRow />
       <ResizableSlidePanel duration={0.5} slideDirection={animationDirection}>
-        <div className="grid flex-1 grid-cols-7 place-items-center gap-x-1 gap-y-4">
-          {calendarData?.length &&
-            calendarData.map((dateStr, i) => {
-              const date = new Date(dateStr)
+        <div className="grid flex-1 grid-cols-7 place-items-center gap-y-4">
+          {calendarData.map((dateStr, i) => {
+            const date = new Date(dateStr)
+            const isThisMonth = month === date.getMonth()
+            const isSuccessfull = timestamps.has(normalizeDate(date))
+            const isExtraStreakDay = extraStreakDays?.has(normalizeDate(date))
+            const isToday = normalizeDate(date) === normalizeDate(new Date())
+            const isTodayWithTimestamp = isToday && isSuccessfull
+
+            // Outside this month
+            if (!isThisMonth) {
+              if (isSuccessfull) {
+                return (
+                  <DayCell
+                    date={date}
+                    key={i}
+                    variant="notThisMonthWithTimestamp"
+                  />
+                )
+              }
+              return <DayCell date={date} key={i} variant="notThisMonth" />
+            }
+
+            if (isTodayWithTimestamp) {
               return (
-                <DayCell
-                  date={date.getDate()}
-                  isThisMonth={month === date.getMonth()}
-                  hasTimestamp={timestamps.has(normalizeDate(date))}
-                  isToday={isToday(date)}
-                  key={i}
-                  isExtraStreakDay={
-                    (extraStreakDays &&
-                      extraStreakDays.has(normalizeDate(date))) ||
-                    false
-                  }
-                />
+                <DayCell date={date} key={i} variant="todayWithTimestamp" />
               )
-            })}
+            }
+
+            if (isToday) {
+              return <DayCell date={date} key={i} variant="today" />
+            }
+
+            if (isSuccessfull) {
+              return <DayCell date={date} key={i} variant="withTimestamp" />
+            }
+
+            if (isExtraStreakDay) {
+              return <DayCell date={date} key={i} variant="extraStreakDay" />
+            }
+
+            return <DayCell date={date} key={i} />
+          })}
         </div>
       </ResizableSlidePanel>
     </div>

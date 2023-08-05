@@ -15,14 +15,16 @@ import { createTRPCRouter, protectedProcedure } from "../trpc"
 export const statsRouter = createTRPCRouter({
   getTotalHabitCompletions: protectedProcedure
     .input(z.object({ habitId: z.string() }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ ctx, input }): Promise<number> => {
       const { habitId } = input
 
-      return await ctx.prisma.timestamp.count({
+      const totalCount = await ctx.prisma.timestamp.count({
         where: {
           habitId,
         },
       })
+
+      return totalCount || 0
     }),
   getHabitSuccessRate: protectedProcedure
     .input(

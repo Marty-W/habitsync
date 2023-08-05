@@ -2,6 +2,7 @@ import {
   differenceInCalendarDays,
   eachDayOfInterval,
   endOfMonth,
+  endOfWeek,
   format,
   isBefore,
   isFriday,
@@ -139,13 +140,14 @@ export const getLabelsForCompletionGraph = (
 ) => {
   if (activePeriod === "week") {
     return Object.keys(timestamps.groupedByWeek).map((weekKey) => {
-      const weekStart = new Date(weekKey)
-      const isStartOfMonth = startOfWeek(weekStart).getDate() <= 7
+      const weekStart = startOfWeek(new Date(weekKey), { weekStartsOn: 1 })
+      const weekEnd = endOfWeek(new Date(weekKey), { weekStartsOn: 1 })
+      const isStartOfMonth = weekStart.getDate() <= 7
       if (isStartOfMonth) {
         const monthName = format(weekStart, "MMM")
         return `${monthName} ${weekStart.getFullYear().toString()}`
       }
-      return format(weekStart, "d")
+      return `${format(weekStart, "d.M")} - ${format(weekEnd, "d.M")}`
     })
   }
 

@@ -7,19 +7,17 @@ interface Props {
 const TotalCompletions = ({ completions }: Props) => {
   return (
     <div className="text-center">
-      <div className="mb-3 text-xl font-semibold text-zinc-400">
+      <div className="text-md text-muted-foreground mb-3">
         <span>Completed</span>
       </div>
       <div className="relative">
         <Counter
           from={0}
           to={completions}
-          className="text-3xl font-black text-zinc-900"
-          animationDuration={5}
+          className="text-3xl"
+          animationDuration={2}
+          postValue={completions > 1 ? " times" : " time"}
         />
-        <span className="absolute bottom-0 pl-1">
-          {completions > 1 ? "times" : "time"}
-        </span>
       </div>
     </div>
   )

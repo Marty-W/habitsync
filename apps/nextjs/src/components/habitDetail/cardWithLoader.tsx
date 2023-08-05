@@ -4,15 +4,18 @@ import {
   type HabitDescriptionData,
   type StreakData,
 } from "@habitsync/lib"
+import { BarChart2, CalendarX2 } from "lucide-react"
 
 import Calendar from "~/components/habitDetail/calendar/calendar"
 import TotalCompletions from "~/components/habitDetail/completions"
 import HabitDescription from "~/components/habitDetail/habitDescription"
 import Streaks from "~/components/habitDetail/streaks"
 import Card from "~/components/ui/card"
+import CardWithHeader from "../ui/cardWithHeader"
 import { Skeleton } from "../ui/loadingSkeleton"
 import CompletionsGraph from "./completionsGraph"
 import SuccessRate from "./successRate"
+import SuccessRateWithCompletions from "./successRateWithCompletions"
 
 //FIX right now these are anys, use RouterOutputs straight from utils in this pckg
 
@@ -51,6 +54,14 @@ interface SuccessRateProps extends BaseProps {
 interface CompletionGraphProps extends BaseProps {
   cardType: "completionGraph"
   data: RouterOutputs["timestamp"]["getSummaryCounts"] | undefined
+}
+
+interface CompletionsWithSuccessRateProps extends BaseProps {
+  cardType: "completionsWithSuccessRate"
+  data: {
+    totalCompletions: number
+    successRate: string
+  }
 }
 
 type Props =
@@ -94,6 +105,7 @@ const CardWithLoader = ({
       break
     case "completionGraph":
       content = <CompletionsGraph timestamps={data} />
+      break
   }
 
   return <Card className={className}>{content}</Card>

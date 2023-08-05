@@ -1,16 +1,12 @@
 import { type PropsWithChildren } from "react"
-import clsx from "clsx"
+
+import { cn } from "~/utils/tailwind"
 
 const Card = ({
   children,
   className,
 }: PropsWithChildren<{ className?: string }>) => (
-  <div
-    className={clsx(
-      "bg-card flex flex-col rounded-2xl p-5 shadow-sm",
-      `${className}`,
-    )}
-  >
+  <div className={cn("bg-card rounded-2xl p-6 shadow-lg", className)}>
     {children}
   </div>
 )

@@ -8,27 +8,23 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip"
 
-export type DayCellVariant =
+export type DayCellWithTooltipVariant =
   | "notThisMonth"
-  | "notThisMonthWithTimestamp"
   | "withTimestamp"
   | "extraStreakDay"
-  | "today"
-  | "todayWithTimestamp"
   | "default"
 
 const dayCellVariants = cva(
-  "flex h-10 w-10 items-center justify-center rounded-full text-md select-none",
+  "flex h-10 w-10 items-center justify-center rounded-full p-4 text-md select-none",
   {
     variants: {
       variant: {
         default: "text-muted-foreground",
+        today: "ring ring-red-400 ring-offset-4",
         notThisMonth: "text-muted-foreground/10",
         notThisMonthWithTimestamp: "text-accent/80",
         withTimestamp: "bg-accent text-foreground",
         extraStreakDay: "bg-accent/30",
-        today: "ring-2",
-        todayWithTimestamp: "ring-2 bg-accent text-foreground",
       },
     },
     defaultVariants: {
@@ -45,25 +41,13 @@ interface Props {
 const DayCell = ({ date, variant = "default" }: Props) => {
   const getTooltipContent = (variant: DayCellVariant) => {
     switch (variant) {
-      case "withTimestamp":
-      case "notThisMonthWithTimestamp":
-      case "todayWithTimestamp":
+      case "withTimestamp" || "notThisMonthWithTimestamp":
         return "Successful day!"
       case "extraStreakDay":
         return "You have a streak going!"
+      default:
+        return "Failure day"
     }
-  }
-
-  if (
-    variant === "default" ||
-    variant === "notThisMonth" ||
-    variant === "today"
-  ) {
-    return (
-      <div className={cn(dayCellVariants({ variant }))}>
-        <span>{date.getDate()}</span>
-      </div>
-    )
   }
 
   return (
