@@ -170,6 +170,9 @@ export const habitRouter = createTRPCRouter({
           name: true,
           url: true,
           createdAt: true,
+          recurrenceType: true,
+          recurrenceDays: true,
+          recurrenceStep: true,
         },
       })
 
