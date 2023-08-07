@@ -1,9 +1,8 @@
 import { TodoistApi } from "@doist/todoist-api-typescript"
-import { getServerSession, type Session } from "@habitsync/auth"
+import { auth, type Session } from "@habitsync/auth"
 import { prisma } from "@habitsync/db"
 import { env } from "@habitsync/lib/"
 import { initTRPC, TRPCError } from "@trpc/server"
-import type { CreateNextContextOptions } from "@trpc/server/adapters/next"
 import superjson from "superjson"
 import { ZodError } from "zod"
 
@@ -25,11 +24,8 @@ export const createContextInner = (opts: CreateContextOptions) => {
   }
 }
 
-export const createContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts
-
-  // Get the session from the server using the unstable_getServerSession wrapper function
-  const session = await getServerSession({ req, res })
+export const createContext = async () => {
+  const session = await auth()
 
   //FIX Get token??
   // Doist API, right now hardcoded to my token

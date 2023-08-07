@@ -11,6 +11,13 @@
     "lint:fix": "pnpm lint --fix",
     "type-check": "tsc --noEmit"
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@acme/eslint-config/base",
+      "@acme/eslint-config/react"
+    ]
+  },
   "dependencies": {
     "@expo/metro-config": "^0.7.1",
     "@shopify/flash-list": "1.4.3",

@@ -13,6 +13,14 @@
     "type-check": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env --"
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@acme/eslint-config/base",
+      "@acme/eslint-config/nextjs",
+      "@acme/eslint-config/react"
+    ]
+  },
   "dependencies": {
     "@doist/todoist-api-typescript": "^2.1.2",
     "@habitsync/api": "^0.1.0",

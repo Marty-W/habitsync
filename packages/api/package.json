@@ -11,6 +11,12 @@
     "lint:fix": "pnpm lint --fix",
     "type-check": "tsc --noEmit"
   },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@habitsync/eslint-config/base"
+    ]
+  },
   "dependencies": {
     "@doist/todoist-api-typescript": "^2.1.2",
     "@habitsync/auth": "^0.1.0",
