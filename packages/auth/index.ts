@@ -1,22 +1,21 @@
-import Google from "@auth/core/providers/google"
-import type { DefaultSession } from "@auth/core/types"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "@habitSync/db"
-import NextAuth from "next-auth"
+import Google from "@auth/core/providers/google";
+import type { DefaultSession } from "@auth/core/types";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@habitSync/db";
+import { env } from "@habitsync/lib";
+import NextAuth from "next-auth";
 
-import { env } from "@habitsync/lib"
-
-export type { Session } from "next-auth"
+export type { Session } from "next-auth";
 
 // Update this whenever adding new providers so that the client can
-export const providers = ["google"] as const
-export type OAuthProviders = (typeof providers)[number]
+export const providers = ["google"] as const;
+export type OAuthProviders = (typeof providers)[number];
 
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string
-    } & DefaultSession["user"]
+      id: string;
+    } & DefaultSession["user"];
   }
 }
 
@@ -55,4 +54,4 @@ export const {
     //   return !!auth?.user
     // }
   },
-})
+});
