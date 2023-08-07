@@ -1,9 +1,10 @@
-import Google from "@auth/core/providers/discord"
+import Google from "@auth/core/providers/google"
 import type { DefaultSession } from "@auth/core/types"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@habitSync/db"
-import { env } from "@habitsync/lib"
 import NextAuth from "next-auth"
+
+import { env } from "@habitsync/lib"
 
 export type { Session } from "next-auth"
 
