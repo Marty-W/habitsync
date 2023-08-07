@@ -1,10 +1,11 @@
 import { TodoistApi } from "@doist/todoist-api-typescript"
-import { auth, type Session } from "@habitsync/auth"
-import { prisma } from "@habitsync/db"
-import { env } from "@habitsync/lib/"
 import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
 import { ZodError } from "zod"
+
+import { auth, type Session } from "@habitsync/auth"
+import { prisma } from "@habitsync/db"
+import { env } from "@habitsync/lib/"
 
 // CONTEXT
 const createDoistApi = (token: string) => {
@@ -24,8 +25,14 @@ export const createContextInner = (opts: CreateContextOptions) => {
   }
 }
 
-export const createContext = async () => {
-  const session = await auth()
+export const createContext = async (opts: {
+  req?: Request
+  auth?: Session
+}) => {
+  const session = opts.auth ?? (await auth())
+  const source = opts.req?.headers.get("x-trpc-source") ?? "unknown"
+
+  console.log(">>> tRPC Request from", source, "by", session?.user)
 
   //FIX Get token??
   // Doist API, right now hardcoded to my token
