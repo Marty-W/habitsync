@@ -1,22 +1,24 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental"
-import { httpBatchLink, loggerLink } from "@trpc/client"
-import superjson from "superjson"
-
-import { api } from "~/utils/trpc"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
+import { api } from "~/utils/trpc";
+import { useState } from "react";
+import superjson from "superjson";
 
 const getBaseUrl = () => {
-  if (typeof window !== "undefined") return "" // browser should use relative url
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}` // SSR should use vercel url
+  if (typeof window !== "undefined") return ""; // browser should use relative url
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
 
-  return `http://localhost:3000` // dev SSR should use localhost
-}
+  return `http://localhost:3000`; // dev SSR should use localhost
+};
 
-export function TRPCReactProvider(props: { children: React.ReactNode }) {
+export function TRPCReactProvider(props: {
+  children: React.ReactNode;
+  headers?: Headers;
+}) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -25,8 +27,8 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             staleTime: 5 * 1000,
           },
         },
-      }),
-  )
+      })
+  );
 
   const [trpcClient] = useState(() =>
     api.createClient({
@@ -37,21 +39,26 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        httpBatchLink({
+        unstable_httpBatchStreamLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers() {
+            const headers = new Map(props.headers);
+            headers.set("x-trpc-source", "nextjs-react");
+            return Object.fromEntries(headers);
+          },
         }),
       ],
-    }),
-  )
+    })
+  );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryStreamedHydration>
-        <api.Provider client={trpcClient} queryClient={queryClient}>
+    <api.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryStreamedHydration transformer={superjson}>
           {props.children}
-        </api.Provider>
-      </ReactQueryStreamedHydration>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  )
+        </ReactQueryStreamedHydration>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </api.Provider>
+  );
 }
