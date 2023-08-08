@@ -2,15 +2,22 @@
 
 import { api } from "~/utils/trpc";
 import FetchError from "../ui/fetchError";
-import HabitLoadingSkeleton from "../ui/habitLoadingSkeleton";
+import Spinner from "../ui/spinner";
 import DashboardHabit from "./dashboardHabit";
 
 const HabitList = () => {
-  const allHabits = api.habit.getAll.useQuery(undefined, {
-    retry: 0,
-  });
+  const allHabits = api.habit.getAll.useQuery(undefined, { retry: 0 });
 
-  if (allHabits.isLoading) return <HabitLoadingSkeleton count={3} />;
+  //TODO  add loading state
+  //TODO check error state
+
+  if (allHabits.isLoading) {
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
+  }
 
   if (allHabits.isError)
     return (

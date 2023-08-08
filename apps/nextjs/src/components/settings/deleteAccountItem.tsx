@@ -1,10 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import type { ReactNode } from "react";
-import { useRouter } from "next/navigation";
-
-import { api } from "~/utils/trpc";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +11,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alertDialog";
-import Spinner from "../ui/spinner";
+import { api } from "~/utils/trpc";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import type { ReactNode } from "react";
+import ClickSpinner from "../ui/clickSpinner";
 import SettingsItem from "./settingsItem";
 
 const DeleteAccountItem = () => {
@@ -24,7 +23,7 @@ const DeleteAccountItem = () => {
   const [mutationOutput, setMutationOutput] = useState<ReactNode | null>(null);
   const deleteAcc = api.acc.deleteAcc.useMutation({
     onMutate: () => {
-      setMutationOutput(<Spinner isActive />);
+      setMutationOutput(<ClickSpinner isActive />);
     },
     onSuccess: () => {
       setMutationOutput(<span>Acount deleted. Redirecting...</span>);
