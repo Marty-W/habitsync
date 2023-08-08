@@ -1,25 +1,21 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
-
+import Link from "next/link";
 import { Button } from "./button";
 
 interface Props {
   className?: string;
   iconSize?: number;
+  href: string;
 }
-const GoBackButton = ({ className, iconSize = 24 }: Props) => {
-  const router = useRouter();
+const GoBackButton = ({ className, iconSize = 24, href }: Props) => {
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={() => router.back()}
-      className={className}
-    >
-      <ChevronLeft size={iconSize} />
-    </Button>
+    <Link href={href}>
+      <Button variant="ghost" size="icon" className={className}>
+        <ChevronLeft size={iconSize} />
+      </Button>
+    </Link>
   );
 };
 

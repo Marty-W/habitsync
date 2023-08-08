@@ -1,9 +1,7 @@
-import { Suspense } from "react";
-import Link from "next/link";
-
 import { auth } from "@habitsync/auth";
-
 import { SignIn, SignOut } from "~/components/auth";
+import Link from "next/link";
+import { Suspense } from "react";
 
 export default function HomePage() {
   return (
@@ -39,7 +37,7 @@ export async function AuthShowcase() {
 
   return (
     <>
-      <Link className="btn" href="/habits">
+      <Link className="btn" href="/habits?firstLoad=true">
         Go to dashboard
       </Link>
 
