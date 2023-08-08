@@ -1,12 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
-import { api } from "~/utils/trpc";
-import { useState } from "react";
 import superjson from "superjson";
+
+import { api } from "~/utils/trpc";
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
@@ -27,7 +28,7 @@ export function TRPCReactProvider(props: {
             staleTime: 5 * 1000,
           },
         },
-      })
+      }),
   );
 
   const [trpcClient] = useState(() =>
@@ -48,7 +49,7 @@ export function TRPCReactProvider(props: {
           },
         }),
       ],
-    })
+    }),
   );
 
   return (

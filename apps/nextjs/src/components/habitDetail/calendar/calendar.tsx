@@ -1,39 +1,40 @@
-import { useState } from "react"
-import { normalizeDate } from "@habitsync/lib"
+import { useState } from "react";
 
-import { type RouterOutputs } from "~/utils/trpc"
-import Loader from "~/components/ui/activeLoader"
-import ResizableSlidePanel from "~/components/ui/resizablePanel"
-import useCalendarData from "~/hooks/useCalendar"
-import DayCell from "./dayCell"
-import MonthSwitcher from "./monthSwitcher"
-import WeekRow from "./weekRow"
+import { normalizeDate } from "@habitsync/lib";
+
+import { type RouterOutputs } from "~/utils/trpc";
+import Loader from "~/components/ui/activeLoader";
+import ResizableSlidePanel from "~/components/ui/resizablePanel";
+import useCalendarData from "~/hooks/useCalendar";
+import DayCell from "./dayCell";
+import MonthSwitcher from "./monthSwitcher";
+import WeekRow from "./weekRow";
 
 interface Props {
-  data: RouterOutputs["timestamp"]["getAllWithStreakDays"]
+  data: RouterOutputs["timestamp"]["getAllWithStreakDays"];
 }
 
-export type AnimationDirection = "left" | "right" | null
+export type AnimationDirection = "left" | "right" | null;
 
 const Calendar = ({ data }: Props) => {
   const { year, month, calendarData, handleAddMonth, handleSubMonth } =
-    useCalendarData()
+    useCalendarData();
   const [animationDirection, setAnimationDirection] =
-    useState<AnimationDirection>(null)
-  const { extraStreakDays, timestamps } = data
+    useState<AnimationDirection>(null);
+  const { extraStreakDays, timestamps } = data;
 
   const handleMonthChange = (type: "addMonth" | "subMonth") => {
     if (type === "addMonth") {
-      setAnimationDirection("right")
-      handleAddMonth()
+      setAnimationDirection("right");
+      handleAddMonth();
     } else {
-      setAnimationDirection("left")
-      handleSubMonth()
+      setAnimationDirection("left");
+      handleSubMonth();
     }
-  }
+  };
 
   if (!calendarData) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
@@ -47,12 +48,12 @@ const Calendar = ({ data }: Props) => {
       <ResizableSlidePanel duration={0.5} slideDirection={animationDirection}>
         <div className="grid flex-1 grid-cols-7 place-items-center gap-y-4">
           {calendarData.map((dateStr, i) => {
-            const date = new Date(dateStr)
-            const isThisMonth = month === date.getMonth()
-            const isSuccessfull = timestamps.has(normalizeDate(date))
-            const isExtraStreakDay = extraStreakDays?.has(normalizeDate(date))
-            const isToday = normalizeDate(date) === normalizeDate(new Date())
-            const isTodayWithTimestamp = isToday && isSuccessfull
+            const date = new Date(dateStr);
+            const isThisMonth = month === date.getMonth();
+            const isSuccessfull = timestamps.has(normalizeDate(date));
+            const isExtraStreakDay = extraStreakDays?.has(normalizeDate(date));
+            const isToday = normalizeDate(date) === normalizeDate(new Date());
+            const isTodayWithTimestamp = isToday && isSuccessfull;
 
             // Outside this month
             if (!isThisMonth) {
@@ -63,35 +64,35 @@ const Calendar = ({ data }: Props) => {
                     key={i}
                     variant="notThisMonthWithTimestamp"
                   />
-                )
+                );
               }
-              return <DayCell date={date} key={i} variant="notThisMonth" />
+              return <DayCell date={date} key={i} variant="notThisMonth" />;
             }
 
             if (isTodayWithTimestamp) {
               return (
                 <DayCell date={date} key={i} variant="todayWithTimestamp" />
-              )
+              );
             }
 
             if (isToday) {
-              return <DayCell date={date} key={i} variant="today" />
+              return <DayCell date={date} key={i} variant="today" />;
             }
 
             if (isSuccessfull) {
-              return <DayCell date={date} key={i} variant="withTimestamp" />
+              return <DayCell date={date} key={i} variant="withTimestamp" />;
             }
 
             if (isExtraStreakDay) {
-              return <DayCell date={date} key={i} variant="extraStreakDay" />
+              return <DayCell date={date} key={i} variant="extraStreakDay" />;
             }
 
-            return <DayCell date={date} key={i} />
+            return <DayCell date={date} key={i} />;
           })}
         </div>
       </ResizableSlidePanel>
     </div>
-  )
-}
+  );
+};
 
-export default Calendar
+export default Calendar;

@@ -1,8 +1,8 @@
-import SettingsButton from "../settingsButton"
-import GoBackButton from "../ui/goBackButton"
+import SettingsButton from "../settingsButton";
+import GoBackButton from "../ui/goBackButton";
 
 interface Props {
-  title: string
+  title: string;
 }
 
 const DetailHeader = ({ title }: Props) => {
@@ -14,7 +14,7 @@ const DetailHeader = ({ title }: Props) => {
         <SettingsButton />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DetailHeader
+export default DetailHeader;

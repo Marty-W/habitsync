@@ -1,8 +1,8 @@
-import { cn } from "~/utils/tailwind"
+import { cn } from "~/utils/tailwind";
 
 interface Props {
-  className?: string
-  tag: string
+  className?: string;
+  tag: string;
 }
 
 const Tag = ({ tag, className }: Props) => {
@@ -12,7 +12,7 @@ const Tag = ({ tag, className }: Props) => {
         {tag}
       </span>
     </div>
-  )
-}
+  );
+};
 
-export default Tag
+export default Tag;

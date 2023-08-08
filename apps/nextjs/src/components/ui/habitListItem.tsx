@@ -1,24 +1,24 @@
-import { CalendarCheck } from "lucide-react"
+import { CalendarCheck } from "lucide-react";
 
-import { Checkbox } from "../ui/checkbox"
+import { Checkbox } from "../ui/checkbox";
 
 interface CommonProps {
-  name: string
-  id: string
-  isSelected: boolean
-  handleSelect: (id: string) => void
+  name: string;
+  id: string;
+  isSelected: boolean;
+  handleSelect: (id: string) => void;
 }
 
 interface PassiveProps extends CommonProps {
-  kind: "add"
+  kind: "add";
 }
 
 interface ActiveProps extends CommonProps {
-  kind: "edit"
-  numOfTimestamps: number
+  kind: "edit";
+  numOfTimestamps: number;
 }
 
-type Props = PassiveProps | ActiveProps
+type Props = PassiveProps | ActiveProps;
 
 const HabitListItem = (props: Props) => {
   return (
@@ -36,7 +36,7 @@ const HabitListItem = (props: Props) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default HabitListItem
+export default HabitListItem;

@@ -1,4 +1,4 @@
-export const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+export const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export const MONTHS = [
   "January",
@@ -13,11 +13,11 @@ export const MONTHS = [
   "October",
   "November",
   "December",
-]
+];
 
 export const TODOIST_EVENTS = {
   ITEM_COMPLETED: "item:completed",
-}
+};
 
 export const WORD_NUMBER_DICT = {
   one: 1,
@@ -27,9 +27,9 @@ export const WORD_NUMBER_DICT = {
   five: 5,
   six: 6,
   seven: 7,
-}
+};
 
-export const POSSIBLE_DAY_STEPS_WORDNUMBERS = Object.keys(WORD_NUMBER_DICT)
+export const POSSIBLE_DAY_STEPS_WORDNUMBERS = Object.keys(WORD_NUMBER_DICT);
 
 export const WEEKDAYS_LONG = [
   "monday",
@@ -39,7 +39,7 @@ export const WEEKDAYS_LONG = [
   "friday",
   "saturday",
   "sunday",
-]
+];
 
 export const WEEKDAYS_INDEXING = [
   "sunday",
@@ -49,9 +49,9 @@ export const WEEKDAYS_INDEXING = [
   "thursday",
   "friday",
   "saturday",
-]
+];
 
-export const WEEKDAYS_SHORT = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+export const WEEKDAYS_SHORT = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 export const WEEKDAY_SHORT_LONG_DICT = {
   mon: "monday",
@@ -61,4 +61,4 @@ export const WEEKDAY_SHORT_LONG_DICT = {
   fri: "friday",
   sat: "saturday",
   sun: "sunday",
-}
+};

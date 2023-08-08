@@ -1,8 +1,8 @@
-import GoBackButton from "../ui/goBackButton"
+import GoBackButton from "../ui/goBackButton";
 
 interface Props {
-  title: string
-  children: React.ReactNode
+  title: string;
+  children: React.ReactNode;
 }
 const SubSettingsPage = ({ title, children }: Props) => {
   return (
@@ -15,7 +15,7 @@ const SubSettingsPage = ({ title, children }: Props) => {
       </div>
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default SubSettingsPage
+export default SubSettingsPage;

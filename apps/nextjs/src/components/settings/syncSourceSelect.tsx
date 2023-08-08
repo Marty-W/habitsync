@@ -1,19 +1,19 @@
-import { type RouterOutputs } from "@habitsync/api"
+import { type RouterOutputs } from "@habitsync/api";
 
-import { ScrollArea } from "~/components/ui/scrollArea"
+import { ScrollArea } from "~/components/ui/scrollArea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "~/components/ui/select"
-import { type SyncSources } from "~/pages/settings/sync-new-habits/labels"
+} from "~/components/ui/select";
+import { type SyncSources } from "~/pages/settings/sync-new-habits/labels";
 
 interface Props {
-  selectValues: SyncSources
-  onValueChange: (value: string) => void
-  sourceType: "project" | "label"
+  selectValues: SyncSources;
+  onValueChange: (value: string) => void;
+  sourceType: "project" | "label";
 }
 
 const SyncSourceSelect = ({
@@ -36,12 +36,12 @@ const SyncSourceSelect = ({
               >
                 {item.name}
               </SelectItem>
-            )
+            );
           })}
         </ScrollArea>
       </SelectContent>
     </Select>
-  )
-}
+  );
+};
 
-export default SyncSourceSelect
+export default SyncSourceSelect;

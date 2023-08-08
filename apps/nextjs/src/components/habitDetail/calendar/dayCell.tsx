@@ -1,12 +1,12 @@
-import { cva } from "class-variance-authority"
+import { cva } from "class-variance-authority";
 
-import { cn } from "~/utils/tailwind"
+import { cn } from "~/utils/tailwind";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "~/components/ui/tooltip"
+} from "~/components/ui/tooltip";
 
 export type DayCellVariant =
   | "notThisMonth"
@@ -15,7 +15,7 @@ export type DayCellVariant =
   | "extraStreakDay"
   | "today"
   | "todayWithTimestamp"
-  | "default"
+  | "default";
 
 const dayCellVariants = cva(
   "flex h-10 w-10 items-center justify-center rounded-full text-md select-none",
@@ -35,11 +35,11 @@ const dayCellVariants = cva(
       variant: "default",
     },
   },
-)
+);
 
 interface Props {
-  date: Date
-  variant?: DayCellVariant
+  date: Date;
+  variant?: DayCellVariant;
 }
 
 const DayCell = ({ date, variant = "default" }: Props) => {
@@ -48,11 +48,11 @@ const DayCell = ({ date, variant = "default" }: Props) => {
       case "withTimestamp":
       case "notThisMonthWithTimestamp":
       case "todayWithTimestamp":
-        return "Successful day!"
+        return "Successful day!";
       case "extraStreakDay":
-        return "You have a streak going!"
+        return "You have a streak going!";
     }
-  }
+  };
 
   if (
     variant === "default" ||
@@ -63,7 +63,7 @@ const DayCell = ({ date, variant = "default" }: Props) => {
       <div className={cn(dayCellVariants({ variant }))}>
         <span>{date.getDate()}</span>
       </div>
-    )
+    );
   }
 
   return (
@@ -77,7 +77,7 @@ const DayCell = ({ date, variant = "default" }: Props) => {
         <TooltipContent>{getTooltipContent(variant)}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
-}
+  );
+};
 
-export default DayCell
+export default DayCell;

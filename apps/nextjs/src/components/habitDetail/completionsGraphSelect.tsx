@@ -4,12 +4,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "~/components/ui/select"
-import { type ActivePeriod } from "./completionsGraph"
+} from "~/components/ui/select";
+import { type ActivePeriod } from "./completionsGraph";
 
 interface Props {
-  activePeriod: ActivePeriod
-  setPeriod: (period: ActivePeriod) => void
+  activePeriod: ActivePeriod;
+  setPeriod: (period: ActivePeriod) => void;
 }
 
 const CompletionsGraphSelect = ({ activePeriod, setPeriod }: Props) => {
@@ -24,7 +24,7 @@ const CompletionsGraphSelect = ({ activePeriod, setPeriod }: Props) => {
         <SelectItem value="year">year</SelectItem>
       </SelectContent>
     </Select>
-  )
-}
+  );
+};
 
-export default CompletionsGraphSelect
+export default CompletionsGraphSelect;

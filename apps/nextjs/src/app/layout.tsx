@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 import "~/styles/globals.css";
+
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import ThemeProvider from "../components/themeProvider";
 import { TRPCReactProvider } from "./providers";
 

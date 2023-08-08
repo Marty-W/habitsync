@@ -1,6 +1,7 @@
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+
 import { appRouter, createContext } from "@habitsync/api";
 import { auth } from "@habitsync/auth";
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 export const runtime = "nodejs";
 

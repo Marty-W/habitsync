@@ -1,11 +1,12 @@
-import { MONTHS } from "@habitsync/lib"
-import { motion } from "framer-motion"
-import { GoChevronLeft, GoChevronRight } from "react-icons/go"
+import { motion } from "framer-motion";
+import { GoChevronLeft, GoChevronRight } from "react-icons/go";
+
+import { MONTHS } from "@habitsync/lib";
 
 interface Props {
-  month: number
-  year: number
-  handleMonthChange: (op: "addMonth" | "subMonth") => void
+  month: number;
+  year: number;
+  handleMonthChange: (op: "addMonth" | "subMonth") => void;
 }
 
 const MonthSwitcher = ({ month, year, handleMonthChange }: Props) => {
@@ -30,7 +31,7 @@ const MonthSwitcher = ({ month, year, handleMonthChange }: Props) => {
         />
       </motion.button>
     </div>
-  )
-}
+  );
+};
 
-export default MonthSwitcher
+export default MonthSwitcher;

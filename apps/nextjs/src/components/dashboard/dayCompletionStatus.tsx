@@ -1,18 +1,18 @@
-import { format } from "date-fns"
+import { format } from "date-fns";
 
-import Pill from "../ui/pill"
+import Pill from "../ui/pill";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip"
+} from "../ui/tooltip";
 
 interface Props {
-  date: Date
-  isSuccessful: boolean
-  isExtraStreakDay?: boolean
-  isBeforeHabitStarted: boolean
+  date: Date;
+  isSuccessful: boolean;
+  isExtraStreakDay?: boolean;
+  isBeforeHabitStarted: boolean;
 }
 
 const DayCompletionStatus = ({
@@ -27,7 +27,7 @@ const DayCompletionStatus = ({
     ? "success"
     : isExtraStreakDay
     ? "void"
-    : "failure"
+    : "failure";
 
   const tooltipContent = (
     <div className="flex flex-col items-center">
@@ -42,7 +42,7 @@ const DayCompletionStatus = ({
       </span>
       <span>{format(date, "iiii MMM e")}</span>
     </div>
-  )
+  );
 
   return (
     <TooltipProvider delayDuration={200}>
@@ -53,7 +53,7 @@ const DayCompletionStatus = ({
         <TooltipContent>{tooltipContent}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
-}
+  );
+};
 
-export default DayCompletionStatus
+export default DayCompletionStatus;

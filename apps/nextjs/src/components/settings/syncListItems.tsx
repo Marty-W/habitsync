@@ -1,20 +1,20 @@
-import { type Dispatch, type SetStateAction } from "react"
+import { type Dispatch, type SetStateAction } from "react";
 
-import { api } from "~/utils/trpc"
-import usePicker from "~/hooks/usePicker"
-import { Button } from "../ui/button"
-import HabitListItem from "../ui/habitListItem"
-import SyncEmpty from "./syncEmpty"
-import { type SyncListWorkflowPhase, type SyncSourceType } from "./syncList"
-import WorkflowError from "./workflowError"
-import WorkflowProgressStatus from "./workflowProgressStatus"
+import { api } from "~/utils/trpc";
+import usePicker from "~/hooks/usePicker";
+import { Button } from "../ui/button";
+import HabitListItem from "../ui/habitListItem";
+import SyncEmpty from "./syncEmpty";
+import { type SyncListWorkflowPhase, type SyncSourceType } from "./syncList";
+import WorkflowError from "./workflowError";
+import WorkflowProgressStatus from "./workflowProgressStatus";
 
 interface Props {
-  selectedSource: string
-  type: SyncSourceType
-  handleNextPhase: (phase: SyncListWorkflowPhase) => void
-  phase: SyncListWorkflowPhase
-  setNumOfHabitsCreated: Dispatch<SetStateAction<number>>
+  selectedSource: string;
+  type: SyncSourceType;
+  handleNextPhase: (phase: SyncListWorkflowPhase) => void;
+  phase: SyncListWorkflowPhase;
+  setNumOfHabitsCreated: Dispatch<SetStateAction<number>>;
 }
 
 const SyncListItems = ({
@@ -24,7 +24,7 @@ const SyncListItems = ({
   handleNextPhase,
   setNumOfHabitsCreated,
 }: Props) => {
-  const { items, editItems } = usePicker()
+  const { items, editItems } = usePicker();
   const todoistTasks = api.habit.getNewTasksFromTodoist.useQuery(
     {
       type,
@@ -35,27 +35,27 @@ const SyncListItems = ({
       retry: false,
       onSuccess: () => handleNextPhase("pick-tasks"),
     },
-  )
+  );
   const todoistSync = api.habit.syncWithTodoist.useMutation({
     onMutate: () => handleNextPhase("syncing-tasks"),
     onSuccess: ({ numberOfHabitsCreated }) => {
-      setNumOfHabitsCreated(numberOfHabitsCreated)
-      handleNextPhase("synced")
+      setNumOfHabitsCreated(numberOfHabitsCreated);
+      handleNextPhase("synced");
     },
-  })
+  });
 
   if (todoistTasks.isError) {
-    return <WorkflowError errorMessage={todoistTasks.error.message} />
+    return <WorkflowError errorMessage={todoistTasks.error.message} />;
   }
 
   if (phase === "fetching-tasks") {
-    return <WorkflowProgressStatus phase={phase} />
+    return <WorkflowProgressStatus phase={phase} />;
   }
 
-  const noTasksToSync = todoistTasks.isSuccess && !todoistTasks.data?.length
+  const noTasksToSync = todoistTasks.isSuccess && !todoistTasks.data?.length;
 
   if (noTasksToSync) {
-    return <SyncEmpty sourceType={type} />
+    return <SyncEmpty sourceType={type} />;
   }
 
   return (
@@ -70,7 +70,7 @@ const SyncListItems = ({
             id={task.id}
             handleSelect={editItems}
           />
-        )
+        );
       })}
       {todoistTasks.isSuccess && (
         <div className="mx-auto mt-10 flex justify-center">
@@ -89,7 +89,7 @@ const SyncListItems = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SyncListItems
+export default SyncListItems;

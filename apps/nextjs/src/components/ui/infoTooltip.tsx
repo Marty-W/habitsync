@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "~/components/ui/dialog"
+} from "~/components/ui/dialog";
 
 const InfoDialog = () => {
   return (
@@ -17,7 +17,7 @@ const InfoDialog = () => {
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
-}
+  );
+};
 
-export default InfoTooltip
+export default InfoTooltip;

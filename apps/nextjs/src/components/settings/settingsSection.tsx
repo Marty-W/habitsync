@@ -1,7 +1,7 @@
 interface Props {
-  title: string
-  children: React.ReactNode
-  dialog?: React.ReactNode
+  title: string;
+  children: React.ReactNode;
+  dialog?: React.ReactNode;
 }
 
 const SettingsSection = ({ title, children, dialog }: Props) => {
@@ -17,7 +17,7 @@ const SettingsSection = ({ title, children, dialog }: Props) => {
         {children}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SettingsSection
+export default SettingsSection;

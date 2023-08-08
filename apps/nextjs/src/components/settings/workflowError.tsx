@@ -1,8 +1,8 @@
-import { AlertCircle } from "lucide-react"
+import { AlertCircle } from "lucide-react";
 
 interface Props {
-  errorMessage: string
-  kind?: "error" | "empty"
+  errorMessage: string;
+  kind?: "error" | "empty";
 }
 
 const WorkflowError = ({ errorMessage, kind }: Props) => {
@@ -13,7 +13,7 @@ const WorkflowError = ({ errorMessage, kind }: Props) => {
         <span className="text-muted-foreground text-sm">{errorMessage}</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default WorkflowError
+export default WorkflowError;

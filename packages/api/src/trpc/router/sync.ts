@@ -1,6 +1,6 @@
-import { z } from "zod"
+import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc"
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const syncRouter = createTRPCRouter({
   // syncByLabel: protectedProcedure
@@ -11,4 +11,4 @@ export const syncRouter = createTRPCRouter({
   //
   //     const fetchedHabits
   // }))
-})
+});

@@ -1,38 +1,38 @@
-import { useState } from "react"
+import { useState } from "react";
 
-import { type SyncSources } from "~/pages/settings/sync-new-habits/labels"
-import SyncListItems from "./syncListItems"
-import SyncSource from "./syncSource"
-import SyncSuccess from "./syncSuccess"
-import WorkflowProgressStatus from "./workflowProgressStatus"
+import { type SyncSources } from "~/pages/settings/sync-new-habits/labels";
+import SyncListItems from "./syncListItems";
+import SyncSource from "./syncSource";
+import SyncSuccess from "./syncSuccess";
+import WorkflowProgressStatus from "./workflowProgressStatus";
 
 export type SyncListWorkflowPhase =
   | "select-source"
   | "fetching-tasks"
   | "pick-tasks"
   | "syncing-tasks"
-  | "synced"
+  | "synced";
 
-export type SyncSourceType = "project" | "label"
+export type SyncSourceType = "project" | "label";
 
 interface Props {
-  syncSources: SyncSources
-  type: SyncSourceType
+  syncSources: SyncSources;
+  type: SyncSourceType;
 }
 
 const SyncList = ({ syncSources, type }: Props) => {
-  const [phase, setPhase] = useState<SyncListWorkflowPhase>("select-source")
-  const [selectedSource, setSelectedSource] = useState("")
-  const [numOfHabitsCreated, setNumOfHabitsCreated] = useState(0)
+  const [phase, setPhase] = useState<SyncListWorkflowPhase>("select-source");
+  const [selectedSource, setSelectedSource] = useState("");
+  const [numOfHabitsCreated, setNumOfHabitsCreated] = useState(0);
 
   const handlePhaseChange = (newPhase: SyncListWorkflowPhase) => {
-    setPhase(newPhase)
-  }
+    setPhase(newPhase);
+  };
 
   const handlePickAgain = () => {
-    setPhase("select-source")
-    setSelectedSource("")
-  }
+    setPhase("select-source");
+    setSelectedSource("");
+  };
 
   return (
     <div className="flex flex-1 flex-col">
@@ -62,7 +62,7 @@ const SyncList = ({ syncSources, type }: Props) => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default SyncList
+export default SyncList;

@@ -1,12 +1,12 @@
-import Link from "next/link"
-import { type ClassValue } from "clsx"
-import { Settings } from "lucide-react"
+import Link from "next/link";
+import { type ClassValue } from "clsx";
+import { Settings } from "lucide-react";
 
-import { cn } from "~/utils/tailwind"
-import { Button } from "./ui/button"
+import { cn } from "~/utils/tailwind";
+import { Button } from "./ui/button";
 
 interface Props {
-  className?: ClassValue
+  className?: ClassValue;
 }
 
 const SettingsButton = ({ className }: Props) => (
@@ -15,6 +15,6 @@ const SettingsButton = ({ className }: Props) => (
       <Settings size="1.2rem" />
     </Link>
   </Button>
-)
+);
 
-export default SettingsButton
+export default SettingsButton;

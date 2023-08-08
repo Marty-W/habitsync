@@ -1,12 +1,12 @@
-import { type LucideIcon } from "lucide-react"
+import { type LucideIcon } from "lucide-react";
 
-import { cn } from "~/utils/tailwind"
+import { cn } from "~/utils/tailwind";
 
 interface Props {
-  title: string
-  icon: LucideIcon
-  children: React.ReactNode
-  className?: string
+  title: string;
+  icon: LucideIcon;
+  children: React.ReactNode;
+  className?: string;
 }
 
 const CardWithHeader = ({ title, icon: Icon, children, className }: Props) => {
@@ -20,7 +20,7 @@ const CardWithHeader = ({ title, icon: Icon, children, className }: Props) => {
       </div>
       <div className="">{children}</div>
     </div>
-  )
-}
+  );
+};
 
-export default CardWithHeader
+export default CardWithHeader;

@@ -1,11 +1,12 @@
-'use client'
-import { api } from "~/utils/trpc"
-import SubSettingsPage from "~/components/settings/subSettingsPage"
-import SyncList from "~/components/settings/syncList"
-import Loader from "~/components/ui/activeLoader"
+"use client";
+
+import { api } from "~/utils/trpc";
+import SubSettingsPage from "~/components/settings/subSettingsPage";
+import SyncList from "~/components/settings/syncList";
+import Loader from "~/components/ui/activeLoader";
 
 const SyncFromProjects = () => {
-  const userProjects = api.acc.getUserProjects.useQuery()
+  const userProjects = api.acc.getUserProjects.useQuery();
   return (
     <SubSettingsPage title="Sync from projects">
       {userProjects.isLoading && <Loader size={55} className="mx-auto mt-4" />}
@@ -13,7 +14,7 @@ const SyncFromProjects = () => {
         <SyncList syncSources={userProjects.data} type="project" />
       )}
     </SubSettingsPage>
-  )
-}
+  );
+};
 
-export default SyncFromProjects
+export default SyncFromProjects;

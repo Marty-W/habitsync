@@ -1,10 +1,10 @@
-import { format } from "date-fns"
-import { motion } from "framer-motion"
+import { format } from "date-fns";
+import { motion } from "framer-motion";
 
-import { type RouterOutputs } from "~/utils/trpc"
+import { type RouterOutputs } from "~/utils/trpc";
 
 interface Props {
-  streaks: RouterOutputs["streak"]["getBest"]
+  streaks: RouterOutputs["streak"]["getBest"];
 }
 
 const Streaks = ({ streaks }: Props) => {
@@ -13,14 +13,14 @@ const Streaks = ({ streaks }: Props) => {
       <h1 className="text-muted-foreground text-lg">Your best streaks</h1>
       <div className="">
         {streaks.map((streak, index, arr) => {
-          const timeFormat = "MMM d"
-          const formattedStart = format(new Date(streak.start), timeFormat)
-          const formattedEnd = format(new Date(streak.end), timeFormat)
+          const timeFormat = "MMM d";
+          const formattedStart = format(new Date(streak.start), timeFormat);
+          const formattedEnd = format(new Date(streak.end), timeFormat);
 
           // I presume that the first streak is the longest one
-          const maxStreak = arr[0].length
+          const maxStreak = arr[0].length;
 
-          const barWidth = (streak.length / maxStreak) * 100
+          const barWidth = (streak.length / maxStreak) * 100;
           return (
             <div
               key={`${index}-${barWidth}`}
@@ -51,11 +51,11 @@ const Streaks = ({ streaks }: Props) => {
                 {formattedEnd}
               </span>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Streaks
+export default Streaks;

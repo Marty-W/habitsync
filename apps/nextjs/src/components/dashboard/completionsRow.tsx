@@ -1,23 +1,24 @@
-import { normalizeDate } from "@habitsync/lib"
-import { isBefore } from "date-fns"
+import { isBefore } from "date-fns";
 
-import useCompletionPillsData from "~/hooks/useCompletionPillsData"
-import usePills from "~/hooks/usePills"
-import FetchError from "../ui/fetchError"
-import { Skeleton } from "../ui/loadingSkeleton"
-import DayCompletionStatus from "./dayCompletionStatus"
+import { normalizeDate } from "@habitsync/lib";
+
+import useCompletionPillsData from "~/hooks/useCompletionPillsData";
+import usePills from "~/hooks/usePills";
+import FetchError from "../ui/fetchError";
+import { Skeleton } from "../ui/loadingSkeleton";
+import DayCompletionStatus from "./dayCompletionStatus";
 
 interface Props {
-  habitId: string
+  habitId: string;
 }
 
 const CompletionsRow = ({ habitId }: Props) => {
-  const { ref, pills } = usePills()
-  const { timestamps, habitDetail } = useCompletionPillsData({ habitId })
+  const { ref, pills } = usePills();
+  const { timestamps, habitDetail } = useCompletionPillsData({ habitId });
 
   const refetchQueries = async () => {
-    await Promise.all([timestamps.refetch(), habitDetail.refetch()])
-  }
+    await Promise.all([timestamps.refetch(), habitDetail.refetch()]);
+  };
 
   if (timestamps.isLoading || habitDetail.isLoading || !pills) {
     return (
@@ -29,7 +30,7 @@ const CompletionsRow = ({ habitId }: Props) => {
           />
         ))}
       </div>
-    )
+    );
   }
 
   if (timestamps.error || habitDetail.error) {
@@ -40,7 +41,7 @@ const CompletionsRow = ({ habitId }: Props) => {
       >
         <span>Try again</span>
       </FetchError>
-    )
+    );
   }
 
   return (
@@ -61,10 +62,10 @@ const CompletionsRow = ({ habitId }: Props) => {
               new Date(habitDetail.data.createdAt),
             )}
           />
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default CompletionsRow
+export default CompletionsRow;

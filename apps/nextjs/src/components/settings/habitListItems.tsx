@@ -1,16 +1,16 @@
-import { type RouterOutputs } from "@habitsync/api"
+import { type RouterOutputs } from "@habitsync/api";
 
-import { api } from "~/utils/trpc"
-import usePicker from "~/hooks/usePicker"
-import { type EditHabitWorkflowPhase } from "~/pages/settings/edit-habits"
-import { Button } from "../ui/button"
-import HabitListItem from "../ui/habitListItem"
+import { api } from "~/utils/trpc";
+import usePicker from "~/hooks/usePicker";
+import { type EditHabitWorkflowPhase } from "~/pages/settings/edit-habits";
+import { Button } from "../ui/button";
+import HabitListItem from "../ui/habitListItem";
 
 interface Props {
-  habits: RouterOutputs["habit"]["getAll"]
-  setPhase: (phase: EditHabitWorkflowPhase) => void
-  setMutationType: (type: "delete-timestamps" | "delete-habits") => void
-  setNumberOfEdits: (num: number) => void
+  habits: RouterOutputs["habit"]["getAll"];
+  setPhase: (phase: EditHabitWorkflowPhase) => void;
+  setMutationType: (type: "delete-timestamps" | "delete-habits") => void;
+  setNumberOfEdits: (num: number) => void;
 }
 
 const HabitListItems = ({
@@ -19,31 +19,31 @@ const HabitListItems = ({
   setMutationType,
   setNumberOfEdits,
 }: Props) => {
-  const { items, editItems } = usePicker()
+  const { items, editItems } = usePicker();
   const deleteHabits = api.habit.deleteMany.useMutation({
     onMutate: () => {
-      setPhase("mutating-habits")
-      setMutationType("delete-habits")
+      setPhase("mutating-habits");
+      setMutationType("delete-habits");
     },
     onSuccess: ({ numberOfHabitsDeleted }) => {
-      setNumberOfEdits(numberOfHabitsDeleted)
-      setPhase("synced")
+      setNumberOfEdits(numberOfHabitsDeleted);
+      setPhase("synced");
     },
-  })
+  });
   const deleteTimestamps = api.timestamp.deleteMany.useMutation({
     onMutate: () => {
-      setPhase("mutating-habits")
-      setMutationType("delete-timestamps")
+      setPhase("mutating-habits");
+      setMutationType("delete-timestamps");
     },
     onSuccess: ({ deletedCount }) => {
-      setPhase("synced")
-      setNumberOfEdits(deletedCount)
+      setPhase("synced");
+      setNumberOfEdits(deletedCount);
     },
-  })
+  });
 
   const habitIdsWithTimestamps = habits
     .filter((habit) => habit.numOfTimestamps > 0)
-    .map((habit) => habit.id)
+    .map((habit) => habit.id);
 
   return (
     <div className="bg-muted flex-1 rounded-t-lg px-6 py-2">
@@ -78,7 +78,7 @@ const HabitListItems = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HabitListItems
+export default HabitListItems;

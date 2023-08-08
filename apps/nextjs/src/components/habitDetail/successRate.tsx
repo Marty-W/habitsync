@@ -1,7 +1,7 @@
-import Counter from "~/components/ui/animatedCounter"
+import Counter from "~/components/ui/animatedCounter";
 
 interface Props {
-  rate: string
+  rate: string;
 }
 
 const SuccessRate = ({ rate }: Props) => {
@@ -20,7 +20,7 @@ const SuccessRate = ({ rate }: Props) => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SuccessRate
+export default SuccessRate;

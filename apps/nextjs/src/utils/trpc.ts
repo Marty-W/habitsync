@@ -1,6 +1,7 @@
-import type { AppRouter } from "@habitsync/api"
-import { createTRPCReact } from "@trpc/react-query"
+import { createTRPCReact } from "@trpc/react-query";
 
-export const api = createTRPCReact<AppRouter>()
+import type { AppRouter } from "@habitsync/api";
 
-export { type RouterInputs, type RouterOutputs } from "@habitsync/api"
+export const api = createTRPCReact<AppRouter>();
+
+export { type RouterInputs, type RouterOutputs } from "@habitsync/api";

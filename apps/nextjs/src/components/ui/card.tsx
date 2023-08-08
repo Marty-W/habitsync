@@ -1,6 +1,6 @@
-import { type PropsWithChildren } from "react"
+import { type PropsWithChildren } from "react";
 
-import { cn } from "~/utils/tailwind"
+import { cn } from "~/utils/tailwind";
 
 const Card = ({
   children,
@@ -9,6 +9,6 @@ const Card = ({
   <div className={cn("bg-card rounded-2xl p-6 shadow-lg", className)}>
     {children}
   </div>
-)
+);
 
-export default Card
+export default Card;

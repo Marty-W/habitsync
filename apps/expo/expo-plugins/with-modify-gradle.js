@@ -17,7 +17,7 @@ const defineConfig = (config) => {
     ext.getPackageJsonVersion = { packageName ->
         new File(['node', '--print', "JSON.parse(require('fs').readFileSync(require.resolve('\${packageName}/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
     }`,
-        )
+        );
       }
 
       if (!config.modResults.contents.includes("reactNativeVersion =")) {
@@ -25,7 +25,7 @@ const defineConfig = (config) => {
           "ext {",
           `ext {
         reactNativeVersion = "\${ext.getPackageJsonVersion('react-native')}"`,
-        )
+        );
       }
 
       if (!config.modResults.contents.includes("expoPackageVersion =")) {
@@ -33,12 +33,12 @@ const defineConfig = (config) => {
           "ext {",
           `ext {
         expoPackageVersion = "\${ext.getPackageJsonVersion('expo')}"`,
-        )
+        );
       }
 
-      return config
+      return config;
     },
-  )
-}
+  );
+};
 
-module.exports = defineConfig
+module.exports = defineConfig;

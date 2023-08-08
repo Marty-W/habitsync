@@ -1,62 +1,63 @@
 //FIX should be imported from @habitsync/api
-import { type RouterOutput } from "@habitsync/next/src/utils/trpc"
-import { z } from "zod"
+import { z } from "zod";
 
-import { type generateCalendarMonth } from "./date"
+import { type RouterOutput } from "@habitsync/next/src/utils/trpc";
+
+import { type generateCalendarMonth } from "./date";
 
 // {Year: {Month: [Day]}}
 export interface SortedMonthInterval {
   [year: number]: {
-    [month: number]: ReturnType<typeof generateCalendarMonth>
-  }
+    [month: number]: ReturnType<typeof generateCalendarMonth>;
+  };
 }
 
 export type Streak = {
-  start: string
-  end: string
-  length: number
-}
+  start: string;
+  end: string;
+  length: number;
+};
 
 export type RecOpts =
   | {
-      type: "every_day"
+      type: "every_day";
     }
   | {
-      type: "every_workday"
+      type: "every_workday";
     }
   | {
-      type: "specific_days"
-      days: Weekday[]
+      type: "specific_days";
+      days: Weekday[];
     }
   | {
-      type: "every_x_days"
-      step: number
-    }
+      type: "every_x_days";
+      step: number;
+    };
 
-export type RecurrenceType = RecOpts["type"]
+export type RecurrenceType = RecOpts["type"];
 
 export interface RecurrenceConfig {
-  step?: number
-  days?: Weekday[]
+  step?: number;
+  days?: Weekday[];
 }
 
 export type CalendarData =
   | RouterOutput["timestamp"]["getAllWithStreakDays"]
   | null
-  | undefined
+  | undefined;
 export type HabitDescriptionData =
   | RouterOutput["habit"]["getDetail"]
   | null
-  | undefined
-export type StreakData = RouterOutput["streak"]["getBest"] | null | undefined
+  | undefined;
+export type StreakData = RouterOutput["streak"]["getBest"] | null | undefined;
 export type AllTimestampData =
   | RouterOutput["timestamp"]["getAll"]
   | null
-  | undefined
+  | undefined;
 
 export interface Interval {
-  start: Date
-  end: Date
+  start: Date;
+  end: Date;
 }
 
 export type Weekday =
@@ -66,7 +67,7 @@ export type Weekday =
   | "thursday"
   | "friday"
   | "saturday"
-  | "sunday"
+  | "sunday";
 
 export const DoistWebhookReqBodyShape = z.object({
   event_name: z.literal("item:completed"),
@@ -77,4 +78,4 @@ export const DoistWebhookReqBodyShape = z.object({
     id: z.string(),
   }),
   user_id: z.string(),
-})
+});

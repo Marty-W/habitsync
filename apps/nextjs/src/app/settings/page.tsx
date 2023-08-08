@@ -1,13 +1,14 @@
-'use client'
-import Link from "next/link"
-import { signOut } from "next-auth/react"
+"use client";
 
-import DeleteAccountItem from "~/components/settings/deleteAccountItem"
-import SettingsItem from "~/components/settings/settingsItem"
-import SettingsSection from "~/components/settings/settingsSection"
-import GoBackButton from "~/components/ui/goBackButton"
-import InfoDialog from "~/components/ui/infoDialog"
-import ThemeSelect from "~/components/ui/themeSelect"
+import Link from "next/link";
+import { signOut } from "next-auth/react";
+
+import DeleteAccountItem from "~/components/settings/deleteAccountItem";
+import SettingsItem from "~/components/settings/settingsItem";
+import SettingsSection from "~/components/settings/settingsSection";
+import GoBackButton from "~/components/ui/goBackButton";
+import InfoDialog from "~/components/ui/infoDialog";
+import ThemeSelect from "~/components/ui/themeSelect";
 
 const Settings = () => {
   return (
@@ -55,7 +56,7 @@ const Settings = () => {
         <DeleteAccountItem />
       </SettingsSection>
     </div>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

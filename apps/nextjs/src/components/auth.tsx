@@ -1,5 +1,6 @@
-import type { ComponentProps } from "react"
-import { CSRF_experimental, type OAuthProviders } from "@habitsync/auth"
+import type { ComponentProps } from "react";
+
+import { CSRF_experimental, type OAuthProviders } from "@habitsync/auth";
 
 export function SignIn({
   provider,
@@ -10,7 +11,7 @@ export function SignIn({
       <button {...props} />
       <CSRF_experimental />
     </form>
-  )
+  );
 }
 
 export function SignOut(props: ComponentProps<"button">) {
@@ -19,5 +20,5 @@ export function SignOut(props: ComponentProps<"button">) {
       <button {...props} />
       <CSRF_experimental />
     </form>
-  )
+  );
 }

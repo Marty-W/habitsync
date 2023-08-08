@@ -1,7 +1,7 @@
-import Counter from "~/components/ui/animatedCounter"
+import Counter from "~/components/ui/animatedCounter";
 
 interface Props {
-  completions: number
+  completions: number;
 }
 
 const TotalCompletions = ({ completions }: Props) => {
@@ -20,7 +20,7 @@ const TotalCompletions = ({ completions }: Props) => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TotalCompletions
+export default TotalCompletions;

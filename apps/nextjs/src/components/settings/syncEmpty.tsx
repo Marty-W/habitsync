@@ -1,16 +1,16 @@
-import Link from "next/link"
-import { CircleSlash } from "lucide-react"
+import Link from "next/link";
+import { CircleSlash } from "lucide-react";
 
-import { Button } from "../ui/button"
-import Recap from "./recap"
-import { type SyncSourceType } from "./syncList"
+import { Button } from "../ui/button";
+import Recap from "./recap";
+import { type SyncSourceType } from "./syncList";
 
 interface Props {
-  sourceType: SyncSourceType
+  sourceType: SyncSourceType;
 }
 
 const SyncEmpty = ({ sourceType }: Props) => {
-  const otherSyncType = sourceType === "project" ? "label" : "project"
+  const otherSyncType = sourceType === "project" ? "label" : "project";
   return (
     <Recap
       icon={<CircleSlash size={50} className="text-primary" />}
@@ -25,7 +25,7 @@ const SyncEmpty = ({ sourceType }: Props) => {
         <Link href="/habits">Go to dashboard</Link>
       </Button>
     </Recap>
-  )
-}
+  );
+};
 
-export default SyncEmpty
+export default SyncEmpty;

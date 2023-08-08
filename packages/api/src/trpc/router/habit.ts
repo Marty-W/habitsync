@@ -1,13 +1,13 @@
-import { TRPCError } from "@trpc/server"
-import { z } from "zod"
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 
 import {
   getRecurrenceStep,
   getRecurrenceType,
   getSpecificRecurrenceDays,
-} from "../../common/recurrence"
-import { filterNonRecurringFromArr } from "../../common/todoist"
-import { createTRPCRouter, protectedProcedure } from "../trpc"
+} from "../../common/recurrence";
+import { filterNonRecurringFromArr } from "../../common/todoist";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const habitRouter = createTRPCRouter({
   syncWithTodoist: protectedProcedure
@@ -26,20 +26,20 @@ export const habitRouter = createTRPCRouter({
       ]),
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session?.user?.id
-      const { sourceId, taskIds } = input
-      let fetchedTodos
+      const userId = ctx.session?.user?.id;
+      const { sourceId, taskIds } = input;
+      let fetchedTodos;
 
       if (input.type === "label") {
         fetchedTodos = await ctx.doist.getTasks({
           label: sourceId,
-        })
+        });
       }
 
       if (input.type === "project") {
         fetchedTodos = await ctx.doist.getTasks({
           projectId: sourceId,
-        })
+        });
       }
 
       if (!fetchedTodos) {
@@ -47,10 +47,10 @@ export const habitRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message:
             "No tasks with the specified query found. Please check Todoist",
-        })
+        });
       }
 
-      const todoistId = fetchedTodos[0].creatorId
+      const todoistId = fetchedTodos[0].creatorId;
       await ctx.prisma.user.update({
         where: {
           id: userId,
@@ -58,30 +58,30 @@ export const habitRouter = createTRPCRouter({
         data: {
           todoistId,
         },
-      })
+      });
 
       const filteredSelected = fetchedTodos.filter((todo) =>
         taskIds.includes(todo.id),
-      )
+      );
 
       const formattedHabitsForDb = filteredSelected.map((habit) => {
-        const { id, content, description, labels, url, due } = habit
+        const { id, content, description, labels, url, due } = habit;
 
         if (!due || !due.isRecurring) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: `Task ${content} is not recurring, please repair it in Todoist`,
-          })
+          });
         }
 
         if (!due.string) {
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: `Task ${content} has the recurrence string in bad format, please repair it in Todoist`,
-          })
+          });
         }
 
-        const recurrenceType = getRecurrenceType(due.string)
+        const recurrenceType = getRecurrenceType(due.string);
 
         const baseHabit = {
           id,
@@ -91,41 +91,41 @@ export const habitRouter = createTRPCRouter({
           url,
           userId,
           recurrenceType,
-        }
+        };
 
         if (recurrenceType === "every_x_days") {
-          const step = getRecurrenceStep(due.string)
+          const step = getRecurrenceStep(due.string);
 
           return {
             ...baseHabit,
             recurrenceStep: step,
-          }
+          };
         }
 
         if (recurrenceType === "specific_days") {
-          const days = getSpecificRecurrenceDays(due.string)
+          const days = getSpecificRecurrenceDays(due.string);
 
           return {
             ...baseHabit,
             recurrenceDays: days,
-          }
+          };
         }
 
-        return baseHabit
-      })
+        return baseHabit;
+      });
 
       await ctx.prisma.habit.createMany({
         data: formattedHabitsForDb,
         skipDuplicates: true,
-      })
+      });
 
       return {
         status: "ok",
         numberOfHabitsCreated: formattedHabitsForDb.length,
-      }
+      };
     }),
   getAll: protectedProcedure.query(async ({ ctx }) => {
-    const userId = ctx.session?.user?.id
+    const userId = ctx.session?.user?.id;
 
     const habits = await ctx.prisma.habit.findMany({
       where: {
@@ -138,13 +138,13 @@ export const habitRouter = createTRPCRouter({
         projectId: true,
         timestamps: true,
       },
-    })
+    });
 
     if (!habits.length) {
       throw new TRPCError({
         code: "NOT_FOUND",
         message: `No habits found. Please sync with Todoist first.`,
-      })
+      });
     }
 
     return habits.map((habit) => ({
@@ -153,12 +153,12 @@ export const habitRouter = createTRPCRouter({
       name: habit.name,
       projectId: habit.projectId,
       numOfTimestamps: habit.timestamps.length,
-    }))
+    }));
   }),
   getDetail: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
-      const { id } = input
+      const { id } = input;
 
       const habit = await ctx.prisma.habit.findUnique({
         where: {
@@ -174,16 +174,16 @@ export const habitRouter = createTRPCRouter({
           recurrenceDays: true,
           recurrenceStep: true,
         },
-      })
+      });
 
       if (!habit) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: `Habit with id ${id} not found`,
-        })
+        });
       }
 
-      return habit
+      return habit;
     }),
   getNewTasksFromTodoist: protectedProcedure
     .input(
@@ -193,19 +193,19 @@ export const habitRouter = createTRPCRouter({
       ]),
     )
     .query(async ({ ctx, input }) => {
-      let fetchedTodos
-      const { type, id } = input
+      let fetchedTodos;
+      const { type, id } = input;
 
       if (type === "label") {
         fetchedTodos = await ctx.doist.getTasks({
           label: id,
-        })
+        });
       }
 
       if (type === "project") {
         fetchedTodos = await ctx.doist.getTasks({
           projectId: id,
-        })
+        });
       }
 
       if (!fetchedTodos) {
@@ -213,17 +213,17 @@ export const habitRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message:
             "No tasks with the specified query found. Please check Todoist.",
-        })
+        });
       }
 
-      const onlyRecurring = filterNonRecurringFromArr(fetchedTodos)
+      const onlyRecurring = filterNonRecurringFromArr(fetchedTodos);
 
       if (onlyRecurring.length === 0) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message:
             "No recurring tasks found. Please check Todoist or pick a different label.",
-        })
+        });
       }
 
       const alreadySyncedIds = await ctx.prisma.habit
@@ -232,7 +232,7 @@ export const habitRouter = createTRPCRouter({
             userId: ctx.session?.user?.id,
           },
         })
-        .then((habits) => habits.map((habit) => habit.id))
+        .then((habits) => habits.map((habit) => habit.id));
 
       return onlyRecurring
         .filter((todo) => !alreadySyncedIds.includes(todo.id))
@@ -243,14 +243,14 @@ export const habitRouter = createTRPCRouter({
             labels: todo.labels,
             projectId: todo.projectId,
             recurrence: todo.due?.string,
-          }
-        })
+          };
+        });
     }),
   deleteMany: protectedProcedure
     .input(z.object({ ids: z.array(z.string()) }))
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session?.user?.id
-      const { ids } = input
+      const userId = ctx.session?.user?.id;
+      const { ids } = input;
 
       const habits = await ctx.prisma.habit.findMany({
         where: {
@@ -259,13 +259,13 @@ export const habitRouter = createTRPCRouter({
           },
           userId,
         },
-      })
+      });
 
       if (habits.length === 0) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: `No habits with the specified ids found`,
-        })
+        });
       }
 
       await ctx.prisma.habit.deleteMany({
@@ -275,11 +275,11 @@ export const habitRouter = createTRPCRouter({
           },
           userId,
         },
-      })
+      });
 
       return {
         status: "ok",
         numberOfHabitsDeleted: habits.length,
-      }
+      };
     }),
-})
+});

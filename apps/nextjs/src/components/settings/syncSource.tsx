@@ -1,17 +1,17 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react"
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
-import { type SyncSources } from "~/pages/settings/sync-new-habits/labels"
-import { Button } from "../ui/button"
-import { type SyncListWorkflowPhase, type SyncSourceType } from "./syncList"
-import SyncSourceSelect from "./syncSourceSelect"
+import { type SyncSources } from "~/pages/settings/sync-new-habits/labels";
+import { Button } from "../ui/button";
+import { type SyncListWorkflowPhase, type SyncSourceType } from "./syncList";
+import SyncSourceSelect from "./syncSourceSelect";
 
 interface Props {
-  selectValues: SyncSources
-  type: SyncSourceType
-  phase: SyncListWorkflowPhase
-  selectedSource: string
-  setSelectedSource: Dispatch<SetStateAction<string>>
-  handleNextPhase: () => void
+  selectValues: SyncSources;
+  type: SyncSourceType;
+  phase: SyncListWorkflowPhase;
+  selectedSource: string;
+  setSelectedSource: Dispatch<SetStateAction<string>>;
+  handleNextPhase: () => void;
 }
 
 const SyncSource = ({
@@ -22,21 +22,21 @@ const SyncSource = ({
   selectedSource,
   handleNextPhase,
 }: Props) => {
-  const [lastSource, setLastSource] = useState<string | null>(null)
+  const [lastSource, setLastSource] = useState<string | null>(null);
 
   const handleButtonClick = () => {
-    setLastSource(selectedSource)
-    handleNextPhase()
-  }
+    setLastSource(selectedSource);
+    handleNextPhase();
+  };
 
   useEffect(() => {
     if (phase === "synced") {
-      setLastSource(null)
+      setLastSource(null);
     }
-  }, [phase])
+  }, [phase]);
 
   if (phase === "synced") {
-    return
+    return;
   }
 
   return (
@@ -55,7 +55,7 @@ const SyncSource = ({
         Fetch habits
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default SyncSource
+export default SyncSource;

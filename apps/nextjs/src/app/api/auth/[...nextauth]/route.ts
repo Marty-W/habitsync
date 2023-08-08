@@ -1,1 +1,1 @@
-export { GET, POST } from "@habitsync/auth"
+export { GET, POST } from "@habitsync/auth";

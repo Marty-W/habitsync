@@ -1,55 +1,55 @@
-'use client'
-import NextError from "next/error"
-import Link from "next/link"
-import { SiTodoist } from "react-icons/si"
+"use client";
 
-import { api } from "~/utils/trpc"
-import CardWithLoader from "~/components/habitDetail/cardWithLoader"
-import DetailHeader from "~/components/habitDetail/detailHeader"
-import { Button } from "~/components/ui/button"
+import NextError from "next/error";
+import Link from "next/link";
+import { SiTodoist } from "react-icons/si";
+
+import { api } from "~/utils/trpc";
+import CardWithLoader from "~/components/habitDetail/cardWithLoader";
+import DetailHeader from "~/components/habitDetail/detailHeader";
+import { Button } from "~/components/ui/button";
 
 interface Props {
-    params: {
-        id: string
-    }
-    searchParams: {
-        name: string
-    }
+  params: {
+    id: string;
+  };
+  searchParams: {
+    name: string;
+  };
 }
 
-
-const HabitDetail = ({params, searchParams}: Props) => {
-    // how to get these typed?
-  const {id} = params
-  const {name} = searchParams
+const HabitDetail = ({ params, searchParams }: Props) => {
+  // how to get these typed?
+  const { id } = params;
+  const { name } = searchParams;
   const calendarData = api.timestamp.getAllWithStreakDays.useQuery({
     habitId: id,
-  })
+  });
   const description = api.habit.getDetail.useQuery({
     id: id,
-  })
+  });
 
-  const streaks = api.streak.getBest.useQuery({ habitId: id, numStreaks: 5 })
+  const streaks = api.streak.getBest.useQuery({ habitId: id, numStreaks: 5 });
   const totalCompletions = api.stats.getTotalHabitCompletions.useQuery({
     habitId: id,
-  })
+  });
 
   const successRate = api.stats.getHabitSuccessRate.useQuery({
     habitId: id,
-  })
+  });
 
   const timestampSummaryCounts = api.timestamp.getSummaryCounts.useQuery({
     habitId: id,
-  })
+  });
 
   if (description.isError || calendarData.isError) {
     const statusCode =
       (description.error?.data?.httpStatus ?? 500) ||
-      (calendarData.error?.data?.httpStatus ?? 500)
+      (calendarData.error?.data?.httpStatus ?? 500);
 
-    const title = description.error?.message || calendarData.error?.message
+    const title = description.error?.message || calendarData.error?.message;
 
-    return <NextError statusCode={statusCode} title={title} />
+    return <NextError statusCode={statusCode} title={title} />;
   }
 
   return (
@@ -110,7 +110,7 @@ const HabitDetail = ({params, searchParams}: Props) => {
         </Link>
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default HabitDetail
+export default HabitDetail;

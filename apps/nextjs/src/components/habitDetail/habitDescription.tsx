@@ -1,10 +1,10 @@
-import { type RouterOutputs } from "~/utils/trpc"
-import Tag from "../ui/tag"
-import RecurrenceTag from "./recurrenceTag"
+import { type RouterOutputs } from "~/utils/trpc";
+import Tag from "../ui/tag";
+import RecurrenceTag from "./recurrenceTag";
 
 type Props = {
-  desc: RouterOutputs["habit"]["getDetail"]
-}
+  desc: RouterOutputs["habit"]["getDetail"];
+};
 
 const HabitDescription = ({ desc }: Props) => (
   <div className="flex flex-col items-center justify-center">
@@ -20,10 +20,10 @@ const HabitDescription = ({ desc }: Props) => (
     </div>
     <div className="flex justify-center">
       {desc.labels.map((label) => {
-        return <Tag key={label} tag={label} />
+        return <Tag key={label} tag={label} />;
       })}
     </div>
   </div>
-)
+);
 
-export default HabitDescription
+export default HabitDescription;

@@ -1,5 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import type { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+
+import { api } from "~/utils/trpc";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,10 +16,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alertDialog";
-import { api } from "~/utils/trpc";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import type { ReactNode } from "react";
 import Spinner from "../ui/spinner";
 import SettingsItem from "./settingsItem";
 

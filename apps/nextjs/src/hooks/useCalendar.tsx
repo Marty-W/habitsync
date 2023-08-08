@@ -1,40 +1,41 @@
-import { useEffect, useState } from "react"
-import { generateCalendarMonth } from "@habitsync/lib"
-import { addMonths, subMonths } from "date-fns"
+import { useEffect, useState } from "react";
+import { addMonths, subMonths } from "date-fns";
+
+import { generateCalendarMonth } from "@habitsync/lib";
 
 const useCalendarData = (initialYear?: number, initialMonth?: number) => {
   const [displayedDate, setDisplayedDate] = useState(() => {
     return initialYear && initialMonth
       ? new Date(initialYear, initialMonth)
-      : new Date()
-  })
+      : new Date();
+  });
   const [calendarData, setCalendarData] =
-    useState<ReturnType<typeof generateCalendarMonth>>()
+    useState<ReturnType<typeof generateCalendarMonth>>();
 
   useEffect(() => {
-    const year = displayedDate.getFullYear()
-    const month = displayedDate.getMonth()
+    const year = displayedDate.getFullYear();
+    const month = displayedDate.getMonth();
 
-    const data = localStorage.getItem(`${year}-${month}`)
+    const data = localStorage.getItem(`${year}-${month}`);
 
     if (!data) {
-      const data = generateCalendarMonth(year, month)
-      localStorage.setItem(`${year}-${month}`, JSON.stringify(data))
-      setCalendarData(data)
+      const data = generateCalendarMonth(year, month);
+      localStorage.setItem(`${year}-${month}`, JSON.stringify(data));
+      setCalendarData(data);
     } else {
-      setCalendarData(JSON.parse(data))
+      setCalendarData(JSON.parse(data));
     }
-  }, [displayedDate])
+  }, [displayedDate]);
 
   const handleSubMonth = () => {
-    const newDate = subMonths(displayedDate, 1)
-    setDisplayedDate(newDate)
-  }
+    const newDate = subMonths(displayedDate, 1);
+    setDisplayedDate(newDate);
+  };
 
   const handleAddMonth = () => {
-    const newDate = addMonths(displayedDate, 1)
-    setDisplayedDate(newDate)
-  }
+    const newDate = addMonths(displayedDate, 1);
+    setDisplayedDate(newDate);
+  };
 
   return {
     month: displayedDate.getMonth(),
@@ -42,7 +43,7 @@ const useCalendarData = (initialYear?: number, initialMonth?: number) => {
     calendarData,
     handleAddMonth,
     handleSubMonth,
-  }
-}
+  };
+};
 
-export default useCalendarData
+export default useCalendarData;

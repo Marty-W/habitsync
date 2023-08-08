@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+
 import "chartjs-adapter-date-fns";
-import type { RouterOutputs } from "@habitsync/api";
-import { getLabelsForCompletionGraph } from "@habitsync/lib";
+
 import {
   BarElement,
   CategoryScale,
@@ -14,6 +14,10 @@ import {
 } from "chart.js";
 import { BarChart2 } from "lucide-react";
 import { Bar } from "react-chartjs-2";
+
+import type { RouterOutputs } from "@habitsync/api";
+import { getLabelsForCompletionGraph } from "@habitsync/lib";
+
 import TabToggle from "../ui/tabToggle";
 import CompletionsGraphSelect from "./completionsGraphSelect";
 
@@ -24,7 +28,7 @@ ChartJS.register(
   LinearScale,
   CategoryScale,
   Title,
-  TimeScale
+  TimeScale,
 );
 
 interface Props {

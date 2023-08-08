@@ -1,6 +1,6 @@
-import { cva, type VariantProps } from "class-variance-authority"
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "~/utils/tailwind"
+import { cn } from "~/utils/tailwind";
 
 const pillVariants = cva("mx-1 h-7 w-[10px] rounded-lg", {
   variants: {
@@ -11,14 +11,14 @@ const pillVariants = cva("mx-1 h-7 w-[10px] rounded-lg", {
       blank: "bg-muted border",
     },
   },
-})
+});
 
 interface Props
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof pillVariants> {}
 
 const Pill = ({ variant, className }: Props) => {
-  return <div className={cn(pillVariants({ variant, className }))} />
-}
+  return <div className={cn(pillVariants({ variant, className }))} />;
+};
 
-export default Pill
+export default Pill;

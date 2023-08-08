@@ -1,7 +1,7 @@
 interface Props {
-  icon: React.ReactNode
-  text: string
-  children: React.ReactNode
+  icon: React.ReactNode;
+  text: string;
+  children: React.ReactNode;
 }
 
 const Recap = ({ icon, children, text }: Props) => {
@@ -13,7 +13,7 @@ const Recap = ({ icon, children, text }: Props) => {
       </div>
       <div className="mx-auto flex w-1/3 flex-col gap-3">{children}</div>
     </div>
-  )
-}
+  );
+};
 
-export default Recap
+export default Recap;

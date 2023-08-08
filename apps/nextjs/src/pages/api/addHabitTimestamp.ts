@@ -1,8 +1,9 @@
-import { checkIfDoist, validateSig } from "@habitsync/api/src/common/todoist";
-import { DoistWebhookReqBodyShape } from "@habitsync/lib";
+import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import { buffer } from "micro";
-import type { NextApiRequest, NextApiResponse } from "next";
+
+import { checkIfDoist, validateSig } from "@habitsync/api/src/common/todoist";
+import { DoistWebhookReqBodyShape } from "@habitsync/lib";
 
 const prisma = new PrismaClient();
 
@@ -16,7 +17,7 @@ export const config = {
 
 const addHabitTimestampHandler = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
   const isDoist = checkIfDoist(req);
 

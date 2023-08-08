@@ -1,4 +1,4 @@
-import { Info } from "lucide-react"
+import { Info } from "lucide-react";
 
 import {
   Dialog,
@@ -7,12 +7,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "~/components/ui/dialog"
+} from "~/components/ui/dialog";
 
 interface Props {
-  iconSize?: number
-  header: string
-  text: string
+  iconSize?: number;
+  header: string;
+  text: string;
 }
 
 const InfoDialog = ({ iconSize = 18, header, text }: Props) => {
@@ -28,7 +28,7 @@ const InfoDialog = ({ iconSize = 18, header, text }: Props) => {
         </DialogHeader>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default InfoDialog
+export default InfoDialog;

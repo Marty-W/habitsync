@@ -1,7 +1,7 @@
-import { Skeleton } from "./loadingSkeleton"
+import { Skeleton } from "./loadingSkeleton";
 
 interface Props {
-  count?: number
+  count?: number;
 }
 
 const HabitLoadingSkeleton = ({ count }: Props) => {
@@ -11,8 +11,8 @@ const HabitLoadingSkeleton = ({ count }: Props) => {
       <Skeleton className="h-3 w-2/3" />
       <Skeleton className="h-3 w-2/3" />
     </div>
-  ))
-  return content
-}
+  ));
+  return content;
+};
 
-export default HabitLoadingSkeleton
+export default HabitLoadingSkeleton;

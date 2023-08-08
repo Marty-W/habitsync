@@ -7,7 +7,7 @@ export type UseMeasureRect = Pick<
 export type UseMeasureRef<E extends Element = Element> = (element: E) => void;
 export type UseMeasureResult<E extends Element = Element> = [
   UseMeasureRef<E>,
-  UseMeasureRect
+  UseMeasureRect,
 ];
 
 const defaultState: UseMeasureRect = {
@@ -34,7 +34,7 @@ function useMeasure<E extends Element = Element>(): UseMeasureResult<E> {
           setRect({ x, y, width, height, top, left, bottom, right });
         }
       }),
-    []
+    [],
   );
 
   useLayoutEffect(() => {

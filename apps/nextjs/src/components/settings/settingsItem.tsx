@@ -1,6 +1,7 @@
-import { cn } from "~/utils/tailwind";
-import { ChevronRight } from "lucide-react";
 import type { ComponentPropsWithoutRef, ElementType } from "react";
+import { ChevronRight } from "lucide-react";
+
+import { cn } from "~/utils/tailwind";
 
 const ButtonDefaultAsType = "button";
 type ButtonDefaultAsType = typeof ButtonDefaultAsType;

@@ -1,9 +1,9 @@
-import { Suspense } from "react"
-import Link from "next/link"
+import { Suspense } from "react";
+import Link from "next/link";
 
-import { auth } from "@habitsync/auth"
+import { auth } from "@habitsync/auth";
 
-import { SignIn, SignOut } from "~/components/auth"
+import { SignIn, SignOut } from "~/components/auth";
 
 export default function HomePage() {
   return (
@@ -20,11 +20,11 @@ export default function HomePage() {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
 export async function AuthShowcase() {
-  const session = await auth()
+  const session = await auth();
 
   if (!session) {
     return (
@@ -34,7 +34,7 @@ export async function AuthShowcase() {
       >
         Sign in with Google
       </SignIn>
-    )
+    );
   }
 
   return (
@@ -47,5 +47,5 @@ export async function AuthShowcase() {
         Sign out
       </SignOut>
     </>
-  )
+  );
 }

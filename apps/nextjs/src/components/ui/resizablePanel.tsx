@@ -1,11 +1,11 @@
-import { type PropsWithChildren } from "react"
-import clsx from "clsx"
-import { AnimatePresence, motion } from "framer-motion"
-import useMeasure from "react-use-measure"
+import { type PropsWithChildren } from "react";
+import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import useMeasure from "react-use-measure";
 
 interface Props {
-  duration: number
-  slideDirection: "left" | "right" | null
+  duration: number;
+  slideDirection: "left" | "right" | null;
 }
 
 const ResizableSlidePanel = ({
@@ -13,7 +13,7 @@ const ResizableSlidePanel = ({
   duration,
   slideDirection,
 }: PropsWithChildren<Props>) => {
-  const [ref, { height, width }] = useMeasure()
+  const [ref, { height, width }] = useMeasure();
 
   const variants = {
     initial: (direction: "left" | "right") => ({
@@ -28,7 +28,7 @@ const ResizableSlidePanel = ({
       x: direction === "left" ? width : -width,
       opacity: 0,
     }),
-  }
+  };
 
   return (
     <motion.div
@@ -57,8 +57,8 @@ const ResizableSlidePanel = ({
         </motion.div>
       </AnimatePresence>
     </motion.div>
-  )
-}
+  );
+};
 
 /*
   Replacer function to JSON.stringify that ignores
@@ -66,15 +66,15 @@ const ResizableSlidePanel = ({
   https://github.com/facebook/react/issues/8669#issuecomment-531515508
 */
 const ignoreCircularReferences = () => {
-  const seen = new WeakSet()
+  const seen = new WeakSet();
   return (key: string, value: string) => {
-    if (key.startsWith("_")) return // Don't compare React's internal props.
+    if (key.startsWith("_")) return; // Don't compare React's internal props.
     if (typeof value === "object" && value !== null) {
-      if (seen.has(value)) return
-      seen.add(value)
+      if (seen.has(value)) return;
+      seen.add(value);
     }
-    return value
-  }
-}
+    return value;
+  };
+};
 
-export default ResizableSlidePanel
+export default ResizableSlidePanel;

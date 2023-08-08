@@ -1,13 +1,14 @@
-import { normalizeDate } from "@habitsync/lib"
-import { isToday } from "date-fns"
+import { isToday } from "date-fns";
 
-import ResizableSlidePanel from "~/components/ui/resizablePanel"
-import useCalendar from "~/hooks/useCalendar"
-import { AnimationDirection } from "./calendar"
-import DayCell from "./dayCell"
+import { normalizeDate } from "@habitsync/lib";
+
+import ResizableSlidePanel from "~/components/ui/resizablePanel";
+import useCalendar from "~/hooks/useCalendar";
+import { AnimationDirection } from "./calendar";
+import DayCell from "./dayCell";
 
 interface Props {
-  animationDirection: AnimationDirection
+  animationDirection: AnimationDirection;
 }
 
 const DaysGrid = ({ animationDirection }: Props) => {
@@ -16,7 +17,7 @@ const DaysGrid = ({ animationDirection }: Props) => {
       <div className="grid flex-1 grid-cols-7 place-items-center gap-x-1 gap-y-4">
         {calendarData?.length &&
           calendarData.map((dateStr, i) => {
-            const date = new Date(dateStr)
+            const date = new Date(dateStr);
             return (
               <DayCell
                 date={date.getDate()}
@@ -30,9 +31,9 @@ const DaysGrid = ({ animationDirection }: Props) => {
                   false
                 }
               />
-            )
+            );
           })}
       </div>
     </ResizableSlidePanel>
-  )
-}
+  );
+};

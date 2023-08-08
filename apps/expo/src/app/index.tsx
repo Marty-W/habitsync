@@ -1,16 +1,16 @@
-import React from "react"
-import { Button, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { Stack, useRouter } from "expo-router"
-import { FlashList } from "@shopify/flash-list"
+import React from "react";
+import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Stack, useRouter } from "expo-router";
+import { FlashList } from "@shopify/flash-list";
 
-import { api, type RouterOutputs } from "~/utils/api"
+import { api, type RouterOutputs } from "~/utils/api";
 
 const PostCard: React.FC<{
-  post: RouterOutputs["post"]["all"][number]
-  onDelete: () => void
+  post: RouterOutputs["post"]["all"][number];
+  onDelete: () => void;
 }> = ({ post, onDelete }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <View className="flex flex-row rounded-lg bg-white/10 p-4">
@@ -26,22 +26,22 @@ const PostCard: React.FC<{
         <Text className="font-bold uppercase text-pink-400">Delete</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const CreatePost: React.FC = () => {
-  const utils = api.useContext()
+  const utils = api.useContext();
 
-  const [title, setTitle] = React.useState("")
-  const [content, setContent] = React.useState("")
+  const [title, setTitle] = React.useState("");
+  const [content, setContent] = React.useState("");
 
   const { mutate, error } = api.post.create.useMutation({
     async onSuccess() {
-      setTitle("")
-      setContent("")
-      await utils.post.all.invalidate()
+      setTitle("");
+      setContent("");
+      await utils.post.all.invalidate();
     },
-  })
+  });
 
   return (
     <View className="mt-4">
@@ -75,23 +75,23 @@ const CreatePost: React.FC = () => {
           mutate({
             title,
             content,
-          })
+          });
         }}
       >
         <Text className="font-semibold text-white">Publish post</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const Index = () => {
-  const utils = api.useContext()
+  const utils = api.useContext();
 
-  const postQuery = api.post.all.useQuery()
+  const postQuery = api.post.all.useQuery();
 
   const deletePostMutation = api.post.delete.useMutation({
     onSettled: () => utils.post.all.invalidate(),
-  })
+  });
 
   return (
     <SafeAreaView className="bg-[#1F104A]">
@@ -129,7 +129,7 @@ const Index = () => {
         <CreatePost />
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;

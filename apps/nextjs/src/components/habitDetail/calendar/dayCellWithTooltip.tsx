@@ -1,18 +1,18 @@
-import { cva } from "class-variance-authority"
+import { cva } from "class-variance-authority";
 
-import { cn } from "~/utils/tailwind"
+import { cn } from "~/utils/tailwind";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "~/components/ui/tooltip"
+} from "~/components/ui/tooltip";
 
 export type DayCellWithTooltipVariant =
   | "notThisMonth"
   | "withTimestamp"
   | "extraStreakDay"
-  | "default"
+  | "default";
 
 const dayCellVariants = cva(
   "flex h-10 w-10 items-center justify-center rounded-full p-4 text-md select-none",
@@ -31,24 +31,24 @@ const dayCellVariants = cva(
       variant: "default",
     },
   },
-)
+);
 
 interface Props {
-  date: Date
-  variant?: DayCellVariant
+  date: Date;
+  variant?: DayCellVariant;
 }
 
 const DayCell = ({ date, variant = "default" }: Props) => {
   const getTooltipContent = (variant: DayCellVariant) => {
     switch (variant) {
       case "withTimestamp" || "notThisMonthWithTimestamp":
-        return "Successful day!"
+        return "Successful day!";
       case "extraStreakDay":
-        return "You have a streak going!"
+        return "You have a streak going!";
       default:
-        return "Failure day"
+        return "Failure day";
     }
-  }
+  };
 
   return (
     <TooltipProvider delayDuration={200}>
@@ -61,7 +61,7 @@ const DayCell = ({ date, variant = "default" }: Props) => {
         <TooltipContent>{getTooltipContent(variant)}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
-}
+  );
+};
 
-export default DayCell
+export default DayCell;
