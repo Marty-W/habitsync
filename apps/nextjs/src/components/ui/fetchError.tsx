@@ -1,9 +1,12 @@
+import type { QueryObserverResult } from "@tanstack/react-query";
 import { cn } from "~/utils/tailwind";
-import Spinner from "./spinner";
+import ClickSpinner from "./clickSpinner";
 
 interface Props {
   className?: string;
-  refetch: () => Promise<any>;
+  refetch: (options?: {
+    throwOnError?: boolean;
+  }) => Promise<QueryObserverResult>;
   isRefetching: boolean;
   children: React.ReactNode;
 }
@@ -17,11 +20,11 @@ const FetchError = ({ className, refetch, isRefetching, children }: Props) => {
     <div
       className={cn(
         "text-muted-foreground flex flex-col items-center justify-center",
-        className,
+        className
       )}
     >
       <button onClick={handleRedoClick} className="mb-3">
-        <Spinner isActive={isRefetching} className="h-8 w-8" />
+        <ClickSpinner isActive={isRefetching} className="h-8 w-8" />
       </button>
       {children}
     </div>

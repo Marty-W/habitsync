@@ -8,13 +8,11 @@ import DashboardHabit from "./dashboardHabit";
 const HabitList = () => {
   const allHabits = api.habit.getAll.useQuery(undefined, { retry: 0 });
 
-  //TODO  add loading state
-  //TODO check error state
-
   if (allHabits.isLoading) {
     return (
-      <div>
-        <Spinner />
+      <div className="flex flex-col items-center justify-center text-muted-foreground/40">
+        <span className="my-3 text-xl">Getting your habits...</span>
+        <Spinner size={90} />
       </div>
     );
   }
