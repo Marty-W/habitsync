@@ -1,6 +1,6 @@
-import baseConfig from "@habitsync/tailwind-config"
-import { type Config } from "tailwindcss"
-import { fontFamily } from "tailwindcss/defaultTheme"
+import baseConfig from "@habitsync/tailwind-config";
+import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 export default {
   presets: [baseConfig],
@@ -10,9 +10,12 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
+      padding: {
+        DEFAULT: "1.5rem",
+        sm: "2rem",
+        lg: "4rem",
+        xl: "5rem",
+        "2xl": "6rem",
       },
     },
     extend: {
@@ -86,4 +89,4 @@ export default {
       },
     },
   },
-} satisfies Config
+} satisfies Config;
