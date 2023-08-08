@@ -5,7 +5,7 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 export default {
   presets: [baseConfig],
   content: ["./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
-  plugins: [require("daisyui"), require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate")],
   darkMode: ["class"],
   theme: {
     container: {
