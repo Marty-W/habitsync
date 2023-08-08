@@ -1,11 +1,9 @@
-import { type NextPage } from "next"
-
 import HabitList from "~/components/dashboard/habitList"
 import SettingsButton from "~/components/settingsButton"
 import ThemeToggle from "~/components/ui/themeToggle"
 import useTimeSensitiveGreeting from "~/hooks/useTimeSensitiveGreeting"
 
-const Habits: NextPage = () => {
+const Habits = () => {
   const greeting = useTimeSensitiveGreeting()
 
   return (

@@ -1,9 +1,7 @@
-import React, { useState } from "react"
-
-import "chartjs-adapter-date-fns"
-
-import type { RouterOutputs } from "@habitsync/api"
-import { getLabelsForCompletionGraph } from "@habitsync/lib"
+import React, { useState } from "react";
+import "chartjs-adapter-date-fns";
+import type { RouterOutputs } from "@habitsync/api";
+import { getLabelsForCompletionGraph } from "@habitsync/lib";
 import {
   BarElement,
   CategoryScale,
@@ -13,12 +11,11 @@ import {
   TimeScale,
   Title,
   Tooltip,
-} from "chart.js"
-import { BarChart2 } from "lucide-react"
-import { Bar } from "react-chartjs-2"
-
-import TabToggle from "../ui/tabToggle"
-import CompletionsGraphSelect from "./completionsGraphSelect"
+} from "chart.js";
+import { BarChart2 } from "lucide-react";
+import { Bar } from "react-chartjs-2";
+import TabToggle from "../ui/tabToggle";
+import CompletionsGraphSelect from "./completionsGraphSelect";
 
 ChartJS.register(
   Tooltip,
@@ -27,30 +24,30 @@ ChartJS.register(
   LinearScale,
   CategoryScale,
   Title,
-  TimeScale,
-)
+  TimeScale
+);
 
-type Props = {
-  timestamps: RouterOutputs["timestamp"]["getSummaryCounts"]
+interface Props {
+  timestamps: RouterOutputs["timestamp"]["getSummaryCounts"];
 }
 
-export type ActivePeriod = "week" | "month" | "year"
+export type ActivePeriod = "week" | "month" | "year";
 
 const CompletionsGraph = ({ timestamps }: Props) => {
-  const [toggledPeriod, setTogglePeriod] = useState<ActivePeriod>("week")
+  const [toggledPeriod, setTogglePeriod] = useState<ActivePeriod>("week");
 
   const handlePeriodChange = (period: ActivePeriod) => {
-    setTogglePeriod(period)
-  }
+    setTogglePeriod(period);
+  };
 
-  const { groupedByWeek, groupedByMonth, groupedByYear } = timestamps
+  const { groupedByWeek, groupedByMonth, groupedByYear } = timestamps;
 
   const activeOption =
     toggledPeriod === "week"
       ? groupedByWeek
       : toggledPeriod === "month"
       ? groupedByMonth
-      : groupedByYear
+      : groupedByYear;
 
   const data = {
     labels: getLabelsForCompletionGraph(timestamps, toggledPeriod),
@@ -61,7 +58,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
         fill: false,
       },
     ],
-  }
+  };
 
   return (
     <>
@@ -106,7 +103,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
               },
               ticks: {
                 callback: (value) => {
-                  return value.toString()
+                  return value.toString();
                 },
                 font: {
                   size: 13,
@@ -139,12 +136,12 @@ const CompletionsGraph = ({ timestamps }: Props) => {
               callbacks: {
                 title: (context) => {
                   if (toggledPeriod === "week") {
-                    return `Week ${context[0]?.label}`
+                    return `Week ${context[0]?.label}`;
                   }
-                  return `${context[0]?.label}`
+                  return `${context[0]?.label}`;
                 },
                 label: (context) => {
-                  return `Completed ${context.parsed.y} times`
+                  return `Completed ${context.parsed.y} times`;
                 },
               },
             },
@@ -156,7 +153,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
         data={data}
       />
     </>
-  )
-}
+  );
+};
 
-export default CompletionsGraph
+export default CompletionsGraph;

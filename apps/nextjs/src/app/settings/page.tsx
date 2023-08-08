@@ -1,4 +1,4 @@
-import type { NextPage } from "next"
+'use client'
 import Link from "next/link"
 import { signOut } from "next-auth/react"
 
@@ -9,7 +9,7 @@ import GoBackButton from "~/components/ui/goBackButton"
 import InfoDialog from "~/components/ui/infoDialog"
 import ThemeSelect from "~/components/ui/themeSelect"
 
-const Settings: NextPage = () => {
+const Settings = () => {
   return (
     <div className="cotainer flex h-screen min-h-screen flex-col px-4">
       <div className="my-5 grid h-1/5 grid-rows-2">

@@ -1,3 +1,4 @@
+'use client'
 import { api, type RouterOutputs } from "~/utils/trpc"
 import SubSettingsPage from "~/components/settings/subSettingsPage"
 import SyncList from "~/components/settings/syncList"

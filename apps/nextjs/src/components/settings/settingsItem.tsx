@@ -1,20 +1,19 @@
-import type { ComponentPropsWithoutRef, ElementType } from "react"
-import { ChevronRight } from "lucide-react"
+import { cn } from "~/utils/tailwind";
+import { ChevronRight } from "lucide-react";
+import type { ComponentPropsWithoutRef, ElementType } from "react";
 
-import { cn } from "~/utils/tailwind"
-
-const ButtonDefaultAsType = "button"
-type ButtonDefaultAsType = typeof ButtonDefaultAsType
+const ButtonDefaultAsType = "button";
+type ButtonDefaultAsType = typeof ButtonDefaultAsType;
 
 type ItemOwnProps<E extends ElementType> = {
-  as?: E
-  title: string
-  className?: string
-  children?: React.ReactNode
-}
+  as?: E;
+  title: string;
+  className?: string;
+  children?: React.ReactNode;
+};
 
 type ItemProps<E extends ElementType> = ItemOwnProps<E> &
-  Omit<ComponentPropsWithoutRef<E>, keyof ItemOwnProps<E>>
+  Omit<ComponentPropsWithoutRef<E>, keyof ItemOwnProps<E>>;
 
 const SettingsItem = <E extends ElementType = ButtonDefaultAsType>({
   as,
@@ -23,7 +22,7 @@ const SettingsItem = <E extends ElementType = ButtonDefaultAsType>({
   children,
   ...delegated
 }: ItemProps<E>) => {
-  const Tag = as || ButtonDefaultAsType
+  const Tag = as || ButtonDefaultAsType;
 
   return (
     <div className="p-3">
@@ -36,7 +35,7 @@ const SettingsItem = <E extends ElementType = ButtonDefaultAsType>({
         {children}
       </Tag>
     </div>
-  )
-}
+  );
+};
 
-export default SettingsItem
+export default SettingsItem;

@@ -1,7 +1,5 @@
-import { useState, type ReactNode } from "react"
-import { useRouter } from "next/router"
+"use client";
 
-import { api } from "~/utils/trpc"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,32 +10,36 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "~/components/ui/alertDialog"
-import Spinner from "../ui/spinner"
-import SettingsItem from "./settingsItem"
+} from "~/components/ui/alertDialog";
+import { api } from "~/utils/trpc";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import type { ReactNode } from "react";
+import Spinner from "../ui/spinner";
+import SettingsItem from "./settingsItem";
 
 const DeleteAccountItem = () => {
-  const router = useRouter()
-  const [mutationOutput, setMutationOutput] = useState<ReactNode | null>(null)
+  const router = useRouter();
+  const [mutationOutput, setMutationOutput] = useState<ReactNode | null>(null);
   const deleteAcc = api.acc.deleteAcc.useMutation({
     onMutate: () => {
-      setMutationOutput(<Spinner isActive />)
+      setMutationOutput(<Spinner isActive />);
     },
     onSuccess: () => {
-      setMutationOutput(<span>Acount deleted. Redirecting...</span>)
+      setMutationOutput(<span>Acount deleted. Redirecting...</span>);
       setTimeout(() => {
-        void router.push("/")
-      }, 2000)
+        void router.push("/");
+      }, 2000);
     },
     onError: (err) => {
-      setMutationOutput(<span>Something went wrong: {err.message}</span>)
+      setMutationOutput(<span>Something went wrong: {err.message}</span>);
     },
-  })
+  });
 
   const handleAccDelete = (e: React.MouseEvent) => {
-    e.preventDefault()
-    deleteAcc.mutate()
-  }
+    e.preventDefault();
+    deleteAcc.mutate();
+  };
 
   return (
     <AlertDialog>
@@ -68,7 +70,7 @@ const DeleteAccountItem = () => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
-}
+  );
+};
 
-export default DeleteAccountItem
+export default DeleteAccountItem;

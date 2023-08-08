@@ -1,14 +1,15 @@
-import { useRouter } from "next/router"
-import { ChevronLeft } from "lucide-react"
+"use client";
 
-import { Button } from "./button"
+import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Button } from "./button";
 
 interface Props {
-  className?: string
-  iconSize?: number
+  className?: string;
+  iconSize?: number;
 }
 const GoBackButton = ({ className, iconSize = 24 }: Props) => {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <Button
       variant="ghost"
@@ -18,7 +19,7 @@ const GoBackButton = ({ className, iconSize = 24 }: Props) => {
     >
       <ChevronLeft size={iconSize} />
     </Button>
-  )
-}
+  );
+};
 
-export default GoBackButton
+export default GoBackButton;

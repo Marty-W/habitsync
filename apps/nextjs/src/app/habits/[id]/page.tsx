@@ -1,19 +1,27 @@
+'use client'
 import NextError from "next/error"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { SiTodoist } from "react-icons/si"
 
 import { api } from "~/utils/trpc"
-import { BackButton } from "~/components/backButton"
 import CardWithLoader from "~/components/habitDetail/cardWithLoader"
 import DetailHeader from "~/components/habitDetail/detailHeader"
-import SettingsButton from "~/components/settingsButton"
 import { Button } from "~/components/ui/button"
-import GoBackButton from "~/components/ui/goBackButton"
 
-const HabitDetail = () => {
-  const id = useRouter().query.id as string
-  const name = useRouter().query.name as string
+interface Props {
+    params: {
+        id: string
+    }
+    searchParams: {
+        name: string
+    }
+}
+
+
+const HabitDetail = ({params, searchParams}: Props) => {
+    // how to get these typed?
+  const {id} = params
+  const {name} = searchParams
   const calendarData = api.timestamp.getAllWithStreakDays.useQuery({
     habitId: id,
   })
