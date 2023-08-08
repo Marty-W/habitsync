@@ -1,11 +1,7 @@
-import { isBefore } from "date-fns";
-
 import { normalizeDate } from "@habitsync/lib";
-
 import useCompletionPillsData from "~/hooks/useCompletionPillsData";
 import usePills from "~/hooks/usePills";
-import FetchError from "../ui/fetchError";
-import { Skeleton } from "../ui/loadingSkeleton";
+import { isBefore, startOfDay } from "date-fns";
 import DayCompletionStatus from "./dayCompletionStatus";
 
 interface Props {
@@ -16,32 +12,20 @@ const CompletionsRow = ({ habitId }: Props) => {
   const { ref, pills } = usePills();
   const { timestamps, habitDetail } = useCompletionPillsData({ habitId });
 
-  const refetchQueries = async () => {
-    await Promise.all([timestamps.refetch(), habitDetail.refetch()]);
-  };
+  if (timestamps.isLoading || habitDetail.isLoading) {
+    return null;
+  }
 
-  if (timestamps.isLoading || habitDetail.isLoading || !pills) {
+  if (timestamps.error ?? habitDetail.error) {
     return (
-      <div className="flex">
-        {Array.from(Array(7).keys()).map((i) => (
-          <Skeleton
-            key={i}
-            className="bg-card-foreground/10 mx-1 h-8 w-[10px] rounded-lg"
-          />
-        ))}
-      </div>
+      <span className="text-muted-foreground">
+        There was an error fetching your completions.
+      </span>
     );
   }
 
-  if (timestamps.error || habitDetail.error) {
-    return (
-      <FetchError
-        refetch={refetchQueries}
-        isRefetching={timestamps.isRefetching || habitDetail.isRefetching}
-      >
-        <span>Try again</span>
-      </FetchError>
-    );
+  if (timestamps.data.timestamps.size === 0) {
+    return <span className="text-muted-foreground">No completions yet</span>;
   }
 
   return (
@@ -57,10 +41,7 @@ const CompletionsRow = ({ habitId }: Props) => {
                 ? timestamps.data.extraStreakDays.has(normalizeDate(day))
                 : false
             }
-            isBeforeHabitStarted={isBefore(
-              day,
-              new Date(habitDetail.data.createdAt),
-            )}
+            isBlank={isBefore(day, startOfDay(habitDetail.data.createdAt))}
           />
         );
       })}

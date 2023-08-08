@@ -1,6 +1,6 @@
-import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "~/utils/tailwind";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 
 const pillVariants = cva("mx-1 h-7 w-[10px] rounded-lg", {
   variants: {
@@ -8,7 +8,7 @@ const pillVariants = cva("mx-1 h-7 w-[10px] rounded-lg", {
       success: "bg-success",
       void: "bg-void",
       failure: "bg-destructive",
-      blank: "bg-muted border",
+      blank: "bg-muted-foreground/10",
     },
   },
 });

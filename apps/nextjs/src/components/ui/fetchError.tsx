@@ -6,7 +6,7 @@ interface Props {
   className?: string;
   refetch: (options?: {
     throwOnError?: boolean;
-  }) => Promise<QueryObserverResult>;
+  }) => Promise<QueryObserverResult> | Promise<void>;
   isRefetching: boolean;
   children: React.ReactNode;
 }
