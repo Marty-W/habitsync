@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Card, Grid } from '@tremor/react'
+import { Card, Flex, Grid } from '@tremor/react'
 import { SiTodoist } from 'react-icons/si'
 
 import Calendar from '~/components/habitDetail/calendar/calendar'
@@ -55,8 +55,10 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 				<HabitDescription desc={description.data} />
 				<CompletionsGraph timestamps={timestampSummaryCounts.data} />
 				<Calendar data={calendarData.data} />
-				{/* <TotalCompletions completions={totalCompletions.data} /> */}
-				{/* <SuccessRate rate={successRate.data} /> */}
+				<Flex>
+					<TotalCompletions completions={totalCompletions.data} />
+					<SuccessRate rate={successRate.data} />
+				</Flex>
 				{/* <Streaks streaks={streaks.data} /> */}
 				<Button variant="link">
 					<Link
