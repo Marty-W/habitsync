@@ -1,12 +1,15 @@
 'use client'
 
-import NextError from 'next/error'
 import Link from 'next/link'
 import { SiTodoist } from 'react-icons/si'
 
-import CardWithLoader from '~/components/habitDetail/cardWithLoader'
+import Calendar from '~/components/habitDetail/calendar/calendar'
+import TotalCompletions from '~/components/habitDetail/completions'
 import CompletionsGraph from '~/components/habitDetail/completionsGraph'
 import DetailHeader from '~/components/habitDetail/detailHeader'
+import HabitDescription from '~/components/habitDetail/habitDescription'
+import Streaks from '~/components/habitDetail/streaks'
+import SuccessRate from '~/components/habitDetail/successRate'
 import { Button } from '~/components/ui/button'
 import useHabitDetailData from '~/hooks/useHabitDetailData'
 
@@ -20,7 +23,6 @@ interface Props {
 }
 
 const HabitDetail = ({ params, searchParams }: Props) => {
-	// how to get these typed?
 	const { id } = params
 	const { name } = searchParams
 
@@ -34,71 +36,26 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 	} = useHabitDetailData(id)
 
 	//TODO refactor this, only placeholder
-	if (!timestampSummaryCounts.isSuccess) {
+	if (
+		!timestampSummaryCounts.isSuccess ||
+		!successRate.isSuccess ||
+		!calendarData.isSuccess ||
+		!streaks.isSuccess ||
+		!description.isSuccess ||
+		!totalCompletions.isSuccess
+	) {
 		return null
 	}
-
-	//TODO check wth is this
-	// if (description.isError || calendarData.isError) {
-	//   const statusCode =
-	//     (description.error?.data?.httpStatus ?? 500) ||
-	//     (calendarData.error?.data?.httpStatus ?? 500);
-	//
-	//   const title = description.error?.message || calendarData.error?.message;
-	//
-	//   return <NextError statusCode={statusCode} title={title} />;
-	// }
 
 	return (
 		<div className="flex min-h-screen flex-col px-7 py-8">
 			<DetailHeader title={name} />
-			<div>
-				<CompletionsGraph timestamps={timestampSummaryCounts.data} />
-			</div>
-			{/* <CardWithLoader */}
-			{/*   cardType="completionGraph" */}
-			{/*   lineCount={8} */}
-			{/*   isLoadingSuccess={timestampSummaryCounts.isSuccess} */}
-			{/*   className="mb-8" */}
-			{/*   data={timestampSummaryCounts.data} */}
-			{/* /> */}
-			{/* <div className="grid grid-cols-2 gap-x-5"> */}
-			{/*   <CardWithLoader */}
-			{/*     cardType="completion" */}
-			{/*     data={totalCompletions.data} */}
-			{/*     isLoadingSuccess={totalCompletions.isSuccess} */}
-			{/*     lineCount={3} */}
-			{/*     className="mb-8" */}
-			{/*   /> */}
-			{/*   <CardWithLoader */}
-			{/*     cardType="successRate" */}
-			{/*     data={successRate.data} */}
-			{/*     isLoadingSuccess={successRate.isSuccess} */}
-			{/*     lineCount={3} */}
-			{/*     className="mb-8" */}
-			{/*   /> */}
-			{/* </div> */}
-			{/* <CardWithLoader */}
-			{/*   data={calendarData.data} */}
-			{/*   lineCount={8} */}
-			{/*   cardType="calendar" */}
-			{/*   isLoadingSuccess={calendarData.isSuccess} */}
-			{/*   className="mb-8" */}
-			{/* /> */}
-			{/* <CardWithLoader */}
-			{/*   data={streaks.data} */}
-			{/*   lineCount={6} */}
-			{/*   cardType="streak" */}
-			{/*   isLoadingSuccess={streaks.isSuccess} */}
-			{/*   className="mb-8" */}
-			{/* /> */}
-			{/* <CardWithLoader */}
-			{/*   cardType="habitDescription" */}
-			{/*   data={description.data} */}
-			{/*   isLoadingSuccess={description.isSuccess} */}
-			{/*   lineCount={4} */}
-			{/*   className="mb-8" */}
-			{/* /> */}
+			<HabitDescription desc={description.data} />
+			<CompletionsGraph timestamps={timestampSummaryCounts.data} />
+			<TotalCompletions completions={totalCompletions.data} />
+			<SuccessRate rate={successRate.data} />
+			<Calendar data={calendarData.data} />
+			<Streaks streaks={streaks.data} />
 			<Button variant="link">
 				<Link
 					href={`${description.data?.url}`}
