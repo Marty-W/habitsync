@@ -23,12 +23,12 @@ const dayCellVariants = cva(
 		variants: {
 			variant: {
 				default: 'text-muted-foreground',
-				notThisMonth: 'text-muted-foreground/10',
-				notThisMonthWithTimestamp: 'text-accent/80',
-				withTimestamp: 'bg-accent text-foreground',
-				extraStreakDay: 'bg-accent/30',
-				today: 'ring-2',
-				todayWithTimestamp: 'ring-2 bg-accent text-foreground',
+				notThisMonth: 'text-blue-50',
+				notThisMonthWithTimestamp: 'text-blue-200',
+				withTimestamp: 'bg-tremor-brand text-blue-50',
+				extraStreakDay: 'bg-tremor-muted',
+				today: 'ring-4',
+				todayWithTimestamp: 'ring-2 bg-tremor-brand text-foreground',
 			},
 		},
 		defaultVariants: {

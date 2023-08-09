@@ -54,9 +54,9 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 			<Grid numItemsMd={2} numItemsLg={3}>
 				<HabitDescription desc={description.data} />
 				<CompletionsGraph timestamps={timestampSummaryCounts.data} />
+				<Calendar data={calendarData.data} />
 				{/* <TotalCompletions completions={totalCompletions.data} /> */}
 				{/* <SuccessRate rate={successRate.data} /> */}
-				{/* <Calendar data={calendarData.data} /> */}
 				{/* <Streaks streaks={streaks.data} /> */}
 				<Button variant="link">
 					<Link
