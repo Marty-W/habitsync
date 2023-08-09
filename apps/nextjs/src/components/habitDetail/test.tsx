@@ -1,9 +1,9 @@
 interface Props {
-  title: string;
+	title: string
 }
 
 const TestComponent = ({ title }: Props) => {
-  return <h1>hellother</h1>;
-};
+	return <h1>hellother</h1>
+}
 
-export default TestComponent;
+export default TestComponent
