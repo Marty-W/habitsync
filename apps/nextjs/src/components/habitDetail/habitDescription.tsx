@@ -1,15 +1,16 @@
-import { type RouterOutputs } from '~/utils/trpc'
-import Tag from '../ui/tag'
+import { Badge, Card } from '@tremor/react'
+
+import type { RouterOutputs } from '~/utils/trpc'
 import RecurrenceTag from './recurrenceTag'
 
-type Props = {
+interface Props {
 	desc: RouterOutputs['habit']['getDetail']
 }
 
 const HabitDescription = ({ desc }: Props) => (
-	<div className="flex flex-col items-center justify-center">
+	<Card>
 		<div className="p-2">
-			<p className="text-card-foreground flex-1 text-lg">{desc.description}</p>
+			<p className="text-card-foreground flex-1 text-2xl">{desc.description}</p>
 		</div>
 		<div className="text-card-foreground/40 p-2">
 			<RecurrenceTag
@@ -18,12 +19,16 @@ const HabitDescription = ({ desc }: Props) => (
 				days={desc.recurrenceDays}
 			/>
 		</div>
-		<div className="flex justify-center">
+		<div className="p-2">
 			{desc.labels.map((label) => {
-				return <Tag key={label} tag={label} />
+				return (
+					<Badge key={label} size="xs" color="emerald" className="mr-1">
+						{label}
+					</Badge>
+				)
 			})}
 		</div>
-	</div>
+	</Card>
 )
 
 export default HabitDescription

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { Card, Grid } from '@tremor/react'
 import { SiTodoist } from 'react-icons/si'
 
 import Calendar from '~/components/habitDetail/calendar/calendar'
@@ -50,22 +51,24 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 	return (
 		<div className="flex min-h-screen flex-col px-7 py-8">
 			<DetailHeader title={name} />
-			<HabitDescription desc={description.data} />
-			<CompletionsGraph timestamps={timestampSummaryCounts.data} />
-			<TotalCompletions completions={totalCompletions.data} />
-			<SuccessRate rate={successRate.data} />
-			<Calendar data={calendarData.data} />
-			<Streaks streaks={streaks.data} />
-			<Button variant="link">
-				<Link
-					href={`${description.data?.url}`}
-					target="_blank"
-					className="mt-4 flex items-center justify-center"
-				>
-					<SiTodoist size="1rem" className="mr-1" />
-					<span>Open in Todoist</span>
-				</Link>
-			</Button>
+			<Grid numItemsMd={2} numItemsLg={3}>
+				<HabitDescription desc={description.data} />
+				{/* <CompletionsGraph timestamps={timestampSummaryCounts.data} /> */}
+				{/* <TotalCompletions completions={totalCompletions.data} /> */}
+				{/* <SuccessRate rate={successRate.data} /> */}
+				{/* <Calendar data={calendarData.data} /> */}
+				{/* <Streaks streaks={streaks.data} /> */}
+				<Button variant="link">
+					<Link
+						href={`${description.data?.url}`}
+						target="_blank"
+						className="mt-4 flex items-center justify-center"
+					>
+						<SiTodoist size="1rem" className="mr-1" />
+						<span>Open in Todoist</span>
+					</Link>
+				</Button>
+			</Grid>
 		</div>
 	)
 }
