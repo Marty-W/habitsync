@@ -53,7 +53,7 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 			<DetailHeader title={name} />
 			<Grid numItemsMd={2} numItemsLg={3}>
 				<HabitDescription desc={description.data} />
-				{/* <CompletionsGraph timestamps={timestampSummaryCounts.data} /> */}
+				<CompletionsGraph timestamps={timestampSummaryCounts.data} />
 				{/* <TotalCompletions completions={totalCompletions.data} /> */}
 				{/* <SuccessRate rate={successRate.data} /> */}
 				{/* <Calendar data={calendarData.data} /> */}

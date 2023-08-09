@@ -1,9 +1,15 @@
 import { TRPCError } from '@trpc/server'
-import { format, startOfMonth, startOfWeek, startOfYear } from 'date-fns'
+import {
+	endOfWeek,
+	format,
+	startOfMonth,
+	startOfWeek,
+	startOfYear,
+} from 'date-fns'
 import { z } from 'zod'
 
 import { getUniqueStringDates, normalizeDate } from '@habitsync/lib/src/date'
-import { type Weekday } from '@habitsync/lib/src/types'
+import type { Weekday } from '@habitsync/lib/src/types'
 
 import {
 	getExtraStreakDaysForSpecificDays,
@@ -159,22 +165,49 @@ export const timestampRouter = createTRPCRouter({
 
 			uniqueStringDates.forEach((timestamp) => {
 				//FIX: now the start of week is set to Monday, maybe it would be worth it to send locale from the client as input
-				const weekKey = format(
+				const weekKeyStart = format(
 					startOfWeek(new Date(timestamp), { weekStartsOn: 1 }),
 					'yyyy-MM-dd',
 				)
-				const monthKey = format(startOfMonth(new Date(timestamp)), 'yyyy-MM')
+				const weekKeyEnd = format(
+					endOfWeek(new Date(weekKeyStart), { weekStartsOn: 1 }),
+					'yyyy-MM-dd',
+				)
+
+				const weekKey = `${format(new Date(weekKeyStart), 'd. M.')} - ${format(
+					new Date(weekKeyEnd),
+					'd. M.',
+				)}`
+
+				const monthKey = format(startOfMonth(new Date(timestamp)), 'MMM yyyy')
 				const yearKey = format(startOfYear(new Date(timestamp)), 'yyyy')
 
-				groupedByWeek[weekKey] = (groupedByWeek[weekKey] || 0) + 1
-				groupedByMonth[monthKey] = (groupedByMonth[monthKey] || 0) + 1
-				groupedByYear[yearKey] = (groupedByYear[yearKey] || 0) + 1
+				groupedByWeek[weekKey] = (groupedByWeek[weekKey] ?? 0) + 1
+				groupedByMonth[monthKey] = (groupedByMonth[monthKey] ?? 0) + 1
+				groupedByYear[yearKey] = (groupedByYear[yearKey] ?? 0) + 1
 			})
 
-			return {
-				groupedByWeek,
+			const transformForChart = (
+				data: Record<string, number>,
+				label: string,
+			) => {
+				return Object.entries(data).map(([key, value]) => ({
+					name: key,
+					[label]: value,
+				}))
+			}
+
+			const weekChartData = transformForChart(groupedByWeek, 'Week completions')
+			const monthChartData = transformForChart(
 				groupedByMonth,
-				groupedByYear,
+				'Month completions',
+			)
+			const yearChartData = transformForChart(groupedByYear, 'Year completions')
+
+			return {
+				weekChartData,
+				monthChartData,
+				yearChartData,
 			}
 		}),
 	deleteMany: protectedProcedure
