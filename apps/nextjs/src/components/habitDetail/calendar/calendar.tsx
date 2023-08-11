@@ -13,11 +13,12 @@ import WeekRow from './weekRow'
 
 interface Props {
 	data: RouterOutputs['timestamp']['getAllWithStreakDays']
+	startDate: Date
 }
 
 export type AnimationDirection = 'left' | 'right' | null
 
-const Calendar = ({ data }: Props) => {
+const Calendar = ({ data, startDate }: Props) => {
 	const { year, month, calendarData, handleAddMonth, handleSubMonth } =
 		useCalendarData()
 	const [animationDirection, setAnimationDirection] =
@@ -48,13 +49,15 @@ const Calendar = ({ data }: Props) => {
 				/>
 				<WeekRow />
 				<ResizableSlidePanel duration={0.5} slideDirection={animationDirection}>
-					<div className="grid flex-1 grid-cols-7 place-items-center gap-y-4">
+					<div className="grid flex-1 grid-cols-7 place-items-center gap-y-4 pt-2">
 						{calendarData.map((dateStr, i) => {
 							const date = new Date(dateStr)
 							const isThisMonth = month === date.getMonth()
 							const isSuccessfull = timestamps.has(normalizeDate(date))
 							const isExtraStreakDay = extraStreakDays?.has(normalizeDate(date))
 							const isToday = normalizeDate(date) === normalizeDate(new Date())
+							const isStartDay =
+								normalizeDate(date) === normalizeDate(startDate)
 							const isTodayWithTimestamp = isToday && isSuccessfull
 
 							// Outside this month
@@ -87,6 +90,10 @@ const Calendar = ({ data }: Props) => {
 
 							if (isExtraStreakDay) {
 								return <DayCell date={date} key={i} variant="extraStreakDay" />
+							}
+
+							if (isStartDay) {
+								return <DayCell date={date} key={i} variant="startDay" />
 							}
 
 							return <DayCell date={date} key={i} />

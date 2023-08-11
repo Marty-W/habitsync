@@ -15,6 +15,7 @@ export type DayCellVariant =
 	| 'extraStreakDay'
 	| 'today'
 	| 'todayWithTimestamp'
+	| 'startDay'
 	| 'default'
 
 const dayCellVariants = cva(
@@ -26,9 +27,10 @@ const dayCellVariants = cva(
 				notThisMonth: 'text-blue-50',
 				notThisMonthWithTimestamp: 'text-blue-200',
 				withTimestamp: 'bg-tremor-brand text-blue-50',
-				extraStreakDay: 'bg-tremor-muted',
+				extraStreakDay: 'bg-green-200',
 				today: 'ring-4',
-				todayWithTimestamp: 'ring-2 bg-tremor-brand text-foreground',
+				todayWithTimestamp: 'ring-2 bg-tremor-brand text-blue-50',
+				startDay: 'ring-4 ring-green-200',
 			},
 		},
 		defaultVariants: {
@@ -51,14 +53,14 @@ const DayCell = ({ date, variant = 'default' }: Props) => {
 				return 'Successful day!'
 			case 'extraStreakDay':
 				return 'You have a streak going!'
+			case 'startDay':
+				return 'You started this habit!'
+			case 'today':
+				return 'Today'
 		}
 	}
 
-	if (
-		variant === 'default' ||
-		variant === 'notThisMonth' ||
-		variant === 'today'
-	) {
+	if (variant === 'default' || variant === 'notThisMonth') {
 		return (
 			<div className={cn(dayCellVariants({ variant }))}>
 				<span>{date.getDate()}</span>

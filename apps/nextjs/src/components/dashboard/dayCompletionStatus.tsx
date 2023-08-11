@@ -18,7 +18,7 @@ const getPillVariant = (variant: PillInput) => {
 		case variant.isSuccessful:
 			return 'success'
 		case variant.isExtraStreakDay:
-			return 'void'
+			return 'extraStreakDay'
 		default:
 			return 'failure'
 	}
@@ -40,7 +40,7 @@ const getTooltipContent = (variant: PillInput) => {
 interface Props {
 	date: Date
 	isSuccessful: boolean
-	isExtraStreakDay?: boolean
+	isExtraStreakDay: boolean
 	isBlank: boolean
 }
 
