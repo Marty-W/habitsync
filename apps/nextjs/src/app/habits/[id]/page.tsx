@@ -59,7 +59,7 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 					<TotalCompletions completions={totalCompletions.data} />
 					<SuccessRate rate={successRate.data} />
 				</Flex>
-				{/* <Streaks streaks={streaks.data} /> */}
+				<Streaks streaks={streaks.data} />
 				<Button variant="link">
 					<Link
 						href={`${description.data?.url}`}
