@@ -10,6 +10,7 @@ import CompletionsGraph from '~/components/habitDetail/completionsGraph'
 import DetailHeader from '~/components/habitDetail/detailHeader'
 import HabitDescription from '~/components/habitDetail/habitDescription'
 import Streaks from '~/components/habitDetail/streaks'
+import SuccessLineGraph from '~/components/habitDetail/successLineGraph'
 import SuccessRate from '~/components/habitDetail/successRate'
 import { Button } from '~/components/ui/button'
 import useHabitDetailData from '~/hooks/useHabitDetailData'
@@ -34,6 +35,7 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 		totalCompletions,
 		successRate,
 		timestampSummaryCounts,
+		habitSmoothingData,
 	} = useHabitDetailData(id)
 
 	//TODO refactor this, only placeholder
@@ -43,7 +45,8 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 		!calendarData.isSuccess ||
 		!streaks.isSuccess ||
 		!description.isSuccess ||
-		!totalCompletions.isSuccess
+		!totalCompletions.isSuccess ||
+		!habitSmoothingData.isSuccess
 	) {
 		return null
 	}
@@ -55,11 +58,15 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 				<Col>
 					<HabitDescription desc={description.data} />
 				</Col>
+				<SuccessLineGraph data={habitSmoothingData.data} />
 				<Col numColSpanLg={2}>
 					<CompletionsGraph timestamps={timestampSummaryCounts.data} />
 				</Col>
 				<Col numColSpanLg={3}>
-					<Calendar data={calendarData.data} />
+					<Calendar
+						data={calendarData.data}
+						startDate={description.data.createdAt}
+					/>
 				</Col>
 				<Col numColSpanLg={2}>
 					<Streaks streaks={streaks.data} />

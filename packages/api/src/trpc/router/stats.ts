@@ -1,14 +1,32 @@
 import { TRPCError } from '@trpc/server'
-import { startOfDay } from 'date-fns'
+import {
+	differenceInCalendarDays,
+	eachDayOfInterval,
+	endOfYesterday,
+	isSaturday,
+	isSunday,
+	isWeekend,
+	startOfDay,
+	subDays,
+} from 'date-fns'
 import { z } from 'zod'
 
-import { type Weekday } from '@habitsync/lib/src/types'
+import type { Timestamp } from '@habitsync/db'
+import { normalizeDate } from '@habitsync/lib'
+import type { Weekday } from '@habitsync/lib/src/types'
 
 import {
+	getHabitSmoothing,
 	getNumberOfDaysInInterval,
 	getNumberOfTimestampsInInterval,
 	getSuccessRate,
+	getWeekdayIndexes,
 } from '../../common/recurrence'
+import {
+	getExtraStreakDaysForSpecificDays,
+	getExtraStreakDaysForStepDays,
+	getExtraStreakDaysForWorkdays,
+} from '../../common/streaks'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 // TODO Check if there is a possibility to make sure these are in date format (or simply use date?)
@@ -80,5 +98,91 @@ export const statsRouter = createTRPCRouter({
 			)
 
 			return getSuccessRate(numOfTimestampsInInterval, numOfDaysInInterval)
+		}),
+	getExpSmoothingSuccessRate: protectedProcedure
+		.input(
+			z.object({
+				habitId: z.string(),
+			}),
+		)
+		.query(async ({ ctx, input }) => {
+			const { habitId } = input
+
+			const habit = await ctx.prisma.habit.findUnique({
+				where: {
+					id: habitId,
+				},
+				select: {
+					timestamps: true,
+					createdAt: true,
+					recurrenceType: true,
+					recurrenceStep: true,
+					recurrenceDays: true,
+				},
+			})
+
+			if (!habit) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'Habit not found',
+				})
+			}
+
+			const completionDates = habit.timestamps.map((timestamp) =>
+				normalizeDate(timestamp.time),
+			)
+
+			// get every day of interval  and prefill with 0 (for the smoothing alg)
+			const everyDaySinceHabitStarted = eachDayOfInterval({
+				start: new Date(habit.createdAt),
+				end: endOfYesterday(),
+			}).map((date) => ({
+				date,
+				value: completionDates.includes(normalizeDate(date)) ? 1 : 0,
+			}))
+
+			if (habit.recurrenceType === 'every_day') {
+				return getHabitSmoothing(
+					everyDaySinceHabitStarted,
+					new Date(habit.createdAt),
+					{ alpha: 0.3, warmupDays: 30 },
+				)
+			} else if (habit.recurrenceType === 'every_workday') {
+				const timestampsOnly = habit.timestamps.map(
+					(timestamp) => timestamp.time,
+				)
+				const extraStreakDays = getExtraStreakDaysForWorkdays(timestampsOnly)
+				return getHabitSmoothing(
+					everyDaySinceHabitStarted,
+					new Date(habit.createdAt),
+					{ alpha: 0.3, warmupDays: 30, extraStreakDays },
+				)
+			} else if (habit.recurrenceType === 'every_x_days') {
+				const timestampsOnly = habit.timestamps.map(
+					(timestamp) => timestamp.time,
+				)
+				const extraStreakDays = getExtraStreakDaysForStepDays(
+					timestampsOnly,
+					habit.recurrenceStep!,
+				)
+				return getHabitSmoothing(
+					everyDaySinceHabitStarted,
+					new Date(habit.createdAt),
+					{ alpha: 0.3, warmupDays: 30, extraStreakDays },
+				)
+			} else if (habit.recurrenceType === 'specific_days') {
+				const timestampsOnly = habit.timestamps.map(
+					(timestamp) => timestamp.time,
+				)
+				const extraStreakDays = getExtraStreakDaysForSpecificDays(
+					timestampsOnly,
+					habit.recurrenceDays as Weekday[],
+				)
+				return getHabitSmoothing(
+					everyDaySinceHabitStarted,
+					new Date(habit.createdAt),
+					{ alpha: 0.3, warmupDays: 30, extraStreakDays },
+				)
+			}
 		}),
 })

@@ -35,10 +35,9 @@ const CompletionsGraph = ({ timestamps }: Props) => {
 							categories={['Week completions']}
 							allowDecimals={false}
 							maxValue={7}
-							autoMinValue
 						/>
 					</TabPanel>
-					<TabPanel className="h-full w-full">
+					<TabPanel>
 						<BarChart
 							data={monthChartData}
 							index="name"
@@ -46,7 +45,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
 							allowDecimals={false}
 						/>
 					</TabPanel>
-					<TabPanel className="h-full w-full">
+					<TabPanel>
 						<BarChart
 							data={yearChartData}
 							index="name"

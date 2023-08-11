@@ -1,19 +1,23 @@
 // FIX
-import { type Timestamp } from '@prisma/client'
-import { eachDayOfInterval, isWeekend, isWithinInterval } from 'date-fns'
+import type { Habit, Timestamp } from '@prisma/client'
+import {
+	eachDayOfInterval,
+	format,
+	isWeekend,
+	isWithinInterval,
+} from 'date-fns'
 
 import {
 	getMidDay,
+	normalizeDate,
 	POSSIBLE_DAY_STEPS_WORDNUMBERS,
 	WEEKDAY_SHORT_LONG_DICT,
 	WEEKDAYS_INDEXING,
 	WEEKDAYS_LONG,
 	WEEKDAYS_SHORT,
 	WORD_NUMBER_DICT,
-	type RecOpts,
-	type RecurrenceType,
-	type Weekday,
 } from '@habitsync/lib'
+import type { RecOpts, RecurrenceType, Weekday } from '@habitsync/lib'
 
 import { cleanseRecurrenceString, containsWordNumbers } from './todoist'
 
@@ -120,4 +124,54 @@ export const getSuccessRate = (
 	numOfDaysInInterval: number,
 ) => {
 	return ((numOfTimestampsInInterval / numOfDaysInInterval) * 100).toFixed(1)
+}
+
+interface Day {
+	date: Date
+	value: number
+}
+
+export const getHabitSmoothing = (
+	data: Day[],
+	startDate: Date,
+	opts: {
+		alpha: number
+		warmupDays: number
+		extraStreakDays?: string[]
+	},
+) => {
+	if (!data.length) {
+		throw new Error('Input data array is empty!')
+	}
+	const smoothedData: { date: string; 'Habit score': number }[] = []
+	let previous = ((data[0]?.value?.valueOf() ?? 0) * 1) / opts.warmupDays
+
+	for (let i = 0; i < data.length; i++) {
+		let current
+
+		const currentDate = new Date(startDate)
+		currentDate.setDate(currentDate.getDate() + i)
+
+		if (
+			opts.extraStreakDays &&
+			opts.extraStreakDays.includes(normalizeDate(currentDate))
+		) {
+			current = previous
+		} else {
+			current = opts.alpha * data[i]?.value + (1 - opts.alpha) * previous
+
+			if (i < opts.warmupDays) {
+				current = Math.min(current, (i + 1) / opts.warmupDays)
+			}
+		}
+
+		smoothedData.push({
+			date: format(currentDate, 'dd. MM.'),
+			'Habit score': Number((current * 100).toFixed(1)),
+		})
+
+		previous = current
+	}
+
+	return smoothedData
 }

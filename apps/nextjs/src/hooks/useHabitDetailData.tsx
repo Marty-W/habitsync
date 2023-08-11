@@ -21,6 +21,10 @@ const useHabitDetailData = (habitId: string) => {
 		habitId,
 	})
 
+	const habitSmoothingData = api.stats.getExpSmoothingSuccessRate.useQuery({
+		habitId,
+	})
+
 	return {
 		calendarData,
 		description,
@@ -28,6 +32,7 @@ const useHabitDetailData = (habitId: string) => {
 		totalCompletions,
 		successRate,
 		timestampSummaryCounts,
+		habitSmoothingData,
 	}
 }
 
