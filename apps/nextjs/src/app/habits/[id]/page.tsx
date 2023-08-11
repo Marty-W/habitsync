@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Card, Flex, Grid } from '@tremor/react'
+import { Col, Flex, Grid } from '@tremor/react'
 import { SiTodoist } from 'react-icons/si'
 
 import Calendar from '~/components/habitDetail/calendar/calendar'
@@ -51,16 +51,24 @@ const HabitDetail = ({ params, searchParams }: Props) => {
 	return (
 		<div className="flex min-h-screen flex-col px-7 py-8">
 			<DetailHeader title={name} />
-			<Grid numItemsMd={2} numItemsLg={3}>
-				<HabitDescription desc={description.data} />
-				<CompletionsGraph timestamps={timestampSummaryCounts.data} />
-				<Calendar data={calendarData.data} />
-				<Flex>
+			<Grid numItemsLg={3} className="gap-4 lg:gap-6">
+				<Col>
+					<HabitDescription desc={description.data} />
+				</Col>
+				<Col numColSpanLg={2}>
+					<CompletionsGraph timestamps={timestampSummaryCounts.data} />
+				</Col>
+				<Col numColSpanLg={3}>
+					<Calendar data={calendarData.data} />
+				</Col>
+				<Col numColSpanLg={2}>
+					<Streaks streaks={streaks.data} />
+				</Col>
+				<div className="flex gap-2">
 					<TotalCompletions completions={totalCompletions.data} />
 					<SuccessRate rate={successRate.data} />
-				</Flex>
-				<Streaks streaks={streaks.data} />
-				<Button variant="link">
+				</div>
+				<Button variant="link" className="text-content">
 					<Link
 						href={`${description.data?.url}`}
 						target="_blank"
