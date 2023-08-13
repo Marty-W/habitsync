@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
+import { getHabitDetail } from '../../common/prisma'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 export const habitRouter = createTRPCRouter({
@@ -40,30 +41,7 @@ export const habitRouter = createTRPCRouter({
 		.query(async ({ ctx, input }) => {
 			const { id } = input
 
-			const habit = await ctx.prisma.habit.findUnique({
-				where: {
-					id,
-				},
-				select: {
-					description: true,
-					labels: true,
-					name: true,
-					url: true,
-					createdAt: true,
-					recurrenceType: true,
-					recurrenceDays: true,
-					recurrenceStep: true,
-				},
-			})
-
-			if (!habit) {
-				throw new TRPCError({
-					code: 'BAD_REQUEST',
-					message: `Habit with id ${id} not found`,
-				})
-			}
-
-			return habit
+			return await getHabitDetail(ctx.prisma, id)
 		}),
 	deleteMany: protectedProcedure
 		.input(z.object({ ids: z.array(z.string()) }))

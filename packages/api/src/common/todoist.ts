@@ -5,6 +5,12 @@ import { TRPCError } from '@trpc/server'
 
 import { env, POSSIBLE_DAY_STEPS_WORDNUMBERS } from '@habitsync/lib'
 
+import {
+	getRecurrenceStep,
+	getRecurrenceType,
+	getSpecificRecurrenceDays,
+} from './recurrence'
+
 const UNSAFE_ELEMENTS = ['ev', 'every', 'day', '', 'and']
 
 export const cleanseRecurrenceString = (humanString: string) => {
@@ -68,7 +74,7 @@ export const fetchTodosByType = async (
 }
 
 export const formatTodoistTasksForDb = (
-	fetchedTodos: ReturnType<typeof fetchTodosByType>,
+	fetchedTodos: Awaited<ReturnType<typeof fetchTodosByType>>,
 	taskIds: string[],
 	userId: string,
 ) => {

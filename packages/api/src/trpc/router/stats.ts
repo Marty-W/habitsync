@@ -1,21 +1,16 @@
-import { TRPCError } from '@trpc/server'
 import { eachDayOfInterval, endOfYesterday, startOfDay } from 'date-fns'
 import { z } from 'zod'
 
 import { normalizeDate } from '@habitsync/lib'
 import type { Weekday } from '@habitsync/lib/src/types'
 
+import { getHabitRecurrenceAndTimestamps } from '../../common/prisma'
 import {
-	getHabitSmoothing,
+	calculateSmoothingForRecurrence,
 	getNumberOfDaysInInterval,
 	getNumberOfTimestampsInInterval,
 	getSuccessRate,
 } from '../../common/recurrence'
-import {
-	getExtraStreakDaysForSpecificDays,
-	getExtraStreakDaysForStepDays,
-	getExtraStreakDaysForWorkdays,
-} from '../../common/streaks'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 export const statsRouter = createTRPCRouter({
@@ -43,25 +38,7 @@ export const statsRouter = createTRPCRouter({
 		.query(async ({ ctx, input }) => {
 			const { habitId } = input
 
-			const habit = await ctx.prisma.habit.findUnique({
-				where: {
-					id: habitId,
-				},
-				select: {
-					timestamps: true,
-					createdAt: true,
-					recurrenceType: true,
-					recurrenceStep: true,
-					recurrenceDays: true,
-				},
-			})
-
-			if (!habit) {
-				throw new TRPCError({
-					code: 'NOT_FOUND',
-					message: 'Habit not found',
-				})
-			}
+			const habit = await getHabitRecurrenceAndTimestamps(ctx.prisma, habitId)
 
 			const interval = {
 				start: input.startDate
@@ -72,7 +49,6 @@ export const statsRouter = createTRPCRouter({
 					: startOfDay(new Date()),
 			}
 
-			//FIX rewrite the type casts
 			const numOfDaysInInterval = getNumberOfDaysInInterval(interval, {
 				days: habit.recurrenceDays as Weekday[],
 				step: habit.recurrenceStep!,
@@ -95,26 +71,7 @@ export const statsRouter = createTRPCRouter({
 		.query(async ({ ctx, input }) => {
 			const { habitId } = input
 
-			const habit = await ctx.prisma.habit.findUnique({
-				where: {
-					id: habitId,
-				},
-				select: {
-					timestamps: true,
-					createdAt: true,
-					recurrenceType: true,
-					recurrenceStep: true,
-					recurrenceDays: true,
-				},
-			})
-
-			if (!habit) {
-				throw new TRPCError({
-					code: 'NOT_FOUND',
-					message: 'Habit not found',
-				})
-			}
-
+			const habit = await getHabitRecurrenceAndTimestamps(ctx.prisma, habitId)
 			const completionDates = habit.timestamps.map((timestamp) =>
 				normalizeDate(timestamp.time),
 			)
@@ -128,48 +85,6 @@ export const statsRouter = createTRPCRouter({
 				value: completionDates.includes(normalizeDate(date)) ? 1 : 0,
 			}))
 
-			if (habit.recurrenceType === 'every_day') {
-				return getHabitSmoothing(
-					everyDaySinceHabitStarted,
-					new Date(habit.createdAt),
-					{ alpha: 0.3, warmupDays: 30 },
-				)
-			} else if (habit.recurrenceType === 'every_workday') {
-				const timestampsOnly = habit.timestamps.map(
-					(timestamp) => timestamp.time,
-				)
-				const extraStreakDays = getExtraStreakDaysForWorkdays(timestampsOnly)
-				return getHabitSmoothing(
-					everyDaySinceHabitStarted,
-					new Date(habit.createdAt),
-					{ alpha: 0.3, warmupDays: 30, extraStreakDays },
-				)
-			} else if (habit.recurrenceType === 'every_x_days') {
-				const timestampsOnly = habit.timestamps.map(
-					(timestamp) => timestamp.time,
-				)
-				const extraStreakDays = getExtraStreakDaysForStepDays(
-					timestampsOnly,
-					habit.recurrenceStep!,
-				)
-				return getHabitSmoothing(
-					everyDaySinceHabitStarted,
-					new Date(habit.createdAt),
-					{ alpha: 0.3, warmupDays: 30, extraStreakDays },
-				)
-			} else if (habit.recurrenceType === 'specific_days') {
-				const timestampsOnly = habit.timestamps.map(
-					(timestamp) => timestamp.time,
-				)
-				const extraStreakDays = getExtraStreakDaysForSpecificDays(
-					timestampsOnly,
-					habit.recurrenceDays as Weekday[],
-				)
-				return getHabitSmoothing(
-					everyDaySinceHabitStarted,
-					new Date(habit.createdAt),
-					{ alpha: 0.3, warmupDays: 30, extraStreakDays },
-				)
-			}
+			return calculateSmoothingForRecurrence(habit, everyDaySinceHabitStarted)
 		}),
 })

@@ -1,5 +1,4 @@
-// FIX
-import type { Habit, Timestamp } from '@prisma/client'
+import type { Timestamp } from '@prisma/client'
 import {
 	eachDayOfInterval,
 	format,
@@ -19,6 +18,12 @@ import {
 } from '@habitsync/lib'
 import type { RecOpts, RecurrenceType, Weekday } from '@habitsync/lib'
 
+import type { getHabitRecurrenceAndTimestamps } from './prisma'
+import {
+	getExtraStreakDaysForSpecificDays,
+	getExtraStreakDaysForStepDays,
+	getExtraStreakDaysForWorkdays,
+} from './streaks'
 import { cleanseRecurrenceString, containsWordNumbers } from './todoist'
 
 export const getRecurrenceType = (recurrence: string): RecurrenceType => {
@@ -174,4 +179,71 @@ export const getHabitSmoothing = (
 	}
 
 	return smoothedData
+}
+
+interface SmoothingOptions {
+	alpha: number
+	warmupDays: number
+	extraStreakDays?: string[]
+}
+
+interface SmoothingBase {
+	date: Date
+	value: number
+}
+
+export const calculateSmoothingForRecurrence = (
+	habit: Awaited<ReturnType<typeof getHabitRecurrenceAndTimestamps>>,
+	everyDaySinceHabitStarted: SmoothingBase[],
+): ReturnType<typeof getHabitSmoothing> => {
+	const baseSmoothingOptions: SmoothingOptions = {
+		alpha: 0.3,
+		warmupDays: 30,
+	}
+
+	const timestampsOnly = habit.timestamps.map((timestamp) => timestamp.time)
+
+	switch (habit.recurrenceType) {
+		case 'every_day':
+			return getHabitSmoothing(
+				everyDaySinceHabitStarted,
+				new Date(habit.createdAt),
+				baseSmoothingOptions,
+			)
+		case 'every_workday':
+			return getHabitSmoothing(
+				everyDaySinceHabitStarted,
+				new Date(habit.createdAt),
+				{
+					...baseSmoothingOptions,
+					extraStreakDays: getExtraStreakDaysForWorkdays(timestampsOnly),
+				},
+			)
+		case 'every_x_days':
+			return getHabitSmoothing(
+				everyDaySinceHabitStarted,
+				new Date(habit.createdAt),
+				{
+					...baseSmoothingOptions,
+					extraStreakDays: getExtraStreakDaysForStepDays(
+						timestampsOnly,
+						habit.recurrenceStep!,
+					),
+				},
+			)
+		case 'specific_days':
+			return getHabitSmoothing(
+				everyDaySinceHabitStarted,
+				new Date(habit.createdAt),
+				{
+					...baseSmoothingOptions,
+					extraStreakDays: getExtraStreakDaysForSpecificDays(
+						timestampsOnly,
+						habit.recurrenceDays as Weekday[],
+					),
+				},
+			)
+		default:
+			throw new Error('Unsupported recurrence type')
+	}
 }
