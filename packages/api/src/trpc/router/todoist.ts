@@ -2,11 +2,10 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import {
-	getRecurrenceStep,
-	getRecurrenceType,
-	getSpecificRecurrenceDays,
-} from '../../common/recurrence'
-import { filterNonRecurringFromArr } from '../../common/todoist'
+	fetchTodosByType,
+	filterNonRecurringFromArr,
+	formatTodoistTasksForDb,
+} from '../../common/todoist'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 export const todoistRouter = createTRPCRouter({
@@ -33,30 +32,12 @@ export const todoistRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			const userId = ctx.session?.user?.id
+			const doist = ctx.doist
 			const { sourceId, taskIds } = input
-			let fetchedTodos
 
-			if (input.type === 'label') {
-				fetchedTodos = await ctx.doist.getTasks({
-					label: sourceId,
-				})
-			}
+			const fetchedTodos = await fetchTodosByType(input.type, sourceId, doist)
 
-			if (input.type === 'project') {
-				fetchedTodos = await ctx.doist.getTasks({
-					projectId: sourceId,
-				})
-			}
-
-			if (!fetchedTodos) {
-				throw new TRPCError({
-					code: 'BAD_REQUEST',
-					message:
-						'No tasks with the specified query found. Please check Todoist',
-				})
-			}
-
-			const todoistId = fetchedTodos[0].creatorId
+			const todoistId = fetchedTodos[0]?.creatorId
 			await ctx.prisma.user.update({
 				where: {
 					id: userId,
@@ -66,59 +47,23 @@ export const todoistRouter = createTRPCRouter({
 				},
 			})
 
-			const filteredSelected = fetchedTodos.filter((todo) =>
+			const userSelected = fetchedTodos.filter((todo) =>
 				taskIds.includes(todo.id),
 			)
 
-			const formattedHabitsForDb = filteredSelected.map((habit) => {
-				const { id, content, description, labels, url, due } = habit
+			if (userSelected.length === 0) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message:
+						'No tasks with the specified query found. Please check Todoist',
+				})
+			}
 
-				if (!due || !due.isRecurring) {
-					throw new TRPCError({
-						code: 'BAD_REQUEST',
-						message: `Task ${content} is not recurring, please repair it in Todoist`,
-					})
-				}
-
-				if (!due.string) {
-					throw new TRPCError({
-						code: 'BAD_REQUEST',
-						message: `Task ${content} has the recurrence string in bad format, please repair it in Todoist`,
-					})
-				}
-
-				const recurrenceType = getRecurrenceType(due.string)
-
-				const baseHabit = {
-					id,
-					name: content,
-					description,
-					labels,
-					url,
-					userId,
-					recurrenceType,
-				}
-
-				if (recurrenceType === 'every_x_days') {
-					const step = getRecurrenceStep(due.string)
-
-					return {
-						...baseHabit,
-						recurrenceStep: step,
-					}
-				}
-
-				if (recurrenceType === 'specific_days') {
-					const days = getSpecificRecurrenceDays(due.string)
-
-					return {
-						...baseHabit,
-						recurrenceDays: days,
-					}
-				}
-
-				return baseHabit
-			})
+			const formattedHabitsForDb = formatTodoistTasksForDb(
+				userSelected,
+				taskIds,
+				userId,
+			)
 
 			await ctx.prisma.habit.createMany({
 				data: formattedHabitsForDb,
@@ -138,28 +83,9 @@ export const todoistRouter = createTRPCRouter({
 			]),
 		)
 		.query(async ({ ctx, input }) => {
-			let fetchedTodos
 			const { type, id } = input
 
-			if (type === 'label') {
-				fetchedTodos = await ctx.doist.getTasks({
-					label: id,
-				})
-			}
-
-			if (type === 'project') {
-				fetchedTodos = await ctx.doist.getTasks({
-					projectId: id,
-				})
-			}
-
-			if (!fetchedTodos) {
-				throw new TRPCError({
-					code: 'BAD_REQUEST',
-					message:
-						'No tasks with the specified query found. Please check Todoist.',
-				})
-			}
+			const fetchedTodos = await fetchTodosByType(type, id, ctx.doist)
 
 			const onlyRecurring = filterNonRecurringFromArr(fetchedTodos)
 

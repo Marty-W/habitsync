@@ -1,6 +1,7 @@
 import crypto from 'crypto'
-import { type NextApiRequest } from 'next'
-import { type Task } from '@doist/todoist-api-typescript'
+import type { NextApiRequest } from 'next'
+import type { Task, TodoistApi } from '@doist/todoist-api-typescript'
+import { TRPCError } from '@trpc/server'
 
 import { env, POSSIBLE_DAY_STEPS_WORDNUMBERS } from '@habitsync/lib'
 
@@ -38,4 +39,80 @@ export const validateSig = async (sig: string | string[], buffer: Buffer) => {
 
 export const filterNonRecurringFromArr = (tasks: Task[]) => {
 	return tasks.filter((todo) => todo.due && todo.due.isRecurring)
+}
+
+export const fetchTodosByType = async (
+	inputType: 'label' | 'project',
+	sourceId: string,
+	doist: TodoistApi,
+) => {
+	let fetchedTodos
+	switch (inputType) {
+		case 'label':
+			fetchedTodos = await doist.getTasks({ label: sourceId })
+			break
+		case 'project':
+			fetchedTodos = await doist.getTasks({ projectId: sourceId })
+			break
+		default:
+			fetchedTodos = null
+	}
+	if (!fetchedTodos) {
+		throw new TRPCError({
+			code: 'BAD_REQUEST',
+			message: 'No tasks with the specified query found. Please check Todoist',
+		})
+	}
+
+	return fetchedTodos
+}
+
+export const formatTodoistTasksForDb = (
+	fetchedTodos: ReturnType<typeof fetchTodosByType>,
+	taskIds: string[],
+	userId: string,
+) => {
+	return fetchedTodos
+		.filter((todo) => taskIds.includes(todo.id))
+		.map((habit) => {
+			const { id, content, description, labels, url, due } = habit
+
+			if (!due?.isRecurring) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: `Task ${content} is not recurring, please repair it in Todoist`,
+				})
+			}
+
+			if (!due.string) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: `Task ${content} has the recurrence string in bad format, please repair it in Todoist`,
+				})
+			}
+
+			const recurrenceType = getRecurrenceType(due.string)
+
+			const baseHabit = {
+				id,
+				name: content,
+				description,
+				labels,
+				url,
+				userId,
+				recurrenceType,
+			}
+
+			switch (recurrenceType) {
+				case 'every_x_days':
+					return { ...baseHabit, recurrenceStep: getRecurrenceStep(due.string) }
+				case 'specific_days':
+					return {
+						...baseHabit,
+						recurrenceDays: getSpecificRecurrenceDays(due.string),
+					}
+				default:
+					return baseHabit
+			}
+		})
 }
