@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
-import type {Weekday} from '@habitsync/lib/src/types';
+import type { Weekday } from '@habitsync/lib/src/types'
 
 import {
 	calculateAllStreaks,
@@ -87,7 +87,6 @@ export const streakRouter = createTRPCRouter({
 				})
 			}
 
-			//FIX rewrite the type casts
 			return calculateAllStreaks(
 				habit.timestamps.map((timestamp) => timestamp.time),
 				{

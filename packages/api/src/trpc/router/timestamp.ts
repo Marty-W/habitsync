@@ -1,21 +1,19 @@
 import { TRPCError } from '@trpc/server'
-import {
-	endOfWeek,
-	format,
-	startOfMonth,
-	startOfWeek,
-	startOfYear,
-} from 'date-fns'
 import { z } from 'zod'
 
 import { getUniqueStringDates, normalizeDate } from '@habitsync/lib/src/date'
 import type { Weekday } from '@habitsync/lib/src/types'
 
+import { getHabitRecurrenceAndTimestamps } from '../../common/prisma'
 import {
 	getExtraStreakDaysForSpecificDays,
 	getExtraStreakDaysForStepDays,
 	getExtraStreakDaysForWorkdays,
 } from '../../common/streaks'
+import {
+	groupTimestamps,
+	transformTimestampsToChartData,
+} from '../../common/timestamps'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 export const timestampRouter = createTRPCRouter({
@@ -45,31 +43,7 @@ export const timestampRouter = createTRPCRouter({
 		.query(async ({ ctx, input }) => {
 			const { habitId } = input
 
-			const habit = await ctx.prisma.habit.findUnique({
-				where: {
-					id: habitId,
-				},
-				select: {
-					timestamps: {
-						orderBy: {
-							time: 'asc',
-						},
-						select: {
-							time: true,
-						},
-					},
-					recurrenceType: true,
-					recurrenceStep: true,
-					recurrenceDays: true,
-				},
-			})
-
-			if (!habit) {
-				throw new TRPCError({
-					code: 'NOT_FOUND',
-					message: 'Habit not found',
-				})
-			}
+			const habit = await getHabitRecurrenceAndTimestamps(ctx.prisma, habitId)
 
 			const normalizedTimestamps = new Set(
 				habit.timestamps.map((timestamp) => normalizeDate(timestamp.time)),
@@ -83,7 +57,6 @@ export const timestampRouter = createTRPCRouter({
 						message: "Recurrence step wasn't provided",
 					})
 				}
-				// FIX: generalize getExtraStreakDaysFor...
 				return {
 					timestamps: normalizedTimestamps,
 					extraStreakDays: new Set(
@@ -127,88 +100,16 @@ export const timestampRouter = createTRPCRouter({
 		.query(async ({ ctx, input }) => {
 			const { habitId } = input
 
-			const habit = await ctx.prisma.habit.findUnique({
-				where: {
-					id: habitId,
-				},
-				select: {
-					timestamps: {
-						orderBy: {
-							time: 'asc',
-						},
-						select: {
-							time: true,
-						},
-					},
-					recurrenceType: true,
-					recurrenceStep: true,
-					recurrenceDays: true,
-				},
-			})
-
-			if (!habit) {
-				throw new TRPCError({
-					code: 'NOT_FOUND',
-					message: 'Habit not found',
-				})
-			}
+			const habit = await getHabitRecurrenceAndTimestamps(ctx.prisma, habitId)
 
 			//Get rid of duplicates and normalize
 			const uniqueStringDates = getUniqueStringDates(
 				habit.timestamps.map((timestamp) => timestamp.time),
 			)
 
-			// Group timestamps by week, month, and year
-			const groupedByWeek: Record<string, number> = {}
-			const groupedByMonth: Record<string, number> = {}
-			const groupedByYear: Record<string, number> = {}
+			const groupedTimestamps = groupTimestamps(uniqueStringDates)
 
-			uniqueStringDates.forEach((timestamp) => {
-				//FIX: now the start of week is set to Monday, maybe it would be worth it to send locale from the client as input
-				const weekKeyStart = format(
-					startOfWeek(new Date(timestamp), { weekStartsOn: 1 }),
-					'yyyy-MM-dd',
-				)
-				const weekKeyEnd = format(
-					endOfWeek(new Date(weekKeyStart), { weekStartsOn: 1 }),
-					'yyyy-MM-dd',
-				)
-
-				const weekKey = `${format(new Date(weekKeyStart), 'd. M.')} - ${format(
-					new Date(weekKeyEnd),
-					'd. M.',
-				)}`
-
-				const monthKey = format(startOfMonth(new Date(timestamp)), 'MMM yyyy')
-				const yearKey = format(startOfYear(new Date(timestamp)), 'yyyy')
-
-				groupedByWeek[weekKey] = (groupedByWeek[weekKey] ?? 0) + 1
-				groupedByMonth[monthKey] = (groupedByMonth[monthKey] ?? 0) + 1
-				groupedByYear[yearKey] = (groupedByYear[yearKey] ?? 0) + 1
-			})
-
-			const transformForChart = (
-				data: Record<string, number>,
-				label: string,
-			) => {
-				return Object.entries(data).map(([key, value]) => ({
-					name: key,
-					[label]: value,
-				}))
-			}
-
-			const weekChartData = transformForChart(groupedByWeek, 'Week completions')
-			const monthChartData = transformForChart(
-				groupedByMonth,
-				'Month completions',
-			)
-			const yearChartData = transformForChart(groupedByYear, 'Year completions')
-
-			return {
-				weekChartData,
-				monthChartData,
-				yearChartData,
-			}
+			return transformTimestampsToChartData(groupedTimestamps)
 		}),
 	deleteMany: protectedProcedure
 		.input(z.object({ habitIds: z.array(z.string()) }))
