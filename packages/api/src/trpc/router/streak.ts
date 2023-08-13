@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
-import { type Weekday } from '@habitsync/lib/src/types'
+import type {Weekday} from '@habitsync/lib/src/types';
 
 import {
 	calculateAllStreaks,
@@ -66,7 +66,7 @@ export const streakRouter = createTRPCRouter({
 				},
 			})
 
-			if (!habit || !habit.recurrenceType) {
+			if (!habit?.recurrenceType) {
 				throw new TRPCError({
 					code: 'NOT_FOUND',
 					message: 'Habit not found',

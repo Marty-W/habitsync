@@ -1,17 +1,7 @@
 import { TRPCError } from '@trpc/server'
-import {
-	differenceInCalendarDays,
-	eachDayOfInterval,
-	endOfYesterday,
-	isSaturday,
-	isSunday,
-	isWeekend,
-	startOfDay,
-	subDays,
-} from 'date-fns'
+import { eachDayOfInterval, endOfYesterday, startOfDay } from 'date-fns'
 import { z } from 'zod'
 
-import type { Timestamp } from '@habitsync/db'
 import { normalizeDate } from '@habitsync/lib'
 import type { Weekday } from '@habitsync/lib/src/types'
 
@@ -20,7 +10,6 @@ import {
 	getNumberOfDaysInInterval,
 	getNumberOfTimestampsInInterval,
 	getSuccessRate,
-	getWeekdayIndexes,
 } from '../../common/recurrence'
 import {
 	getExtraStreakDaysForSpecificDays,
@@ -28,8 +17,6 @@ import {
 	getExtraStreakDaysForWorkdays,
 } from '../../common/streaks'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
-
-// TODO Check if there is a possibility to make sure these are in date format (or simply use date?)
 
 export const statsRouter = createTRPCRouter({
 	getTotalHabitCompletions: protectedProcedure

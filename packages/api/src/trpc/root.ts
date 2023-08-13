@@ -3,8 +3,8 @@ import { authRouter } from './router/auth'
 import { habitRouter } from './router/habit'
 import { statsRouter } from './router/stats'
 import { streakRouter } from './router/streak'
-import { syncRouter } from './router/sync'
 import { timestampRouter } from './router/timestamp'
+import { todoistRouter } from './router/todoist'
 import { createTRPCRouter } from './trpc'
 
 export const appRouter = createTRPCRouter({
@@ -14,7 +14,7 @@ export const appRouter = createTRPCRouter({
 	timestamp: timestampRouter,
 	streak: streakRouter,
 	stats: statsRouter,
-	sync: syncRouter,
+	todoist: todoistRouter,
 })
 
 // export type definition of API

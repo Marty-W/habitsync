@@ -6,7 +6,7 @@ import SyncList from '~/components/settings/syncList'
 import Loader from '~/components/ui/activeLoader'
 
 const SyncFromProjects = () => {
-	const userProjects = api.acc.getUserProjects.useQuery()
+	const userProjects = api.todoist.getUserProjects.useQuery()
 	return (
 		<SubSettingsPage title="Sync from projects">
 			{userProjects.isLoading && <Loader size={55} className="mx-auto mt-4" />}
