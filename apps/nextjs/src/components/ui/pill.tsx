@@ -6,10 +6,10 @@ import { cn } from '~/utils/tailwind'
 const pillVariants = cva('mx-1 h-7 w-[10px] rounded-lg', {
 	variants: {
 		variant: {
-			success: 'bg-green-500',
+			success: 'bg-green-400',
 			failure: 'bg-red-400',
-			blank: 'bg-gray-700',
-			extraStreakDay: 'bg-green-200',
+			blank: 'bg-gray-500',
+			extraStreakDay: 'bg-lime-200',
 		},
 	},
 })
@@ -19,7 +19,6 @@ interface Props
 		VariantProps<typeof pillVariants> {}
 
 const Pill = ({ variant, className }: Props) => {
-	console.log(variant)
 	return <div className={cn(pillVariants({ variant, className }))} />
 }
 

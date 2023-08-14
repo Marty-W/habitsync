@@ -8,11 +8,11 @@ import { Button } from './button'
 interface Props {
 	className?: string
 	iconSize?: number
-	href: string
+	to: string
 }
-const GoBackButton = ({ className, iconSize = 24, href }: Props) => {
+const GoBackButton = ({ className, iconSize = 24, to }: Props) => {
 	return (
-		<Link href={href}>
+		<Link href={to}>
 			<Button variant="ghost" size="icon" className={className}>
 				<ChevronLeft size={iconSize} />
 			</Button>

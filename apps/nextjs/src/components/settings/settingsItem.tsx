@@ -1,16 +1,18 @@
 import type { ComponentPropsWithoutRef, ElementType } from 'react'
 import { ChevronRight } from 'lucide-react'
+import type { Icon } from 'lucide-react'
 
 import { cn } from '~/utils/tailwind'
 
 const ButtonDefaultAsType = 'button'
 type ButtonDefaultAsType = typeof ButtonDefaultAsType
 
-type ItemOwnProps<E extends ElementType> = {
+interface ItemOwnProps<E extends ElementType> {
 	as?: E
 	title: string
 	className?: string
 	children?: React.ReactNode
+	Icon: Icon
 }
 
 type ItemProps<E extends ElementType> = ItemOwnProps<E> &
@@ -21,17 +23,22 @@ const SettingsItem = <E extends ElementType = ButtonDefaultAsType>({
 	title,
 	className,
 	children,
+	Icon,
 	...delegated
 }: ItemProps<E>) => {
-	const Tag = as || ButtonDefaultAsType
+	const Tag = as ?? ButtonDefaultAsType
 
 	return (
-		<div className="p-3">
+		<div className="flex h-14 items-center justify-center">
+			<Icon size={20} />
 			<Tag
 				{...delegated}
-				className={cn('flex w-full items-center justify-between', className)}
+				className={cn(
+					'flex w-full items-center justify-between px-3 ',
+					className,
+				)}
 			>
-				<span>{title}</span>
+				<span className="text-lg">{title}</span>
 				{as !== 'button' && <ChevronRight size={20} />}
 				{children}
 			</Tag>

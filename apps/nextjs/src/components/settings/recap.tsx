@@ -9,9 +9,9 @@ const Recap = ({ icon, children, text }: Props) => {
 		<div>
 			<div className="my-5 flex w-full flex-col items-center">
 				<div className="mb-3">{icon}</div>
-				<p className="text-xl">{text}</p>
+				<p className="text-lg">{text}</p>
 			</div>
-			<div className="mx-auto flex w-1/3 flex-col gap-3">{children}</div>
+			<div className="mx-auto flex flex-col gap-3">{children}</div>
 		</div>
 	)
 }

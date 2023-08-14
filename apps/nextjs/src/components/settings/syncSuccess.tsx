@@ -3,7 +3,7 @@ import { BadgeCheck } from 'lucide-react'
 
 import { Button } from '../ui/button'
 import Recap from './recap'
-import { type SyncSourceType } from './syncList'
+import type { SyncSourceType } from './syncList'
 
 interface Props {
 	numOfHabitsCreated: number
@@ -21,15 +21,20 @@ const SyncSuccess = ({
 		numOfHabitsCreated > 1 ? 's' : ''
 	}.`
 	return (
-		<Recap icon={<BadgeCheck size={50} className="text-success" />} text={text}>
-			<Button variant="link">
-				<Link href={`/settings/sync-new-habits/${otherSyncType}s`}>
-					Sync by {otherSyncType}s{' '}
-				</Link>
-			</Button>
-			<Button size="sm" onClick={handleSyncAgain} variant="link">
-				Sync again
-			</Button>
+		<Recap
+			icon={<BadgeCheck size={50} className="text-green-400" />}
+			text={text}
+		>
+			<div className="flex min-w-max justify-center">
+				<Button variant="link">
+					<Link href={`/settings/sync-new-habits/${otherSyncType}s`}>
+						Sync by {otherSyncType}s{' '}
+					</Link>
+				</Button>
+				<Button size="sm" onClick={handleSyncAgain} variant="link">
+					Sync again
+				</Button>
+			</div>
 			<Button>
 				<Link href="/habits">Go to dashboard</Link>
 			</Button>

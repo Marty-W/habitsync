@@ -1,8 +1,9 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
+import { useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
-import { type SyncSources } from '~/pages/settings/sync-new-habits/labels'
+import type {SyncSources} from '~/app/settings/sync-new-habits/labels/page';
 import { Button } from '../ui/button'
-import { type SyncListWorkflowPhase, type SyncSourceType } from './syncList'
+import type {SyncListWorkflowPhase, SyncSourceType} from './syncList';
 import SyncSourceSelect from './syncSourceSelect'
 
 interface Props {

@@ -20,7 +20,7 @@ const FetchError = ({ className, refetch, isRefetching, children }: Props) => {
 	return (
 		<div
 			className={cn(
-				'text-muted-foreground flex flex-col items-center justify-center',
+				'text-smuted-foreground flex flex-col items-center justify-center',
 				className,
 			)}
 		>

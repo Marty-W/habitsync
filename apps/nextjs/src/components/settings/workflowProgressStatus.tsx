@@ -1,6 +1,6 @@
-import { type EditHabitWorkflowPhase } from '~/pages/settings/edit-habits'
+import type { EditHabitWorkflowPhase } from '~/app/settings/edit-habits/page'
 import Loader from '../ui/activeLoader'
-import { type SyncListWorkflowPhase } from './syncList'
+import type { SyncListWorkflowPhase } from './syncList'
 
 interface Props {
 	phase: SyncListWorkflowPhase | EditHabitWorkflowPhase
@@ -16,11 +16,9 @@ const STATUS_MESSAGES = {
 const WorkflowProgressStatus = ({ phase }: Props) => {
 	const validPhase = phase as keyof typeof STATUS_MESSAGES
 	return (
-		<div className="flex-1 flex-col items-center justify-center text-center">
-			<Loader size={48} className="text-muted-foreground mx-auto my-4" />
-			<span className="text-muted-foreground">
-				{STATUS_MESSAGES[validPhase]}
-			</span>
+		<div className="text-smuted-foreground/40 flex-1 flex-col items-center justify-center text-center">
+			<Loader size={48} className="mx-auto my-4" />
+			<span>{STATUS_MESSAGES[validPhase]}</span>
 		</div>
 	)
 }

@@ -17,7 +17,7 @@ const DashboardHabit = ({ habit }: Props) => {
 		<Link href={`/habits/${id}?name=${name}`}>
 			<div
 				className={cn(
-					'bg-card hover:bg-accent/30 text-card-foreground my-2 flex items-center justify-between rounded-xl p-5',
+					'bg-scard hover:bg-saccent/70 text-scard-foreground flex items-center justify-between rounded-lg border p-5 shadow-sm',
 					isFirstLoad && 'animate-fade-in',
 				)}
 			>

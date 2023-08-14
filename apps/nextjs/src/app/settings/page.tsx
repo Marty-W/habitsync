@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { Eraser, Hash, LogOut, Palette, Tags } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 
 import DeleteAccountItem from '~/components/settings/deleteAccountItem'
@@ -11,11 +13,15 @@ import InfoDialog from '~/components/ui/infoDialog'
 import ThemeSelect from '~/components/ui/themeSelect'
 
 const Settings = () => {
+	const searchParams = useSearchParams()
 	return (
-		<div className="cotainer flex h-screen min-h-screen flex-col px-4">
+		<div className="flex h-screen max-h-screen flex-col px-6">
 			<div className="my-5 grid h-1/5 grid-rows-2">
-				<GoBackButton className="self-start" />
-				<h1 className="text-accent self-end text-4xl">Settings</h1>
+				<GoBackButton
+					className="self-start"
+					to={searchParams?.get('from') ?? '/habits'}
+				/>
+				<h1 className="text-smuted-foreground self-end text-4xl">Settings</h1>
 			</div>
 			<SettingsSection
 				title="Sync"
@@ -30,11 +36,13 @@ const Settings = () => {
 					title="From Projects"
 					as={Link}
 					href="/settings/sync-new-habits/projects"
+					Icon={Hash}
 				/>
 				<SettingsItem
 					title="From Labels"
 					as={Link}
 					href="/settings/sync-new-habits/labels"
+					Icon={Tags}
 				/>
 			</SettingsSection>
 			<SettingsSection title="App">
@@ -42,8 +50,9 @@ const Settings = () => {
 					title="Delete timestamps or habits"
 					as={Link}
 					href="/settings/edit-habits"
+					Icon={Eraser}
 				/>
-				<SettingsItem title="Prefered theme" as="button">
+				<SettingsItem title="Prefered theme" as="button" Icon={Palette}>
 					<ThemeSelect />
 				</SettingsItem>
 			</SettingsSection>
@@ -52,6 +61,7 @@ const Settings = () => {
 					title="Log out"
 					as="button"
 					onClick={() => signOut({ callbackUrl: '/' })}
+					Icon={LogOut}
 				/>
 				<DeleteAccountItem />
 			</SettingsSection>

@@ -6,11 +6,13 @@ const DashboardHeader = () => {
 	const greeting = useTimeSensitiveGreeting()
 
 	return (
-		<div className="mb-10 grid grid-cols-3 items-center py-7">
-			<h1 className="text-accent col-start-1 text-5xl">{greeting}</h1>
-			<div className="col-start-3 flex justify-end self-end">
+		<div className="mb-10 flex items-end justify-between py-7">
+			<h1 className="bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-4xl text-transparent">
+				{greeting}
+			</h1>
+			<div className="flex justify-end">
 				<ThemeToggle />
-				<SettingsButton className="ml-2 justify-self-end" />
+				<SettingsButton className="ml-2 justify-self-end" from="habits" />
 			</div>
 		</div>
 	)

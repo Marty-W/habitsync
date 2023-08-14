@@ -20,14 +20,14 @@ const CompletionsRow = ({ habitId }: Props) => {
 
 	if (timestamps.error ?? habitDetail.error) {
 		return (
-			<span className="text-muted-foreground">
+			<span className="text-smuted-foreground">
 				There was an error fetching your completions.
 			</span>
 		)
 	}
 
 	if (timestamps.data.timestamps.size === 0) {
-		return <span className="text-muted-foreground">No completions yet</span>
+		return <span className="text-smuted-foreground">No completions yet</span>
 	}
 
 	return (

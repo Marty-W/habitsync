@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { PlusCircle } from 'lucide-react'
 
-import { type SyncSources } from '~/pages/settings/sync-new-habits/labels'
+import type { SyncSources } from '~/pages/settings/sync-new-habits/labels'
 import SyncListItems from './syncListItems'
 import SyncSource from './syncSource'
 import SyncSuccess from './syncSuccess'
+import WorkflowError from './workflowError'
 import WorkflowProgressStatus from './workflowProgressStatus'
 
 export type SyncListWorkflowPhase =
@@ -44,6 +46,12 @@ const SyncList = ({ syncSources, type }: Props) => {
 				setSelectedSource={setSelectedSource}
 				handleNextPhase={() => handlePhaseChange('fetching-tasks')}
 			/>
+			{phase === 'select-source' && (
+				<WorkflowError
+					errorMessage="Select a source to sync from."
+					kind="empty"
+				/>
+			)}
 			{(phase === 'fetching-tasks' || phase === 'pick-tasks') && (
 				<SyncListItems
 					phase={phase}

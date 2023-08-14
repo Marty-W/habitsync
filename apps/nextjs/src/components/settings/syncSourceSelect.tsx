@@ -1,4 +1,4 @@
-import { type RouterOutputs } from '@habitsync/api'
+import type {RouterOutputs} from '@habitsync/api';
 
 import { ScrollArea } from '~/components/ui/scrollArea'
 import {
@@ -8,7 +8,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '~/components/ui/select'
-import { type SyncSources } from '~/pages/settings/sync-new-habits/labels'
+import type {SyncSources} from '~/pages/settings/sync-new-habits/labels';
 
 interface Props {
 	selectValues: SyncSources

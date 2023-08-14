@@ -86,46 +86,38 @@ export default {
 						inverted: '#000000', // black
 					},
 				},
-				border: 'hsl(var(--border))',
-				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
-				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))',
+				sborder: 'hsl(var(--sborder))',
+				sinput: 'hsl(var(--sinput))',
+				sring: 'hsl(var(--sring))',
+				sbackground: 'hsl(var(--sbackground))',
+				sforeground: 'hsl(var(--sforeground))',
+				sprimary: {
+					DEFAULT: 'hsl(var(--sprimary))',
+					foreground: 'hsl(var(--sprimary-foreground))',
 				},
-				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))',
+				ssecondary: {
+					DEFAULT: 'hsl(var(--ssecondary))',
+					foreground: 'hsl(var(--ssecondary-foreground))',
 				},
-				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))',
+				sdestructive: {
+					DEFAULT: 'hsl(var(--sdestructive))',
+					foreground: 'hsl(var(--sdestructive-foreground))',
 				},
-				success: {
-					DEFAULT: 'hsl(var(--success))',
-					foreground: 'hsl(var(--success-foreground))',
+				smuted: {
+					DEFAULT: 'hsl(var(--smuted))',
+					foreground: 'hsl(var(--smuted-foreground))',
 				},
-				void: {
-					DEFAULT: 'hsl(var(--void))',
-					foreground: 'hsl(var(--success-foreground))',
+				saccent: {
+					DEFAULT: 'hsl(var(--saccent))',
+					foreground: 'hsl(var(--saccent-foreground))',
 				},
-				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))',
+				spopover: {
+					DEFAULT: 'hsl(var(--spopover))',
+					foreground: 'hsl(var(--spopover-foreground))',
 				},
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))',
-				},
-				popover: {
-					DEFAULT: 'hsl(var(--popover))',
-					foreground: 'hsl(var(--popover-foreground))',
-				},
-				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))',
+				scard: {
+					DEFAULT: 'hsl(var(--scard))',
+					foreground: 'hsl(var(--scard-foreground))',
 				},
 			},
 			boxShadow: {

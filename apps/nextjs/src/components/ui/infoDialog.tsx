@@ -18,7 +18,7 @@ interface Props {
 const InfoDialog = ({ iconSize = 18, header, text }: Props) => {
 	return (
 		<Dialog>
-			<DialogTrigger className="text-muted-foreground">
+			<DialogTrigger className="text-smuted-foreground">
 				<Info size={iconSize} />
 			</DialogTrigger>
 			<DialogContent>

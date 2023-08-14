@@ -10,9 +10,11 @@ interface Props {
 const HabitDescription = ({ desc }: Props) => (
 	<Card>
 		<div className="p-2">
-			<p className="text-card-foreground flex-1 text-2xl">{desc.description}</p>
+			<p className="text-scard-foreground flex-1 text-2xl">
+				{desc.description}
+			</p>
 		</div>
-		<div className="text-card-foreground/40 p-2">
+		<div className="text-scard-foreground/40 p-2">
 			<RecurrenceTag
 				type={desc.recurrenceType}
 				step={desc.recurrenceStep}

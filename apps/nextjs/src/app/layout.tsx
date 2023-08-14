@@ -22,7 +22,7 @@ export default function Layout(props: { children: React.ReactNode }) {
 			<body className={['font-sans', fontSans.variable].join(' ')}>
 				<TRPCReactProvider>
 					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-						<div className="container">{props.children}</div>
+						<div>{props.children}</div>
 					</ThemeProvider>
 				</TRPCReactProvider>
 			</body>

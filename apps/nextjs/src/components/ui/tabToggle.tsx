@@ -14,7 +14,7 @@ const TabToggle = ({ options, onToggleChange, activeOption }: Props) => {
 					className={`${
 						activeOption === option
 							? 'text-lg'
-							: 'text-muted-foreground/30 text-md'
+							: 'text-smuted-foreground/30 text-md'
 					}`}
 				>
 					<span>{option}</span>

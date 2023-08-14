@@ -13,8 +13,8 @@ const SuccessRate = ({ rate }: Props) => {
 			<Counter
 				from={0}
 				to={Number(rate)}
-				className="text-tremor-content-emphasis dark:text-tremor-content-emphasis text-tremor-metric font-semibold"
-				animationDuration={2}
+				className="text-ssecondary-foreground text-tremor-metric font-semibold"
+				animationDuration={3}
 				postValue=" %"
 			/>
 		</Card>

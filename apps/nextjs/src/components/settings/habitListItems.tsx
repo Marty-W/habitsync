@@ -1,8 +1,8 @@
-import { type RouterOutputs } from '@habitsync/api'
+import type { RouterOutputs } from '@habitsync/api'
 
 import { api } from '~/utils/trpc'
 import usePicker from '~/hooks/usePicker'
-import { type EditHabitWorkflowPhase } from '~/pages/settings/edit-habits'
+import type { EditHabitWorkflowPhase } from '~/pages/settings/edit-habits'
 import { Button } from '../ui/button'
 import HabitListItem from '../ui/habitListItem'
 
@@ -46,7 +46,7 @@ const HabitListItems = ({
 		.map((habit) => habit.id)
 
 	return (
-		<div className="bg-muted flex-1 rounded-t-lg px-6 py-2">
+		<div className="bg-muted flex-1 rounded-lg px-6 py-2">
 			{habits.map((habit) => (
 				<HabitListItem
 					kind="edit"

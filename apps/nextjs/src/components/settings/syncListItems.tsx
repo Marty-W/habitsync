@@ -1,11 +1,11 @@
-import { type Dispatch, type SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
 import { api } from '~/utils/trpc'
 import usePicker from '~/hooks/usePicker'
 import { Button } from '../ui/button'
 import HabitListItem from '../ui/habitListItem'
 import SyncEmpty from './syncEmpty'
-import { type SyncListWorkflowPhase, type SyncSourceType } from './syncList'
+import type { SyncListWorkflowPhase, SyncSourceType } from './syncList'
 import WorkflowError from './workflowError'
 import WorkflowProgressStatus from './workflowProgressStatus'
 
@@ -25,7 +25,7 @@ const SyncListItems = ({
 	setNumOfHabitsCreated,
 }: Props) => {
 	const { items, editItems } = usePicker()
-	const todoistTasks = api.habit.getNewTasksFromTodoist.useQuery(
+	const todoistTasks = api.todoist.getNewTasksFromTodoist.useQuery(
 		{
 			type,
 			id: selectedSource,
@@ -36,7 +36,7 @@ const SyncListItems = ({
 			onSuccess: () => handleNextPhase('pick-tasks'),
 		},
 	)
-	const todoistSync = api.habit.syncWithTodoist.useMutation({
+	const todoistSync = api.todoist.syncWithTodoist.useMutation({
 		onMutate: () => handleNextPhase('syncing-tasks'),
 		onSuccess: ({ numberOfHabitsCreated }) => {
 			setNumOfHabitsCreated(numberOfHabitsCreated)
@@ -45,7 +45,9 @@ const SyncListItems = ({
 	})
 
 	if (todoistTasks.isError) {
-		return <WorkflowError errorMessage={todoistTasks.error.message} />
+		return (
+			<WorkflowError errorMessage={todoistTasks.error.message} kind="error" />
+		)
 	}
 
 	if (phase === 'fetching-tasks') {
@@ -59,36 +61,40 @@ const SyncListItems = ({
 	}
 
 	return (
-		<div className="bg-muted flex-1 rounded-t-lg px-6 py-2">
-			{todoistTasks.data?.map((task) => {
-				return (
-					<HabitListItem
-						kind="add"
-						name={task.name}
-						key={task.id}
-						isSelected={items.includes(task.id)}
-						id={task.id}
-						handleSelect={editItems}
-					/>
-				)
-			})}
-			{todoistTasks.isSuccess && (
-				<div className="mx-auto mt-10 flex justify-center">
-					<Button
-						disabled={!items.length}
-						onClick={() =>
-							todoistSync.mutate({
-								type,
-								taskIds: items,
-								sourceId: selectedSource,
-							})
-						}
-					>
-						Sync with Todoist
-					</Button>
-				</div>
-			)}
-		</div>
+		<>
+			<div className="bg-smuted divide-smuted-foreground/20 flex-1 divide-y overflow-y-auto rounded-lg px-6 py-2 shadow-md">
+				{todoistTasks.data?.map((task) => {
+					return (
+						<HabitListItem
+							kind="add"
+							name={task.name}
+							key={task.id}
+							isSelected={items.includes(task.id)}
+							id={task.id}
+							handleSelect={editItems}
+						/>
+					)
+				})}
+			</div>
+			<div>
+				{todoistTasks.isSuccess && (
+					<div className="mx-auto mt-6 flex justify-center">
+						<Button
+							disabled={!items.length}
+							onClick={() =>
+								todoistSync.mutate({
+									type,
+									taskIds: items,
+									sourceId: selectedSource,
+								})
+							}
+						>
+							Sync with Todoist
+						</Button>
+					</div>
+				)}
+			</div>
+		</>
 	)
 }
 

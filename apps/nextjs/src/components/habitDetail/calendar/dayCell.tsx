@@ -23,9 +23,9 @@ const dayCellVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: 'text-muted-foreground',
-				notThisMonth: 'text-blue-50',
-				notThisMonthWithTimestamp: 'text-blue-200',
+				default: 'text-sforeground',
+				notThisMonth: 'text-smuted-foreground/50',
+				notThisMonthWithTimestamp: 'text-blue-400/30',
 				withTimestamp: 'bg-tremor-brand text-blue-50',
 				extraStreakDay: 'bg-green-200',
 				today: 'ring-4',
@@ -76,7 +76,9 @@ const DayCell = ({ date, variant = 'default' }: Props) => {
 						<span>{date.getDate()}</span>
 					</div>
 				</TooltipTrigger>
-				<TooltipContent>{getTooltipContent(variant)}</TooltipContent>
+				<TooltipContent className="text-slate-50">
+					{getTooltipContent(variant)}
+				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>
 	)

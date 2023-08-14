@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
+import { UserX2 } from 'lucide-react'
 
 import { api } from '~/utils/trpc'
 import {
@@ -45,7 +46,7 @@ const DeleteAccountItem = () => {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<SettingsItem title="Delete account" as="button" />
+				<SettingsItem title="Delete account" as="button" Icon={UserX2} />
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>

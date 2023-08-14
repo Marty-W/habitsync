@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Col, Flex, Grid } from '@tremor/react'
+import { Col, Grid } from '@tremor/react'
 import { SiTodoist } from 'react-icons/si'
 
 import Calendar from '~/components/habitDetail/calendar/calendar'

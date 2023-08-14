@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { BadgeCheck } from 'lucide-react'
 
-import { type EditHabitType } from '~/pages/settings/edit-habits'
+import type { EditHabitType } from '~/app/settings/edit-habits/page'
 import { Button } from '../ui/button'
 import Recap from './recap'
 
@@ -26,7 +26,10 @@ const EditSuccess = ({ numOfMutations, handleEditMore, type }: Props) => {
 	const text = getEditTypeText(type, numOfMutations)
 
 	return (
-		<Recap icon={<BadgeCheck size={50} className="text-success" />} text={text}>
+		<Recap
+			icon={<BadgeCheck size={50} className="text-green-400" />}
+			text={text}
+		>
 			<Button size="sm" onClick={handleEditMore} variant="link">
 				Edit more
 			</Button>
