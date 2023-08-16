@@ -15,7 +15,7 @@ import ThemeSelect from '~/components/ui/themeSelect'
 const Settings = () => {
 	const searchParams = useSearchParams()
 	return (
-		<div className="flex h-screen max-h-screen flex-col px-6">
+		<div className="flex flex-col px-6">
 			<div className="my-5 grid h-1/5 grid-rows-2">
 				<GoBackButton
 					className="self-start"

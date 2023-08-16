@@ -12,9 +12,9 @@ const DetailHeader = ({ title }: Props) => {
 	const params = useParams()
 	return (
 		<div className="mb-8 grid grid-cols-[0.2fr_1fr_0.2fr] place-items-center">
-			<GoBackButton to="/habits" />
-			<h1 className="text-smuted-foreground text-lg">{title}</h1>
-			<div className="flex items-center justify-end space-x-1">
+			<GoBackButton to="/habits" className="md:hidden" />
+			<h1 className="text-smuted-foreground text-lg md:text-2xl">{title}</h1>
+			<div className="flex items-center justify-end space-x-1 md:hidden">
 				<ThemeToggle />
 				<SettingsButton from={`habits/${params?.id as string}` ?? '/habits'} />
 			</div>

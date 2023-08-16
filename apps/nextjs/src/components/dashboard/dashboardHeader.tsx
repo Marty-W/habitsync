@@ -8,7 +8,11 @@ const DashboardHeader = () => {
 			<Greeting />
 			<div className="flex justify-end">
 				<ThemeToggle />
-				<SettingsButton className="ml-2 justify-self-end" from="habits" />
+				<SettingsButton
+					className="ml-2 justify-self-end"
+					from="habits"
+					link="/habits/@links/(....)settings"
+				/>
 			</div>
 		</div>
 	)
