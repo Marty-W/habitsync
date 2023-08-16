@@ -39,7 +39,7 @@ const EditHabits = () => {
 	if (userHabits.isError) {
 		return (
 			<SubSettingsPage title="Edit habits">
-				<WorkflowError errorMessage={userHabits.error.message} />
+				<WorkflowError errorMessage={userHabits.error.message} kind="error" />
 			</SubSettingsPage>
 		)
 	}

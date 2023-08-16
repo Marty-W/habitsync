@@ -27,6 +27,7 @@ interface Props {
 const HabitDetail = ({ params, searchParams }: Props) => {
 	const { id } = params
 	const { name } = searchParams
+	console.log('rendered')
 
 	const {
 		calendarData,
