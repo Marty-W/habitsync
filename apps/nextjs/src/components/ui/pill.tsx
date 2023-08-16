@@ -8,8 +8,8 @@ const pillVariants = cva('mx-1 h-7 w-[10px] rounded-lg', {
 		variant: {
 			success: 'bg-green-400',
 			failure: 'bg-red-400',
-			blank: 'bg-gray-500',
-			extraStreakDay: 'bg-lime-200',
+			blank: 'border',
+			extraStreakDay: 'bg-neutral-300',
 		},
 	},
 })

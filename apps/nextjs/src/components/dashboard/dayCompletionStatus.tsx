@@ -1,6 +1,7 @@
 import { useSearchParams } from 'next/navigation'
-import { format } from 'date-fns'
+import { format, isToday } from 'date-fns'
 
+import HalvedPill from '../ui/halvedPill'
 import Pill from '../ui/pill'
 import {
 	Tooltip,
@@ -52,6 +53,7 @@ const DayCompletionStatus = ({
 }: Props) => {
 	const variant = getPillVariant({ isSuccessful, isExtraStreakDay, isBlank })
 	const isFirstLoad = useSearchParams()?.get('firstLoad')
+	const isPillForToday = isToday(date)
 
 	const tooltipContent = (
 		<div className="flex flex-col items-center">
@@ -67,7 +69,11 @@ const DayCompletionStatus = ({
 			<Tooltip>
 				<TooltipTrigger>
 					<div className={`${isFirstLoad ? 'animate-fade-in' : ''}`}>
-						<Pill variant={variant} />
+						{isPillForToday ? (
+							<HalvedPill variant={variant} />
+						) : (
+							<Pill variant={variant} />
+						)}
 					</div>
 				</TooltipTrigger>
 				<TooltipContent>{tooltipContent}</TooltipContent>
