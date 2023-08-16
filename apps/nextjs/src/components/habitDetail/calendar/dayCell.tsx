@@ -25,9 +25,9 @@ const dayCellVariants = cva(
 			variant: {
 				default: 'text-sforeground',
 				notThisMonth: 'text-smuted-foreground/50',
-				notThisMonthWithTimestamp: 'text-blue-400/30',
+				notThisMonthWithTimestamp: 'text-blue-400',
 				withTimestamp: 'bg-tremor-brand text-blue-50',
-				extraStreakDay: 'bg-green-200',
+				extraStreakDay: 'bg-neutral-400 text-neutral-50',
 				today: 'ring-4',
 				todayWithTimestamp: 'ring-2 bg-tremor-brand text-blue-50',
 				startDay: 'ring-4 ring-green-200',
