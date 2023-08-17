@@ -1,3 +1,5 @@
+'use client'
+
 import { usePathname } from 'next/navigation'
 
 import SettingsButton from '../settingsButton'
@@ -6,6 +8,7 @@ import ThemeToggle from '../ui/themeToggle'
 
 const DesktopTopBar = () => {
 	const pathname = usePathname()
+	console.log('render')
 	return (
 		<div className="flex items-center justify-between py-6">
 			<div className="h-16 w-16">

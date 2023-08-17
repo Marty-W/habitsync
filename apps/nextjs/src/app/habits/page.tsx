@@ -3,7 +3,7 @@ import HabitList from '~/components/dashboard/habitList'
 
 const Habits = () => {
 	return (
-		<div className="flex min-h-screen flex-col py-6 max-md:container">
+		<div className="flex flex-col py-6 max-md:container">
 			<DashboardHeader />
 			<HabitList />
 		</div>

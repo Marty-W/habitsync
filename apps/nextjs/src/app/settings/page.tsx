@@ -13,14 +13,11 @@ import InfoDialog from '~/components/ui/infoDialog'
 import ThemeSelect from '~/components/ui/themeSelect'
 
 const Settings = () => {
-	const searchParams = useSearchParams()
+	// const searchParams = useSearchParams()
 	return (
 		<div className="flex flex-col px-6">
 			<div className="my-5 grid h-1/5 grid-rows-2">
-				<GoBackButton
-					className="self-start"
-					to={searchParams?.get('from') ?? '/habits'}
-				/>
+				<GoBackButton className="self-start" to={'/habits'} />
 				<h1 className="text-smuted-foreground self-end text-4xl">Settings</h1>
 			</div>
 			<SettingsSection

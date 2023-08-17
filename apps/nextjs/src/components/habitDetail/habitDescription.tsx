@@ -8,7 +8,7 @@ interface Props {
 }
 
 const HabitDescription = ({ desc }: Props) => (
-	<Card>
+	<Card className="space-y-4">
 		<div className="p-2">
 			<p className="text-scard-foreground flex-1 text-2xl">
 				{desc.description}

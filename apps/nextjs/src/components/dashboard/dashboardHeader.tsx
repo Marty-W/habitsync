@@ -11,7 +11,7 @@ const DashboardHeader = () => {
 				<SettingsButton
 					className="ml-2 justify-self-end"
 					from="habits"
-					link="/habits/@links/(....)settings"
+					link="/settings"
 				/>
 			</div>
 		</div>

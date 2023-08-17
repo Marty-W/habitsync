@@ -19,7 +19,7 @@ export type DayCellVariant =
 	| 'default'
 
 const dayCellVariants = cva(
-	'flex h-10 w-10 items-center justify-center rounded-full text-md select-none',
+	'flex h-10 w-10 items-center justify-center rounded-full text-md select-none p-2',
 	{
 		variants: {
 			variant: {

@@ -1,35 +1,22 @@
 import { isBefore, startOfDay } from 'date-fns'
 
+import type { RouterOutputs } from '@habitsync/api'
 import { normalizeDate } from '@habitsync/lib'
 
-import useCompletionPillsData from '~/hooks/useCompletionPillsData'
 import usePills from '~/hooks/usePills'
 import DayCompletionStatus from './dayCompletionStatus'
 
 interface Props {
-	habitId: string
+	timestampData: RouterOutputs['timestamp']['getAllWithStreakDays']
+	habitDetail: RouterOutputs['habit']['getDetail']
 }
 
-const CompletionsRow = ({ habitId }: Props) => {
+const CompletionsRow = ({ timestampData, habitDetail }: Props) => {
 	const { ref, pills } = usePills()
-	const { timestamps, habitDetail } = useCompletionPillsData({ habitId })
 
-	if (timestamps.isLoading || habitDetail.isLoading) {
-		return null
-	}
-
-	if (timestamps.error ?? habitDetail.error) {
-		return (
-			<span className="text-smuted-foreground">
-				There was an error fetching your completions.
-			</span>
-		)
-	}
-
-	if (timestamps.data.timestamps.size === 0) {
+	if (timestampData.timestamps.size === 0) {
 		return <span className="text-smuted-foreground">No completions yet</span>
 	}
-
 	return (
 		<div className="flex flex-1 justify-end" ref={ref}>
 			{pills.map((day, index) => {
@@ -37,13 +24,11 @@ const CompletionsRow = ({ habitId }: Props) => {
 					<DayCompletionStatus
 						key={index}
 						date={day}
-						isSuccessful={timestamps.data.timestamps.has(normalizeDate(day))}
+						isSuccessful={timestampData.timestamps.has(normalizeDate(day))}
 						isExtraStreakDay={
-							timestamps.data.extraStreakDays
-								? timestamps.data.extraStreakDays.has(normalizeDate(day))
-								: false
+							timestampData.extraStreakDays?.has(normalizeDate(day)) ?? false
 						}
-						isBlank={isBefore(day, startOfDay(habitDetail.data.createdAt))}
+						isBlank={isBefore(day, startOfDay(habitDetail.createdAt))}
 					/>
 				)
 			})}
