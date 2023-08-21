@@ -19,8 +19,8 @@ const CompletionsGraph = ({ timestamps }: Props) => {
 	const { weekChartData, monthChartData, yearChartData } = timestamps
 
 	return (
-		<Card>
-			<Title>Completions overview</Title>
+		<Card className="2xl:h-full">
+			<Title className="mb-2">Completions overview</Title>
 			<TabGroup>
 				<TabList>
 					<Tab>Week</Tab>
@@ -35,6 +35,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
 							categories={['Week completions']}
 							allowDecimals={false}
 							maxValue={7}
+							className="2xl:h-[450px]"
 						/>
 					</TabPanel>
 					<TabPanel>
@@ -43,6 +44,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
 							index="name"
 							categories={['Month completions']}
 							allowDecimals={false}
+							className="2xl:h-[450px]"
 						/>
 					</TabPanel>
 					<TabPanel>
@@ -51,6 +53,7 @@ const CompletionsGraph = ({ timestamps }: Props) => {
 							index="name"
 							categories={['Year completions']}
 							allowDecimals={false}
+							className="2xl:h-[450px]"
 						/>
 					</TabPanel>
 				</TabPanels>

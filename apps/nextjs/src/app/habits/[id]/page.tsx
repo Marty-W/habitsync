@@ -15,7 +15,7 @@ const HabitDetailPage = ({ params, searchParams }: Props) => {
 	const { name } = searchParams
 
 	return (
-		<div className="flex min-h-screen flex-col px-7 py-8">
+		<div className="flex min-h-screen flex-col px-7 py-8 xl:space-y-8">
 			<DetailHeader title={name} />
 			<HabitDetail habitId={id} />
 		</div>

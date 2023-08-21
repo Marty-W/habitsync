@@ -1,25 +1,19 @@
 'use client'
 
-import { api } from '~/utils/trpc'
 import type { RouterOutputs } from '~/utils/trpc'
 import SubSettingsPage from '~/components/settings/subSettingsPage'
-import SyncList from '~/components/settings/syncList'
-import Loader from '~/components/ui/activeLoader'
+import SyncFromLabels from '~/components/settings/syncFromLabels'
 
 export type SyncSources =
 	| RouterOutputs['todoist']['getUserProjects']
 	| RouterOutputs['todoist']['getUserLabels']
 
-const SyncFromLabels = () => {
-	const userLabels = api.todoist.getUserLabels.useQuery()
+const SyncFromLabelsPage = () => {
 	return (
 		<SubSettingsPage title="Sync from labels">
-			{userLabels.isLoading && <Loader size={55} className="mx-auto mt-4" />}
-			{userLabels.isSuccess && (
-				<SyncList syncSources={userLabels.data} type="label" />
-			)}
+			<SyncFromLabels />
 		</SubSettingsPage>
 	)
 }
 
-export default SyncFromLabels
+export default SyncFromLabelsPage

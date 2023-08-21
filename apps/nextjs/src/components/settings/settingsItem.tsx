@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ElementType } from 'react'
 import { ChevronRight } from 'lucide-react'
-import type { Icon } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 import { cn } from '~/utils/tailwind'
 
@@ -12,7 +12,7 @@ interface ItemOwnProps<E extends ElementType> {
 	title: string
 	className?: string
 	children?: React.ReactNode
-	Icon: Icon
+	Icon: LucideIcon
 }
 
 type ItemProps<E extends ElementType> = ItemOwnProps<E> &

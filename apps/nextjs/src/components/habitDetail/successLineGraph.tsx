@@ -10,7 +10,7 @@ interface Props {
 
 const SuccessLineGraph = ({ data }: Props) => {
 	return (
-		<Card className="2xl:h-full">
+		<Card className="2xl:flex 2xl:h-full 2xl:flex-col">
 			<div className="flex items-center justify-between">
 				<Title>Habit score</Title>
 				<ComponentDialog title="Understanding Your Habit Journey">
@@ -24,7 +24,7 @@ const SuccessLineGraph = ({ data }: Props) => {
 				</ComponentDialog>
 			</div>
 			<LineChart
-				className="mt-6"
+				className="mt-6 2xl:flex-1"
 				data={data}
 				index="date"
 				categories={['Habit score']}

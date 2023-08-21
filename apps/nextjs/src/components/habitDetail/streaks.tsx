@@ -9,7 +9,7 @@ interface Props {
 
 const Streaks = ({ streaks }: Props) => {
 	return (
-		<Card>
+		<Card className="2xl:h-fit">
 			<Title>Your best streaks</Title>
 			<div className="">
 				{streaks.map((streak, index, arr) => {

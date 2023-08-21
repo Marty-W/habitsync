@@ -1,23 +1,20 @@
-'use client'
-
-import Link from 'next/link'
 import { Eraser, Hash, LogOut, Palette, Tags } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 
-import DeleteAccountItem from '~/components/settings/deleteAccountItem'
-import SettingsItem from '~/components/settings/settingsItem'
-import SettingsSection from '~/components/settings/settingsSection'
-import GoBackButton from '~/components/ui/goBackButton'
 import InfoDialog from '~/components/ui/infoDialog'
 import ThemeSelect from '~/components/ui/themeSelect'
+import DeleteAccountItem from '../deleteAccountItem'
+import SettingsItem from '../settingsItem'
+import SettingsSection from '../settingsSection'
+import type { CurrentView } from './desktopWrapper'
 
-const Settings = () => {
+interface Props {
+	changeView: (view: CurrentView) => void
+}
+
+const DesktopMainSettings = ({ changeView }: Props) => {
 	return (
-		<div className="flex flex-col px-6">
-			<div className="my-5 grid h-1/5 grid-rows-2">
-				<GoBackButton className="self-start" to={'/habits'} />
-				<h1 className="text-smuted-foreground self-end text-4xl">Settings</h1>
-			</div>
+		<div>
 			<SettingsSection
 				title="Sync"
 				dialog={
@@ -29,23 +26,23 @@ const Settings = () => {
 			>
 				<SettingsItem
 					title="From Projects"
-					as={Link}
-					href="/settings/sync-new-habits/projects"
+					as="button"
 					Icon={Hash}
+					onClick={() => changeView('sync-projects')}
 				/>
 				<SettingsItem
 					title="From Labels"
-					as={Link}
-					href="/settings/sync-new-habits/labels"
+					as="button"
 					Icon={Tags}
+					onClick={() => changeView('sync-labels')}
 				/>
 			</SettingsSection>
 			<SettingsSection title="App">
 				<SettingsItem
 					title="Delete timestamps or habits"
-					as={Link}
-					href="/settings/edit-habits"
+					as="button"
 					Icon={Eraser}
+					onClick={() => changeView('edit-habits')}
 				/>
 				<SettingsItem title="Prefered theme" as="button" Icon={Palette}>
 					<ThemeSelect />
@@ -64,4 +61,4 @@ const Settings = () => {
 	)
 }
 
-export default Settings
+export default DesktopMainSettings
