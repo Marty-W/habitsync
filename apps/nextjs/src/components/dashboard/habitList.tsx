@@ -33,7 +33,7 @@ const HabitList = () => {
 	}
 
 	return (
-		<div className="flex flex-col space-y-2 md:space-y-4">
+		<div className="flex flex-col space-y-2 pt-4 md:space-y-4">
 			{allHabits.data.map((habit) => {
 				return <DashboardHabit key={habit.id} habit={habit} />
 			})}

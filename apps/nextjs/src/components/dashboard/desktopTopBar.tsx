@@ -8,9 +8,8 @@ import ThemeToggle from '../ui/themeToggle'
 
 const DesktopTopBar = () => {
 	const pathname = usePathname()
-	console.log('render')
 	return (
-		<div className="flex items-center justify-between py-6">
+		<div className="flex items-end justify-between py-4">
 			<div className="h-16 w-16">
 				<BrandIcon />
 			</div>

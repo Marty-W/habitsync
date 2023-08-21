@@ -51,7 +51,7 @@
 		"clsx": "^1.2.1",
 		"date-fns": "^2.29.3",
 		"framer-motion": "^7.10.2",
-		"lucide-react": "^0.246.0",
+		"lucide-react": "^0.268.0",
 		"micro": "^10.0.1",
 		"next": "^13.4.12",
 		"next-app": "^0.0.0",

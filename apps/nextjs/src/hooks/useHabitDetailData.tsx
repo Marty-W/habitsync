@@ -36,4 +36,6 @@ const useHabitDetailData = (habitId: string) => {
 	}
 }
 
+export type useHabitDetailDataReturn = ReturnType<typeof useHabitDetailData>
+
 export default useHabitDetailData
