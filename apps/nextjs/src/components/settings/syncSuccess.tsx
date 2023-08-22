@@ -1,6 +1,12 @@
+import { useContext } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { BadgeCheck } from 'lucide-react'
 
+import {
+	SettingsModalContext,
+	useIsSettingsModalOpen,
+} from '~/hooks/useSettingsModalContext'
 import { Button } from '../ui/button'
 import Recap from './recap'
 import type { SyncSourceType } from './syncList'
@@ -20,6 +26,10 @@ const SyncSuccess = ({
 	const text = `Congratulations. You've synced ${numOfHabitsCreated} habit${
 		numOfHabitsCreated > 1 ? 's' : ''
 	}.`
+	const modalContext = useContext(SettingsModalContext)
+
+	const isMobile = usePathname()?.includes('settings')
+
 	return (
 		<Recap
 			icon={<BadgeCheck size={50} className="text-green-400" />}
@@ -35,9 +45,15 @@ const SyncSuccess = ({
 					Sync again
 				</Button>
 			</div>
-			<Button>
-				<Link href="/habits">Go to dashboard</Link>
-			</Button>
+			{isMobile ? (
+				<Button>
+					<Link href="/habits">Go to dashboard</Link>
+				</Button>
+			) : (
+				<Button onClick={() => modalContext?.closeAndIvalidate()}>
+					Go to dashboard
+				</Button>
+			)}
 		</Recap>
 	)
 }

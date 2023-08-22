@@ -26,6 +26,7 @@ const getTitle = (view: CurrentView) => {
 
 const DesktopWrapper = () => {
 	const [currentView, setCurrentView] = useState<CurrentView>('settings')
+	// TODO add back button that goes back to settings
 	return (
 		<div>
 			<h1 className="mb-4 text-center text-2xl">{getTitle(currentView)}</h1>

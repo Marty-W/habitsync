@@ -1,7 +1,10 @@
+import { useContext } from 'react'
 import Link from 'next/link'
-import { BadgeCheck } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { BadgeCheck, Settings } from 'lucide-react'
 
 import type { EditHabitType } from '~/app/settings/edit-habits/page'
+import { SettingsModalContext } from '~/hooks/useSettingsModalContext'
 import { Button } from '../ui/button'
 import Recap from './recap'
 
@@ -24,6 +27,8 @@ const getEditTypeText = (type: EditHabitType, numOfMutations: number) => {
 
 const EditSuccess = ({ numOfMutations, handleEditMore, type }: Props) => {
 	const text = getEditTypeText(type, numOfMutations)
+	const isMobile = usePathname()?.includes('settings')
+	const modalContext = useContext(SettingsModalContext)
 
 	return (
 		<Recap
@@ -33,9 +38,15 @@ const EditSuccess = ({ numOfMutations, handleEditMore, type }: Props) => {
 			<Button size="sm" onClick={handleEditMore} variant="link">
 				Edit more
 			</Button>
-			<Button>
-				<Link href="/habits">Go to dashboard</Link>
-			</Button>
+			{isMobile ? (
+				<Button>
+					<Link href="/habits">Go to dashboard</Link>
+				</Button>
+			) : (
+				<Button onClick={() => modalContext?.closeAndIvalidate()}>
+					Go to dashboard
+				</Button>
+			)}
 		</Recap>
 	)
 }
