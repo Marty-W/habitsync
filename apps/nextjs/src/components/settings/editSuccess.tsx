@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BadgeCheck, Settings } from 'lucide-react'
+import { BadgeCheck } from 'lucide-react'
 
 import type { EditHabitType } from '~/app/settings/edit-habits/page'
 import { SettingsModalContext } from '~/hooks/useSettingsModalContext'

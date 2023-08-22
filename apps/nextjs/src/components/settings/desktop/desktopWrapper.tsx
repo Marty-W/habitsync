@@ -1,17 +1,13 @@
-import { useState } from 'react'
+import { ChevronLeft } from 'lucide-react'
 
+import type { CurrentSettingsView } from '~/hooks/useSettingsModalContext'
+import { useSettingsModalContext } from '~/hooks/useSettingsModalContext'
 import EditHabits from '../editHabits'
 import SyncFromLabels from '../syncFromLabels'
 import SyncFromProjects from '../syncFromProjects'
 import DesktopMainSettings from './desktopMainSettings'
 
-export type CurrentView =
-	| 'settings'
-	| 'sync-projects'
-	| 'sync-labels'
-	| 'edit-habits'
-
-const getTitle = (view: CurrentView) => {
+const getTitle = (view: CurrentSettingsView) => {
 	switch (view) {
 		case 'settings':
 			return 'Settings'
@@ -25,15 +21,23 @@ const getTitle = (view: CurrentView) => {
 }
 
 const DesktopWrapper = () => {
-	const [currentView, setCurrentView] = useState<CurrentView>('settings')
-	// TODO add back button that goes back to settings
+	const { currentView, changeSettingsView } = useSettingsModalContext()
 	return (
 		<div>
-			<h1 className="mb-4 text-center text-2xl">{getTitle(currentView)}</h1>
+			<div className="mb-4 grid grid-cols-[1fr_fit_1fr] items-center">
+				{currentView !== 'settings' && (
+					<ChevronLeft
+						size={24}
+						className="inline-block cursor-pointer"
+						onClick={() => changeSettingsView('settings')}
+					/>
+				)}
+				<h1 className="col-start-2 text-2xl">
+					{getTitle(currentView ?? 'settings')}
+				</h1>
+			</div>
 			{currentView === 'settings' && (
-				<DesktopMainSettings
-					changeView={(view: CurrentView) => setCurrentView(view)}
-				/>
+				<DesktopMainSettings changeView={changeSettingsView} />
 			)}
 			{currentView === 'sync-projects' && <SyncFromProjects />}
 			{currentView === 'sync-labels' && <SyncFromLabels />}

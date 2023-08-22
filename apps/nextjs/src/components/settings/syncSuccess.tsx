@@ -36,11 +36,22 @@ const SyncSuccess = ({
 			text={text}
 		>
 			<div className="flex min-w-max justify-center">
-				<Button variant="link">
-					<Link href={`/settings/sync-new-habits/${otherSyncType}s`}>
+				{isMobile ? (
+					<Button variant="link">
+						<Link href={`/settings/sync-new-habits/${otherSyncType}s`}>
+							Sync by {otherSyncType}s{' '}
+						</Link>
+					</Button>
+				) : (
+					<Button
+						onClick={() =>
+							modalContext?.changeSettingsView(`sync-${otherSyncType}s`)
+						}
+						variant="link"
+					>
 						Sync by {otherSyncType}s{' '}
-					</Link>
-				</Button>
+					</Button>
+				)}
 				<Button size="sm" onClick={handleSyncAgain} variant="link">
 					Sync again
 				</Button>
