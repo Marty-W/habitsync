@@ -8,7 +8,6 @@ import { env } from '@habitsync/lib'
 
 export type { Session } from 'next-auth'
 
-// Update this whenever adding new providers so that the client can
 export const providers = ['todoist'] as const
 export type OAuthProviders = (typeof providers)[number]
 

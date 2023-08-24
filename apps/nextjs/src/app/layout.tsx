@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function Layout(props: { children: React.ReactNode }) {
 	return (
-		<html lang="en" className="scroll-smooth">
+		<html lang="en" className="scroll-smooth" suppressHydrationWarning>
 			<body className={['font-sans', fontSans.variable].join(' ')}>
 				<TRPCReactProvider>
 					<ThemeProvider attribute="class" defaultTheme="light">
