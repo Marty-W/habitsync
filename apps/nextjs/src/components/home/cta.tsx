@@ -1,5 +1,7 @@
 import React from 'react'
+import { Button } from '@tremor/react'
 
+import { SignIn } from '../auth'
 import Container from './container'
 
 const Cta = () => {
@@ -16,14 +18,12 @@ const Cta = () => {
 					</p>
 				</div>
 				<div className="w-full flex-shrink-0 text-center lg:w-auto">
-					<a
-						href="https://github.com/web3templates"
-						target="_blank"
-						rel="noopener noreferrer"
+					<SignIn
+						provider="todoist"
 						className="mx-auto inline-block rounded-md bg-white px-7 py-3 text-center text-lg font-medium text-blue-600 lg:px-10 lg:py-5"
 					>
 						Try for Free
-					</a>
+					</SignIn>
 				</div>
 			</div>
 		</Container>

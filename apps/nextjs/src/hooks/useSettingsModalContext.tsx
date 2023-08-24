@@ -15,6 +15,7 @@ interface SettingsModalContextProps {
 	closeAndIvalidate: () => void
 	currentView: CurrentSettingsView
 	changeSettingsView: (view: CurrentSettingsView) => void
+	mountAndChangeView: (view: CurrentSettingsView) => void
 }
 
 export const SettingsModalContext =
@@ -36,6 +37,11 @@ export const SettingsModalProvider = ({
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const utils = api.useContext()
 
+	const mountAndChangeView = useCallback((view: CurrentSettingsView) => {
+		setIsModalOpen(true)
+		setCurrentView(view)
+	}, [])
+
 	const toggleIsOpen = useCallback(() => {
 		setIsModalOpen(!isModalOpen)
 	}, [isModalOpen])
@@ -56,6 +62,7 @@ export const SettingsModalProvider = ({
 			closeAndIvalidate,
 			currentView,
 			changeSettingsView,
+			mountAndChangeView,
 		}),
 		[
 			isModalOpen,
@@ -63,6 +70,7 @@ export const SettingsModalProvider = ({
 			closeAndIvalidate,
 			currentView,
 			changeSettingsView,
+			mountAndChangeView,
 		],
 	)
 

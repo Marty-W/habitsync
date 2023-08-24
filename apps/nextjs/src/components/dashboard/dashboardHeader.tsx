@@ -4,7 +4,7 @@ import ThemeToggle from '../ui/themeToggle'
 
 const DashboardHeader = () => {
 	return (
-		<div className="mb-10 flex items-end justify-between py-7 md:hidden">
+		<div className="mb-10 flex items-end justify-between py-7 lg:hidden">
 			<Greeting />
 			<div className="flex justify-end">
 				<ThemeToggle />

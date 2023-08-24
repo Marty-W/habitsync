@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import DesktopTopBar from '~/components/dashboard/desktopTopBar'
 import HabitList from '~/components/dashboard/habitList'
 import DesktopDashboardView from '~/components/ui/desktopDashboardView'
+import { SettingsModalProvider } from '~/hooks/useSettingsModalContext'
 
 interface Props {
 	children: React.ReactNode
@@ -20,9 +21,11 @@ export default function Layout({ children }: Props) {
 
 			{/* For Desktop */}
 			<div className="bg-smuted hidden px-6 shadow-lg lg:block">
-				<div className="divide-smuted-foreground/20 flex h-screen flex-col divide-y-2 divide-opacity-20">
-					<DesktopTopBar />
-					<HabitList />
+				<div className="flex h-screen flex-col gap-y-4">
+					<SettingsModalProvider>
+						<DesktopTopBar />
+						<HabitList />
+					</SettingsModalProvider>
 				</div>
 			</div>
 			<div className="my-auto hidden lg:col-start-2 lg:block">

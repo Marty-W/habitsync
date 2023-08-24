@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { auth } from '@habitsync/auth'
 
 import heroImg from '../../../public/hero.png'
+import { SignIn } from '../auth'
 import { Button } from '../ui/button'
 import Container from './container'
 
@@ -31,17 +32,15 @@ const Hero = () => {
 					</div>
 				</div>
 				<div className="flex w-full items-center justify-center lg:w-1/2">
-					<div className="">
-						<Image
-							src={heroImg}
-							width="616"
-							height="617"
-							className={'object-cover'}
-							alt="Hero Illustration"
-							loading="eager"
-							placeholder="blur"
-						/>
-					</div>
+					<Image
+						src={heroImg}
+						width="616"
+						height="617"
+						className={'object-cover'}
+						alt="Hero Illustration"
+						loading="eager"
+						placeholder="blur"
+					/>
 				</div>
 			</Container>
 			<Container>
@@ -71,8 +70,9 @@ const HeroAuth = async () => {
 	}
 	return (
 		<>
-			<Button size="xl">Sign up</Button>
-			<Button variant="link">Demo account</Button>
+			<Button size="xl">
+				<SignIn provider="todoist">Sign up with Todoist</SignIn>
+			</Button>
 		</>
 	)
 }

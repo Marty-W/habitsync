@@ -21,7 +21,7 @@ export default function Layout(props: { children: React.ReactNode }) {
 		<html lang="en" className="scroll-smooth">
 			<body className={['font-sans', fontSans.variable].join(' ')}>
 				<TRPCReactProvider>
-					<ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+					<ThemeProvider attribute="class" defaultTheme="light">
 						<div>{props.children}</div>
 					</ThemeProvider>
 				</TRPCReactProvider>

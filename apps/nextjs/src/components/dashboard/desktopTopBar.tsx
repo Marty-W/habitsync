@@ -1,4 +1,3 @@
-import { SettingsModalProvider } from '~/hooks/useSettingsModalContext'
 import SettingsModal from '../settings/desktop/settingsModal'
 import BrandIcon from '../ui/brandIcon'
 import ThemeToggle from '../ui/themeToggle'
@@ -11,9 +10,7 @@ const DesktopTopBar = () => {
 			</div>
 			<div className="flex space-x-2">
 				<ThemeToggle />
-				<SettingsModalProvider>
-					<SettingsModal />
-				</SettingsModalProvider>
+				<SettingsModal />
 			</div>
 		</div>
 	)

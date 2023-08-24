@@ -3,16 +3,16 @@ import { initTRPC, TRPCError } from '@trpc/server'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
 
-import { auth, type Session } from '@habitsync/auth'
+import { auth } from '@habitsync/auth'
+import type { Session } from '@habitsync/auth'
 import { prisma } from '@habitsync/db'
-import { env } from '@habitsync/lib/'
 
 // CONTEXT
 const createDoistApi = (token: string) => {
 	return new TodoistApi(token)
 }
 
-type CreateContextOptions = {
+interface CreateContextOptions {
 	session: Session | null
 	doist: TodoistApi
 }
@@ -34,9 +34,19 @@ export const createContext = async (opts: {
 
 	console.log('>>> tRPC Request from', source, 'by', session?.user)
 
-	//FIX Get token??
-	// Doist API, right now hardcoded to my token
-	const doist = createDoistApi(env.DOIST_TEMP_API_TOKEN)
+	const userId = session.user.id
+
+	// Fetch the account from the database
+	const account = await prisma.user.findUnique({
+		where: {
+			id: userId,
+		},
+		select: {
+			accounts: true,
+		},
+	})
+
+	const doist = createDoistApi(account?.accounts[0]?.access_token ?? '')
 
 	return createContextInner({
 		session,

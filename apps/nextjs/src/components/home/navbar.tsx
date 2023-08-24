@@ -55,7 +55,7 @@ const NavAuth = async () => {
 	if (!session) {
 		return (
 			<Button variant="secondary">
-				<SignIn provider="google">Sign in</SignIn>
+				<SignIn provider="todoist">Sign in</SignIn>
 			</Button>
 		)
 	}

@@ -21,13 +21,6 @@ export const habitRouter = createTRPCRouter({
 			},
 		})
 
-		if (!habits.length) {
-			throw new TRPCError({
-				code: 'NOT_FOUND',
-				message: `No habits found. Please sync with Todoist first.`,
-			})
-		}
-
 		return habits.map((habit) => ({
 			id: habit.id,
 			labels: habit.labels,
