@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button } from '@tremor/react'
 
 import { SignIn } from '../auth'
 import Container from './container'

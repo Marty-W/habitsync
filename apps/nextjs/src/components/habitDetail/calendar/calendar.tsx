@@ -3,7 +3,6 @@ import { Card } from '@tremor/react'
 
 import { normalizeDate } from '@habitsync/lib'
 
-import { cn } from '~/utils/tailwind'
 import type { RouterOutputs } from '~/utils/trpc'
 import Loader from '~/components/ui/activeLoader'
 import ResizableSlidePanel from '~/components/ui/resizablePanel'

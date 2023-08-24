@@ -5,12 +5,8 @@ export const env = createEnv({
 	server: {
 		NODE_ENV: z.enum(['development', 'test', 'production']),
 		DATABASE_URL: z.string().url(),
-		GOOGLE_CLIENT_ID: z.string(),
-		GOOGLE_CLIENT_SECRET: z.string(),
 		DOIST_CLIENT_ID: z.string(),
 		DOIST_CLIENT_SECRET: z.string(),
-		DOIST_VERIF_TOKEN: z.string(),
-		DOIST_TEMP_API_TOKEN: z.string(),
 		NEXTAUTH_URL: z.preprocess(
 			// This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
 			// Since NextAuth.js automatically uses the VERCEL_URL if present.
@@ -31,13 +27,8 @@ export const env = createEnv({
 		NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 		DATABASE_URL: process.env.DATABASE_URL,
-		GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-		GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 		DOIST_CLIENT_ID: process.env.DOIST_CLIENT_ID,
 		DOIST_CLIENT_SECRET: process.env.DOIST_CLIENT_SECRET,
-		DOIST_VERIF_TOKEN: process.env.DOIST_VERIF_TOKEN,
-		DOIST_TEMP_API_TOKEN: process.env.DOIST_TEMP_API_TOKEN,
-		// NEXT_PUBLIC_TEMP_API_TOKEN: process.env.NEXT_PUBLIC_TEMP_API_TOKEN,
 	},
 	skipValidation: !!process.env.CI || !!process.env.SKIP_ENV_VALIDATION,
 })

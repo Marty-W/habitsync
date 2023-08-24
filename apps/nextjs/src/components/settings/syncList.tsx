@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { PlusCircle } from 'lucide-react'
 
-import type { SyncSources } from '~/pages/settings/sync-new-habits/labels'
+import type { SyncSources } from '~/app/settings/sync-new-habits/labels/page'
 import SyncListItems from './syncListItems'
 import SyncSource from './syncSource'
 import SyncSuccess from './syncSuccess'

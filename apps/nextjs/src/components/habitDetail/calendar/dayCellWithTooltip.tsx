@@ -7,6 +7,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '~/components/ui/tooltip'
+import type { DayCellVariant } from './dayCell'
 
 export type DayCellWithTooltipVariant =
 	| 'notThisMonth'

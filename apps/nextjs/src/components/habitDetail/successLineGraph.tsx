@@ -18,8 +18,9 @@ const SuccessLineGraph = ({ data }: Props) => {
 						This graph illustrates your habit consistency over time, offering a
 						clearer view of your progress. Through smoothed scoring, you can
 						easily spot patterns, understand your dedication levels, and stay
-						motivated. It's not just about daily successes, but your overall
-						journey. Stay on track, and watch the positive trends unfold!
+						motivated. It&apos;s not just about daily successes, but your
+						overall journey. Stay on track, and watch the positive trends
+						unfold!
 					</p>
 				</ComponentDialog>
 			</div>

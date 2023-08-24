@@ -23,6 +23,7 @@ const useCalendarData = (initialYear?: number, initialMonth?: number) => {
 			localStorage.setItem(`${year}-${month}`, JSON.stringify(data))
 			setCalendarData(data)
 		} else {
+			//eslint-disable-next-line
 			setCalendarData(JSON.parse(data))
 		}
 	}, [displayedDate])

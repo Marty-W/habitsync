@@ -3,10 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { BadgeCheck } from 'lucide-react'
 
-import {
-	SettingsModalContext,
-	useIsSettingsModalOpen,
-} from '~/hooks/useSettingsModalContext'
+import { SettingsModalContext } from '~/hooks/useSettingsModalContext'
 import { Button } from '../ui/button'
 import Recap from './recap'
 import type { SyncSourceType } from './syncList'
