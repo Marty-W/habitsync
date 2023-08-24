@@ -1,4 +1,8 @@
+import { Suspense } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+
+import { auth } from '@habitsync/auth'
 
 import heroImg from '../../../public/hero.png'
 import { Button } from '../ui/button'
@@ -20,8 +24,9 @@ const Hero = () => {
 						</p>
 
 						<div className="flex flex-col items-start space-y-3 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
-							<Button size="xl">Sign up</Button>
-							<Button variant="link">Demo account</Button>
+							<Suspense fallback={<span>...</span>}>
+								<HeroAuth />
+							</Suspense>
 						</div>
 					</div>
 				</div>
@@ -48,6 +53,26 @@ const Hero = () => {
 					</p>
 				</div>
 			</Container>
+		</>
+	)
+}
+
+const HeroAuth = async () => {
+	const session = await auth()
+
+	if (session) {
+		return (
+			<Button size="xl">
+				<Link className="btn" href="/habits?firstLoad=true">
+					Go to dashboard
+				</Link>
+			</Button>
+		)
+	}
+	return (
+		<>
+			<Button size="xl">Sign up</Button>
+			<Button variant="link">Demo account</Button>
 		</>
 	)
 }

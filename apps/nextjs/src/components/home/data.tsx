@@ -9,13 +9,13 @@ import {
 	SunMoon,
 	Tally5,
 } from 'lucide-react'
+import benefitTwoImg from 'public/benefit2.png'
+import benefitThreeImg from 'public/benefit3.png'
 import barchart from 'public/visualizations/barchart.png'
 import calendar from 'public/visualizations/calendar.png'
 import linechart from 'public/visualizations/linechart.png'
 import streaks from 'public/visualizations/streaks.png'
 
-import benefitOneImg from '../../../public/benefit1.png'
-import benefitTwoImg from '../../../public/benefit1.png'
 import type { CarouselBenefitData, ImageBenefitData } from './benefits'
 
 const benefitOne: CarouselBenefitData = {
@@ -65,7 +65,7 @@ const benefitTwo: ImageBenefitData = {
 	title: 'Seamless Todoist Integration',
 	desc: 'HabitSync bridges the gap between Todoist and habit tracking. Flag projects or labels and let the magic happen.',
 	visual: 'image',
-	image: benefitOneImg,
+	image: benefitTwoImg,
 	bullets: [
 		{
 			title: 'Todoist Recurrence',
@@ -89,7 +89,7 @@ const benefitThree: ImageBenefitData = {
 	title: 'Modern & Responsive',
 	desc: 'Built with cutting-edge technologies, HabitSync offers a seamless experience across devices.',
 	visual: 'image',
-	image: benefitOneImg,
+	image: benefitThreeImg,
 	bullets: [
 		{
 			title: 'Powered by Next.js & TailwindCSS',

@@ -38,22 +38,28 @@ const Faq = () => {
 
 const faqdata = [
 	{
-		question: 'Is this template completely free to use?',
-		answer: 'Yes, this template is completely free to use.',
+		question: 'How do I integrate HabitSync with my Todoist account?',
+		answer: `Integrating HabitSync with Todoist is simple. Once you sign up, you'll be prompted to connect your Todoist account. Just follow the on-screen instructions, and you'll be set up in no time.`,
 	},
 	{
-		question: 'Can I use it in a commercial project?',
-		answer: 'Yes, this you can.',
-	},
-	{
-		question: 'What is your refund policy? ',
+		question: 'How does HabitSync track my habits from Todoist tasks?',
 		answer:
-			"If you're unhappy with your purchase for any reason, email us within 90 days and we'll refund you in full, no questions asked.",
+			'Once you flag specific projects or labels for tracking in HabitSync, every time you complete a task under them in Todoist, our system records a timestamp. This data is then used to provide you with detailed habit analytics.',
 	},
 	{
-		question: 'Do you offer technical support? ',
+		question: 'Can I use HabitSync on my mobile device?',
 		answer:
-			"No, we don't offer technical support for free downloads. Please purchase a support plan to get 6 months of support.",
+			'Yes, HabitSync is fully responsive and optimized for both desktop and mobile devices. You can track and visualize your habits on the go.',
+	},
+	{
+		question: 'Do you support task managers other than Todoist?',
+		answer:
+			"Currently, HabitSync is exclusively designed for Todoist users. However, we're always looking to expand and might support other task managers in the future.",
+	},
+	{
+		question: 'How much does HabitSync cost?',
+		answer:
+			"HabitSync is currently in its alpha phase, and all features are available for free. We're continuously working to improve and expand the platform. Any potential changes to our pricing will be communicated in advance, but for now, enjoy everything HabitSync has to offer at no cost!",
 	},
 ]
 

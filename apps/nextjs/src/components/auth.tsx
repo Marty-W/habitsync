@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { CSRF_experimental, type OAuthProviders } from '@habitsync/auth'
+import { CSRF_experimental } from '@habitsync/auth'
+import type { OAuthProviders } from '@habitsync/auth'
 
 export function SignIn({
 	provider,

@@ -1,11 +1,17 @@
-'use client'
-
+import { Suspense } from 'react'
 import Link from 'next/link'
 
+import { auth } from '@habitsync/auth'
+
+import { Button } from '~/components/ui/button'
 import BrandIcon from '../../components/ui/brandIcon'
+import { SignIn, SignOut } from '../auth'
 
 const Navbar = () => {
-	const navigation = ['Features', 'Pricing', 'FAQ']
+	const navigation = [
+		{ name: 'Features', href: '#features' },
+		{ name: 'FAQ', href: '#faq' },
+	]
 
 	return (
 		<div className="w-full">
@@ -23,26 +29,41 @@ const Navbar = () => {
 						{navigation.map((menu, index) => (
 							<li className="nav__item mr-3" key={index}>
 								<Link
-									href="/"
+									href={menu.href}
 									className="inline-block rounded-md px-4 py-2 text-lg font-normal text-gray-800 no-underline hover:text-blue-500 focus:bg-blue-100 focus:text-blue-500 focus:outline-none"
 								>
-									{menu}
+									{menu.name}
 								</Link>
 							</li>
 						))}
 					</ul>
 				</div>
 
-				<div className="nav__item mr-3 hidden space-x-4 lg:flex">
-					<Link
-						href="/"
-						className="rounded-md bg-blue-600 px-6 py-2 text-white md:ml-5"
-					>
-						Get Started
-					</Link>
+				<div className="mr-3 hidden space-x-4 lg:flex">
+					<Suspense fallback={<span>...</span>}>
+						<NavAuth />
+					</Suspense>
 				</div>
 			</nav>
 		</div>
+	)
+}
+
+const NavAuth = async () => {
+	const session = await auth()
+
+	if (!session) {
+		return (
+			<Button variant="secondary">
+				<SignIn provider="google">Sign in</SignIn>
+			</Button>
+		)
+	}
+
+	return (
+		<Button variant="secondary">
+			<SignOut>Sign out</SignOut>
+		</Button>
 	)
 }
 

@@ -43,7 +43,7 @@ const Benefits = ({
 	const { title, desc, bullets, visual } = data
 	return (
 		<>
-			<Container className="mb-20 flex flex-wrap lg:flex-nowrap lg:gap-10 ">
+			<Container className="mb-20 flex flex-wrap lg:flex-nowrap lg:gap-10">
 				<div
 					className={`flex w-full items-center justify-center lg:w-1/2 ${
 						imgPos === 'right' ? 'lg:order-1' : ''
@@ -53,8 +53,6 @@ const Benefits = ({
 						{visual === 'image' ? (
 							<Image
 								src={data.image}
-								width="521"
-								height="auto"
 								alt="Benefits"
 								className={'object-cover'}
 								placeholder="blur"
@@ -101,7 +99,7 @@ interface BenefitProps {
 	children: ReactNode
 }
 
-function Benefit({ icon: Icon, title, children }: BenefitProps) {
+const Benefit = ({ icon: Icon, title, children }: BenefitProps) => {
 	return (
 		<>
 			<div className="mt-8 flex items-start space-x-3">

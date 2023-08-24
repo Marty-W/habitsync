@@ -7,14 +7,16 @@ interface Props {
 	pretitle?: string
 	title?: string
 	children: React.ReactNode
+	id?: string
 }
 
-const SectionTitle = ({ align, pretitle, title, children }: Props) => {
+const SectionTitle = ({ align, pretitle, title, children, id }: Props) => {
 	return (
 		<Container
 			className={`mt-4 flex w-full flex-col ${
 				align === 'left' ? '' : 'items-center justify-center text-center'
 			}`}
+			id={id}
 		>
 			{pretitle && (
 				<div className="text-sm font-bold uppercase tracking-wider text-blue-600">
