@@ -34,8 +34,6 @@ const Hero = () => {
 				<div className="flex w-full items-center justify-center lg:w-1/2">
 					<Image
 						src={heroImg}
-						width="616"
-						height="617"
 						className={'object-cover'}
 						alt="Hero Illustration"
 						loading="eager"
@@ -61,7 +59,7 @@ const HeroAuth = async () => {
 
 	if (session) {
 		return (
-			<Button size="xl">
+			<Button size="xl" asChild>
 				<Link className="btn" href="/habits?firstLoad=true">
 					Go to dashboard
 				</Link>
@@ -70,7 +68,7 @@ const HeroAuth = async () => {
 	}
 	return (
 		<>
-			<Button size="xl">
+			<Button size="xl" asChild>
 				<SignIn provider="todoist">Sign up with Todoist</SignIn>
 			</Button>
 		</>

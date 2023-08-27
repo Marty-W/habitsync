@@ -54,14 +54,14 @@ const NavAuth = async () => {
 
 	if (!session) {
 		return (
-			<Button variant="secondary">
+			<Button variant="secondary" asChild>
 				<SignIn provider="todoist">Sign in</SignIn>
 			</Button>
 		)
 	}
 
 	return (
-		<Button variant="secondary">
+		<Button variant="secondary" asChild>
 			<SignOut>Sign out</SignOut>
 		</Button>
 	)
