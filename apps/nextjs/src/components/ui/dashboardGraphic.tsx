@@ -9,7 +9,7 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
 		width={392}
 		height={372}
 		fill="none"
-		className={cn(props.className, 'fill-sforeground')}
+		className={cn(props.className, 'fill-sprimary/50')}
 	>
 		<path
 			fillRule="evenodd"

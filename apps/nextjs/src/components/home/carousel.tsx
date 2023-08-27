@@ -47,7 +47,7 @@ const Carousel = ({ options, images }: Props) => {
 	}, [emblaApi, onSelect])
 
 	return (
-		<div className="relative overflow-hidden" ref={emblaRef}>
+		<div className="relative max-w-lg overflow-hidden" ref={emblaRef}>
 			<div className="backface-hidden touch-action-pan-y ml-[-1rem] flex">
 				{images.map((image, index) => (
 					<div

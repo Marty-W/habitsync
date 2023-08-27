@@ -54,7 +54,7 @@ const Benefits = ({
 							<Image
 								src={data.image}
 								alt="Benefits"
-								className={'object-cover'}
+								className="max-w-md object-cover"
 								placeholder="blur"
 							/>
 						) : (
