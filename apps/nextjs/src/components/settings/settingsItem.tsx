@@ -1,50 +1,79 @@
-import type { ComponentPropsWithoutRef, ElementType } from 'react'
+import type { PropsWithChildren } from 'react'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 import { cn } from '~/utils/tailwind'
 
-const ButtonDefaultAsType = 'button'
-type ButtonDefaultAsType = typeof ButtonDefaultAsType
-
-interface ItemOwnProps<E extends ElementType> {
-	as?: E
+interface SettingsItemBaseProps {
 	title: string
 	className?: string
-	children?: React.ReactNode
 	Icon: LucideIcon
 }
 
-type ItemProps<E extends ElementType> = ItemOwnProps<E> &
-	Omit<ComponentPropsWithoutRef<E>, keyof ItemOwnProps<E>>
-
-const SettingsItem = <E extends ElementType = ButtonDefaultAsType>({
-	as,
-	title,
-	className,
-	children,
+export const SettingsItem = ({
 	Icon,
-	...delegated
-}: ItemProps<E>) => {
-	const Tag = as ?? ButtonDefaultAsType
-
+	title,
+	children,
+}: PropsWithChildren<SettingsItemBaseProps>) => {
 	return (
 		<div className="flex h-14 items-center">
 			<Icon size={20} />
-			<Tag
-				{...delegated}
+			<span className="px-3 text-lg">{title}</span>
+			<div className="ml-auto">{children}</div>
+		</div>
+	)
+}
+
+interface SettingsItemLinkProps extends SettingsItemBaseProps {
+	href: string
+}
+
+export const SettingsItemLink = ({
+	href,
+	className,
+	title,
+	Icon,
+}: SettingsItemLinkProps) => {
+	return (
+		<div className="flex h-14 items-center">
+			<Icon size={20} />
+			<Link
+				href={href}
 				className={cn(
 					'flex w-full items-center justify-between px-3 ',
 					className,
 				)}
 			>
 				<span className="text-lg">{title}</span>
-				{as === Link && <ChevronRight size={20} />}
-				{children}
-			</Tag>
+				<ChevronRight size={20} />
+			</Link>
 		</div>
 	)
 }
 
-export default SettingsItem
+interface SettingsItemButtonProps extends SettingsItemBaseProps {
+	onClick?: () => void
+}
+
+export const SettingsItemButton = ({
+	onClick,
+	className,
+	title,
+	Icon,
+}: SettingsItemButtonProps) => {
+	return (
+		<div className="flex h-14 items-center">
+			<Icon size={20} />
+			<button
+				className={cn(
+					'flex w-full items-center justify-between px-3 ',
+					className,
+				)}
+				onClick={onClick}
+			>
+				<span className="text-lg">{title}</span>
+			</button>
+		</div>
+	)
+}

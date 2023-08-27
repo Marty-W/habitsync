@@ -18,11 +18,12 @@ import {
 	AlertDialogTrigger,
 } from '~/components/ui/alertDialog'
 import ClickSpinner from '../ui/clickSpinner'
-import SettingsItem from './settingsItem'
+import { SettingsItemButton } from './settingsItem'
 
 const DeleteAccountItem = () => {
 	const router = useRouter()
 	const [mutationOutput, setMutationOutput] = useState<ReactNode | null>(null)
+
 	const deleteAcc = api.acc.deleteAcc.useMutation({
 		onMutate: () => {
 			setMutationOutput(<ClickSpinner isActive />)
@@ -46,7 +47,12 @@ const DeleteAccountItem = () => {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<SettingsItem title="Delete account" as="button" Icon={UserX2} />
+				<button className="flex h-14 items-center">
+					<UserX2 size={20} />
+					<div className="flex w-full items-center justify-between px-3">
+						<span className="text-lg">Delete account</span>
+					</div>
+				</button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>

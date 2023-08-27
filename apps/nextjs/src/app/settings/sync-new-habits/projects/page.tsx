@@ -5,7 +5,7 @@ import SyncFromProjects from '~/components/settings/syncFromProjects'
 
 const SyncFromProjectsPage = () => {
 	return (
-		<SubSettingsPage title="Sync from projects">
+		<SubSettingsPage title="Sync projects">
 			<SyncFromProjects />
 		</SubSettingsPage>
 	)

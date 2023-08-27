@@ -4,7 +4,7 @@ import { signOut } from 'next-auth/react'
 import InfoDialog from '~/components/ui/infoDialog'
 import ThemeSelect from '~/components/ui/themeSelect'
 import DeleteAccountItem from '../deleteAccountItem'
-import SettingsItem from '../settingsItem'
+import { SettingsItem, SettingsItemButton } from '../settingsItem'
 import SettingsSection from '../settingsSection'
 import type { CurrentView } from './desktopWrapper'
 
@@ -24,34 +24,30 @@ const DesktopMainSettings = ({ changeView }: Props) => {
 					/>
 				}
 			>
-				<SettingsItem
+				<SettingsItemButton
 					title="From Projects"
-					as="button"
 					Icon={Hash}
 					onClick={() => changeView('sync-projects')}
 				/>
-				<SettingsItem
+				<SettingsItemButton
 					title="From Labels"
-					as="button"
 					Icon={Tags}
 					onClick={() => changeView('sync-labels')}
 				/>
 			</SettingsSection>
 			<SettingsSection title="App">
-				<SettingsItem
+				<SettingsItemButton
 					title="Delete timestamps or habits"
-					as="button"
 					Icon={Eraser}
 					onClick={() => changeView('edit-habits')}
 				/>
-				<SettingsItem title="Prefered theme" as="button" Icon={Palette}>
+				<SettingsItem title="Prefered theme" Icon={Palette}>
 					<ThemeSelect />
 				</SettingsItem>
 			</SettingsSection>
 			<SettingsSection title="Account">
-				<SettingsItem
+				<SettingsItemButton
 					title="Log out"
-					as="button"
 					onClick={() => signOut({ callbackUrl: '/' })}
 					Icon={LogOut}
 				/>

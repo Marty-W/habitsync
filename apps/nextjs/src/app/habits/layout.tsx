@@ -21,10 +21,12 @@ export default function Layout({ children }: Props) {
 
 			{/* For Desktop */}
 			<div className="bg-smuted hidden px-6 shadow-lg lg:block">
-				<div className="flex h-screen flex-col gap-y-4">
+				<div className="h-screen">
 					<SettingsModalProvider>
-						<DesktopTopBar />
-						<HabitList />
+						<div className="divide-sprimary/20 flex flex-col divide-y-2">
+							<DesktopTopBar />
+							<HabitList />
+						</div>
 					</SettingsModalProvider>
 				</div>
 			</div>

@@ -5,5 +5,5 @@ export const metadata: Metadata = {
 }
 
 export default function Layout(props: { children: React.ReactNode }) {
-	return <section>{props.children}</section>
+	return <section className="bg-smuted h-screen">{props.children}</section>
 }

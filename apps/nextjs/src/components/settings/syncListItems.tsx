@@ -62,7 +62,7 @@ const SyncListItems = ({
 
 	return (
 		<>
-			<div className="bg-smuted divide-smuted-foreground/20 flex-1 divide-y overflow-y-auto rounded-lg px-6 py-2 shadow-md">
+			<div className="divide-smuted-foreground/20 bg-scard flex-1 divide-y overflow-y-auto rounded-lg px-6 py-2">
 				{todoistTasks.data?.map((task) => {
 					return (
 						<HabitListItem

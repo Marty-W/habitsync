@@ -46,25 +46,27 @@ const HabitListItems = ({
 		.map((habit) => habit.id)
 
 	return (
-		<div className="bg-muted flex-1 rounded-lg px-6 py-2">
-			{habits.map((habit) => (
-				<HabitListItem
-					kind="edit"
-					name={habit.name}
-					key={habit.id}
-					isSelected={items.includes(habit.id)}
-					id={habit.id}
-					handleSelect={editItems}
-					numOfTimestamps={habit.numOfTimestamps}
-				/>
-			))}
+		<>
+			<div className="bg-scard flex-1 rounded-lg px-6 py-2">
+				{habits.map((habit) => (
+					<HabitListItem
+						kind="edit"
+						name={habit.name}
+						key={habit.id}
+						isSelected={items.includes(habit.id)}
+						id={habit.id}
+						handleSelect={editItems}
+						numOfTimestamps={habit.numOfTimestamps}
+					/>
+				))}
+			</div>
 			<div className="mx-auto mt-10 flex flex-col justify-center gap-3 px-28">
 				<Button
 					disabled={
 						!items.length ||
 						items.every((id) => !habitIdsWithTimestamps.includes(id))
 					}
-					variant="secondary"
+					variant="outline"
 					onClick={() => deleteTimestamps.mutate({ habitIds: items })}
 				>
 					Delete timestamps
@@ -77,7 +79,7 @@ const HabitListItems = ({
 					Delete habits
 				</Button>
 			</div>
-		</div>
+		</>
 	)
 }
 

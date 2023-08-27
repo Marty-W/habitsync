@@ -19,7 +19,7 @@ const ThemeSelect = ({ className }: Props) => {
 
 	return (
 		<Select onValueChange={(value) => setTheme(value)}>
-			<SelectTrigger className={cn('h-full w-[80px]', className)}>
+			<SelectTrigger className={cn('w-[80px]', className)}>
 				<SelectValue placeholder={theme} />
 			</SelectTrigger>
 			<SelectContent>

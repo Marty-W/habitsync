@@ -10,7 +10,7 @@ export type SyncSources =
 
 const SyncFromLabelsPage = () => {
 	return (
-		<SubSettingsPage title="Sync from labels">
+		<SubSettingsPage title="Sync labels">
 			<SyncFromLabels />
 		</SubSettingsPage>
 	)

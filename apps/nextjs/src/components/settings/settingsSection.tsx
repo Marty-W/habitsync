@@ -13,7 +13,7 @@ const SettingsSection = ({ title, children, dialog }: Props) => {
 				</h2>
 				{dialog}
 			</div>
-			<div className="bg-smuted/40 dark:divide-sprimary/10 flex flex-col divide-y rounded-lg px-2">
+			<div className="dark:divide-sprimary/10 bg-scard flex flex-col divide-y rounded-lg px-2">
 				{children}
 			</div>
 		</div>
