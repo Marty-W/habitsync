@@ -1,9 +1,9 @@
-import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
-import { type AppRouter } from './src/trpc/root'
+import type { AppRouter } from './src/trpc/root'
 
 export { appRouter, type AppRouter } from './src/trpc/root'
-export { createContext, createContextInner } from './src/trpc/trpc'
+export { createTRPCContext } from './src/trpc/trpc'
 export { t, protectedProcedure } from './src/trpc/trpc'
 
 /**

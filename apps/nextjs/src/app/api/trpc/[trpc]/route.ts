@@ -1,6 +1,6 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
-import { appRouter, createContext } from '@habitsync/api'
+import { appRouter, createTRPCContext } from '@habitsync/api'
 import { auth } from '@habitsync/auth'
 
 export const runtime = 'nodejs'
@@ -29,7 +29,7 @@ const handler = auth(async (req) => {
 		endpoint: '/api/trpc',
 		router: appRouter,
 		req,
-		createContext: () => createContext({ auth: req.auth, req }),
+		createContext: () => createTRPCContext({ auth: req.auth, req }),
 	})
 
 	setCorsHeaders(response)

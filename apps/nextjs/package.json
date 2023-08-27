@@ -54,7 +54,7 @@
 		"framer-motion": "^7.10.3",
 		"lucide-react": "^0.268.0",
 		"micro": "^10.0.1",
-		"next": "13.4.20-canary.9",
+		"next": "13.4.19",
 		"next-app": "^0.0.0",
 		"next-themes": "^0.2.1",
 		"react": "18.2.0",

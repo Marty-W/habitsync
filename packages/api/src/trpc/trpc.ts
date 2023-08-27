@@ -17,7 +17,7 @@ interface CreateContextOptions {
 	doist: TodoistApi
 }
 
-export const createContextInner = (opts: CreateContextOptions) => {
+export const createInnerTRPCContext = (opts: CreateContextOptions) => {
 	return {
 		session: opts.session,
 		doist: opts.doist,
@@ -25,7 +25,7 @@ export const createContextInner = (opts: CreateContextOptions) => {
 	}
 }
 
-export const createContext = async (opts: {
+export const createTRPCContext = async (opts: {
 	req?: Request
 	auth?: Session
 }) => {
@@ -46,9 +46,16 @@ export const createContext = async (opts: {
 		},
 	})
 
-	const doist = createDoistApi(account?.accounts[0]?.access_token ?? '')
+	if (!account?.accounts[0]?.access_token) {
+		throw new TRPCError({
+			code: 'UNAUTHORIZED',
+			message: 'User does not have a Todoist account linked',
+		})
+	}
 
-	return createContextInner({
+	const doist = createDoistApi(account.accounts[0].access_token)
+
+	return createInnerTRPCContext({
 		session,
 		doist,
 	})
@@ -56,7 +63,7 @@ export const createContext = async (opts: {
 
 // INITIALIZATION
 
-export const t = initTRPC.context<typeof createContext>().create({
+export const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson,
 	errorFormatter({ shape, error }) {
 		return {
@@ -77,7 +84,7 @@ export const createTRPCRouter = t.router
 export const publicProcedure = t.procedure
 
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-	if (!ctx.session || !ctx.session.user) {
+	if (!ctx.session?.user) {
 		throw new TRPCError({ code: 'UNAUTHORIZED' })
 	}
 	return next({
