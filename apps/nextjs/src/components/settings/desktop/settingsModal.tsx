@@ -14,7 +14,7 @@ const SettingsModal = () => {
 			onOpenChange={modalContext?.toggleIsOpen}
 			open={modalContext?.isModalOpen}
 		>
-			<DialogTrigger>
+			<DialogTrigger asChild>
 				<Button variant="outline" size="icon">
 					<Settings size="1.2rem" />
 				</Button>

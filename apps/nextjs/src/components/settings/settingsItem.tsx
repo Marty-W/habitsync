@@ -1,4 +1,5 @@
 import type { ComponentPropsWithoutRef, ElementType } from 'react'
+import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -29,7 +30,7 @@ const SettingsItem = <E extends ElementType = ButtonDefaultAsType>({
 	const Tag = as ?? ButtonDefaultAsType
 
 	return (
-		<div className="flex h-14 items-center justify-center">
+		<div className="flex h-14 items-center">
 			<Icon size={20} />
 			<Tag
 				{...delegated}
@@ -39,7 +40,7 @@ const SettingsItem = <E extends ElementType = ButtonDefaultAsType>({
 				)}
 			>
 				<span className="text-lg">{title}</span>
-				{as !== 'button' && <ChevronRight size={20} />}
+				{as === Link && <ChevronRight size={20} />}
 				{children}
 			</Tag>
 		</div>

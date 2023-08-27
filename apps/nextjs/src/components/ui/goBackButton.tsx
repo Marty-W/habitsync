@@ -12,11 +12,11 @@ interface Props {
 }
 const GoBackButton = ({ className, iconSize = 24, to }: Props) => {
 	return (
-		<Link href={to}>
-			<Button variant="ghost" size="icon" className={className}>
+		<Button variant="ghost" size="icon" className={className} asChild>
+			<Link href={to}>
 				<ChevronLeft size={iconSize} />
-			</Button>
-		</Link>
+			</Link>
+		</Button>
 	)
 }
 

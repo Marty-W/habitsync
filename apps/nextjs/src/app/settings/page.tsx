@@ -10,8 +10,10 @@ import SettingsSection from '~/components/settings/settingsSection'
 import GoBackButton from '~/components/ui/goBackButton'
 import InfoDialog from '~/components/ui/infoDialog'
 import ThemeSelect from '~/components/ui/themeSelect'
+import useRenderAfterMount from '~/hooks/useRenderAfterMount'
 
 const Settings = () => {
+	const SafeThemeSelect = useRenderAfterMount(<ThemeSelect />)
 	return (
 		<div className="flex flex-col px-6">
 			<div className="my-5 grid h-1/5 grid-rows-2">
@@ -47,8 +49,8 @@ const Settings = () => {
 					href="/settings/edit-habits"
 					Icon={Eraser}
 				/>
-				<SettingsItem title="Prefered theme" as="button" Icon={Palette}>
-					<ThemeSelect />
+				<SettingsItem title="Prefered theme" Icon={Palette}>
+					{SafeThemeSelect}
 				</SettingsItem>
 			</SettingsSection>
 			<SettingsSection title="Account">

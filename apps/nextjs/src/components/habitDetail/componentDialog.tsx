@@ -12,13 +12,13 @@ import {
 
 interface Props {
 	title: string
-	children: React.ReactNode
+	text: React.ReactNode
 }
 
-const ComponentDialog = ({ title, children }: Props) => {
+const ComponentDialog = ({ title, text }: Props) => {
 	return (
 		<Dialog>
-			<DialogTrigger>
+			<DialogTrigger asChild>
 				<Button variant="ghost">
 					<Info size={18} />
 				</Button>
@@ -26,7 +26,7 @@ const ComponentDialog = ({ title, children }: Props) => {
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
-					<DialogDescription>{children}</DialogDescription>
+					<DialogDescription>{text}</DialogDescription>
 				</DialogHeader>
 			</DialogContent>
 		</Dialog>

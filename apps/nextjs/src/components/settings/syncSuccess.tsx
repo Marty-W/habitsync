@@ -34,7 +34,7 @@ const SyncSuccess = ({
 		>
 			<div className="flex min-w-max justify-center">
 				{isMobile ? (
-					<Button variant="link">
+					<Button variant="link" asChild>
 						<Link href={`/settings/sync-new-habits/${otherSyncType}s`}>
 							Sync by {otherSyncType}s{' '}
 						</Link>
@@ -54,7 +54,7 @@ const SyncSuccess = ({
 				</Button>
 			</div>
 			{isMobile ? (
-				<Button>
+				<Button asChild>
 					<Link href="/habits">Go to dashboard</Link>
 				</Button>
 			) : (

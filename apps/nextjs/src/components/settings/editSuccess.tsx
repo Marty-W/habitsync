@@ -39,7 +39,7 @@ const EditSuccess = ({ numOfMutations, handleEditMore, type }: Props) => {
 				Edit more
 			</Button>
 			{isMobile ? (
-				<Button>
+				<Button asChild>
 					<Link href="/habits">Go to dashboard</Link>
 				</Button>
 			) : (

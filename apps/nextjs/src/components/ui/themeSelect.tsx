@@ -1,8 +1,7 @@
-'use client'
-
 import * as React from 'react'
 import { useTheme } from 'next-themes'
 
+import { cn } from '~/utils/tailwind'
 import {
 	Select,
 	SelectContent,
@@ -11,11 +10,16 @@ import {
 	SelectValue,
 } from '~/components/ui/select'
 
-const ThemeSelect = () => {
+interface Props {
+	className?: string
+}
+
+const ThemeSelect = ({ className }: Props) => {
 	const { setTheme, theme } = useTheme()
+
 	return (
 		<Select onValueChange={(value) => setTheme(value)}>
-			<SelectTrigger className="h-full w-[80px]">
+			<SelectTrigger className={cn('h-full w-[80px]', className)}>
 				<SelectValue placeholder={theme} />
 			</SelectTrigger>
 			<SelectContent>

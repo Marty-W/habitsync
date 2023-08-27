@@ -69,6 +69,7 @@ const HabitDetail = ({ habitId }: Props) => {
 			<Button
 				variant="link"
 				className="text-content row-start-6 lg:col-span-2 xl:self-center xl:text-lg 2xl:col-span-4 2xl:row-start-4"
+				asChild
 			>
 				<Link
 					href={`${description.data?.url}`}

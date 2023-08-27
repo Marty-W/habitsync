@@ -13,7 +13,7 @@ interface Props {
 
 const SettingsButton = ({ className, from, link }: Props) => {
 	return (
-		<Button variant="outline" size="icon" className={cn(className)}>
+		<Button variant="outline" size="icon" className={cn(className)} asChild>
 			<Link href={link ?? `/settings?from=${from}`}>
 				<Settings size="1.2rem" />
 			</Link>

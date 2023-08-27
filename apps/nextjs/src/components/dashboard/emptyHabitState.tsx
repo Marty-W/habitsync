@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext, useState } from 'react'
 import Link from 'next/link'
 
@@ -46,12 +48,12 @@ const EmptyHabitState = () => {
 					<DialogFooter className="flex justify-center space-x-4">
 						{isMobile ? (
 							<>
-								<Button>
+								<Button asChild>
 									<Link href="/settings/sync-new-habits/projects">
 										Projects
 									</Link>
 								</Button>
-								<Button>
+								<Button asChild>
 									<Link href="/settings/sync-new-habits/labels">Labels</Link>
 								</Button>
 							</>

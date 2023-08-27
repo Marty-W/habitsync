@@ -16,12 +16,12 @@ const SyncEmpty = ({ sourceType }: Props) => {
 			icon={<CircleSlash size={50} className="text-sprimary" />}
 			text="There are no new tasks to sync. Pick another source."
 		>
-			<Button variant="link">
+			<Button variant="link" asChild>
 				<Link href={`/settings/sync-new-habits/${otherSyncType}s`}>
 					Sync by {otherSyncType}s
 				</Link>
 			</Button>
-			<Button>
+			<Button asChild>
 				<Link href="/habits">Go to dashboard</Link>
 			</Button>
 		</Recap>
