@@ -22,7 +22,6 @@
 		]
 	},
 	"dependencies": {
-		"@doist/todoist-api-typescript": "^2.1.2",
 		"@habitsync/api": "^0.1.0",
 		"@habitsync/auth": "^0.1.0",
 		"@habitsync/db": "^0.1.0",
@@ -45,8 +44,6 @@
 		"@trpc/next": "^10.38.0",
 		"@trpc/react-query": "^10.38.0",
 		"@trpc/server": "^10.38.0",
-		"chart.js": "^4.4.0",
-		"chartjs-adapter-date-fns": "^3.0.0",
 		"class-variance-authority": "^0.6.1",
 		"clsx": "^1.2.1",
 		"date-fns": "^2.30.0",
@@ -79,6 +76,7 @@
 		"autoprefixer": "^10.4.15",
 		"dotenv-cli": "^7.3.0",
 		"eslint": "^8.48.0",
+		"knip": "^2.20.1",
 		"postcss": "^8.4.28",
 		"tailwindcss": "^3.3.3",
 		"ts-node": "^10.9.1",

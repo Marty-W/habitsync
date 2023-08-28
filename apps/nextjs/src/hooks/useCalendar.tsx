@@ -41,7 +41,7 @@ const useCalendarData = (initialYear?: number, initialMonth?: number) => {
 	return {
 		month: displayedDate.getMonth(),
 		year: displayedDate.getFullYear(),
-		calendarData,
+		calendarData: calendarData ?? [],
 		handleAddMonth,
 		handleSubMonth,
 	}
