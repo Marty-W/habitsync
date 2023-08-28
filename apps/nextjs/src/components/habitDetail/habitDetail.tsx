@@ -1,8 +1,11 @@
 'use client'
 
 import Link from 'next/link'
+import { useIsFetching } from '@tanstack/react-query'
+import { Card } from '@tremor/react'
 import { SiTodoist } from 'react-icons/si'
 
+import { api } from '~/utils/trpc'
 import Calendar from '~/components/habitDetail/calendar/calendar'
 import TotalCompletions from '~/components/habitDetail/completions'
 import CompletionsGraph from '~/components/habitDetail/completionsGraph'
@@ -11,60 +14,41 @@ import Streaks from '~/components/habitDetail/streaks'
 import SuccessLineGraph from '~/components/habitDetail/successLineGraph'
 import SuccessRate from '~/components/habitDetail/successRate'
 import { Button } from '~/components/ui/button'
-import useHabitDetailData from '~/hooks/useHabitDetailData'
+import Spinner from '../ui/spinner'
 
 interface Props {
 	habitId: string
 }
 
 const HabitDetail = ({ habitId }: Props) => {
-	const {
-		calendarData,
-		description,
-		streaks,
-		totalCompletions,
-		successRate,
-		timestampSummaryCounts,
-		habitSmoothingData,
-	} = useHabitDetailData(habitId)
+	const isFetching = useIsFetching()
+	const description = api.habit.getDetail.useQuery({ id: habitId })
 
-	//TODO refactor this, only placeholder
-	if (
-		!timestampSummaryCounts.isSuccess ||
-		!successRate.isSuccess ||
-		!calendarData.isSuccess ||
-		!streaks.isSuccess ||
-		!description.isSuccess ||
-		!totalCompletions.isSuccess ||
-		!habitSmoothingData.isSuccess
-	) {
-		return null
+	if (isFetching) {
+		return <Spinner className="text-sprimary mx-auto h-24 w-24" />
 	}
 
 	return (
 		<div className="2xl:auto-rows-fit flex flex-1 flex-col gap-6 lg:grid lg:grid-cols-2 lg:gap-6 lg:px-4 xl:gap-y-8 2xl:grid-cols-4 2xl:grid-rows-[0.3fr_1fr_0.8fr_0.3fr]">
 			<div className="col-span-1 2xl:col-span-2">
-				<HabitDescription desc={description.data} />
+				<HabitDescription habitId={habitId} />
 			</div>
 			<div className="col-span-2 col-start-1 2xl:row-start-2">
-				<SuccessLineGraph data={habitSmoothingData.data} />
+				<SuccessLineGraph habitId={habitId} />
 			</div>
 			<div className="col-span-2 row-start-3 2xl:row-start-2">
-				<CompletionsGraph timestamps={timestampSummaryCounts.data} />
+				<CompletionsGraph habitId={habitId} />
 			</div>
 			<div className="col-span-2 row-start-4 2xl:row-start-3">
-				<Calendar
-					data={calendarData.data}
-					startDate={description.data.createdAt}
-				/>
+				<Calendar habitId={habitId} />
 			</div>
 
 			<div className="col-span-2 row-start-5 2xl:row-start-3 2xl:self-stretch">
-				<Streaks streaks={streaks.data} />
+				<Streaks habitId={habitId} />
 			</div>
 			<div className="flex gap-4 lg:col-start-2 lg:row-start-1 2xl:col-span-2 2xl:col-start-3">
-				<TotalCompletions completions={totalCompletions.data} />
-				<SuccessRate rate={successRate.data} />
+				<TotalCompletions habitId={habitId} />
+				<SuccessRate habitId={habitId} />
 			</div>
 			<Button
 				variant="link"

@@ -3,27 +3,32 @@ import { Card } from '@tremor/react'
 
 import { normalizeDate } from '@habitsync/lib'
 
-import type { RouterOutputs } from '~/utils/trpc'
-import Loader from '~/components/ui/activeLoader'
+import { api } from '~/utils/trpc'
 import ResizableSlidePanel from '~/components/ui/resizablePanel'
 import useCalendarData from '~/hooks/useCalendar'
+import DetailError from '../detailError'
 import DayCell from './dayCell'
 import MonthSwitcher from './monthSwitcher'
 import WeekRow from './weekRow'
 
 interface Props {
-	data: RouterOutputs['timestamp']['getAllWithStreakDays']
-	startDate: Date
+	habitId: string
 }
 
 export type AnimationDirection = 'left' | 'right' | null
 
-const Calendar = ({ data, startDate }: Props) => {
+const Calendar = ({ habitId }: Props) => {
+	const calendarQueryData = api.timestamp.getAllWithStreakDays.useQuery({
+		habitId,
+	})
+	const description = api.habit.getDetail.useQuery({
+		id: habitId,
+	})
+
 	const { year, month, calendarData, handleAddMonth, handleSubMonth } =
 		useCalendarData()
 	const [animationDirection, setAnimationDirection] =
 		useState<AnimationDirection>(null)
-	const { extraStreakDays, timestamps } = data
 
 	const handleMonthChange = (type: 'addMonth' | 'subMonth') => {
 		if (type === 'addMonth') {
@@ -35,9 +40,25 @@ const Calendar = ({ data, startDate }: Props) => {
 		}
 	}
 
-	if (!calendarData) {
-		return <Loader />
+	if (calendarQueryData.isLoading || description.isLoading) {
+		return null
 	}
+
+	if (calendarQueryData.isError || description.isError) {
+		return (
+			<Card>
+				{calendarQueryData.isError && (
+					<DetailError>{calendarQueryData.error.message}</DetailError>
+				)}
+				{description.isError && (
+					<DetailError>{description.error.message}</DetailError>
+				)}
+			</Card>
+		)
+	}
+
+	const { timestamps, extraStreakDays } = calendarQueryData.data
+	const { createdAt } = description.data
 
 	return (
 		<Card>
@@ -57,7 +78,7 @@ const Calendar = ({ data, startDate }: Props) => {
 							const isExtraStreakDay = extraStreakDays?.has(normalizeDate(date))
 							const isToday = normalizeDate(date) === normalizeDate(new Date())
 							const isStartDay =
-								normalizeDate(date) === normalizeDate(startDate)
+								normalizeDate(date) === normalizeDate(createdAt)
 							const isTodayWithTimestamp = isToday && isSuccessfull
 
 							// Outside this month

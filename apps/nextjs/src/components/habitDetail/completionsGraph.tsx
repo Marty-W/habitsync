@@ -9,14 +9,19 @@ import {
 	Title,
 } from '@tremor/react'
 
-import type { RouterOutputs } from '@habitsync/api'
+import { api } from '~/utils/trpc'
+import DetailError from './detailError'
 
 interface Props {
-	timestamps: RouterOutputs['timestamp']['getSummaryCounts']
+	habitId: string
 }
 
-const CompletionsGraph = ({ timestamps }: Props) => {
-	const { weekChartData, monthChartData, yearChartData } = timestamps
+const CompletionsGraph = ({ habitId }: Props) => {
+	const timestampSummaryCounts = api.timestamp.getSummaryCounts.useQuery({
+		habitId,
+	})
+
+	if (timestampSummaryCounts.isLoading) return null
 
 	return (
 		<Card className="2xl:h-full">
@@ -27,36 +32,40 @@ const CompletionsGraph = ({ timestamps }: Props) => {
 					<Tab>Month</Tab>
 					<Tab>Year</Tab>
 				</TabList>
-				<TabPanels>
-					<TabPanel>
-						<BarChart
-							data={weekChartData}
-							index="name"
-							categories={['Week completions']}
-							allowDecimals={false}
-							maxValue={7}
-							className="2xl:h-[450px]"
-						/>
-					</TabPanel>
-					<TabPanel>
-						<BarChart
-							data={monthChartData}
-							index="name"
-							categories={['Month completions']}
-							allowDecimals={false}
-							className="2xl:h-[450px]"
-						/>
-					</TabPanel>
-					<TabPanel>
-						<BarChart
-							data={yearChartData}
-							index="name"
-							categories={['Year completions']}
-							allowDecimals={false}
-							className="2xl:h-[450px]"
-						/>
-					</TabPanel>
-				</TabPanels>
+				{!timestampSummaryCounts.isError ? (
+					<TabPanels>
+						<TabPanel>
+							<BarChart
+								data={timestampSummaryCounts.data.weekChartData}
+								index="name"
+								categories={['Week completions']}
+								allowDecimals={false}
+								maxValue={7}
+								className="2xl:h-[450px]"
+							/>
+						</TabPanel>
+						<TabPanel>
+							<BarChart
+								data={timestampSummaryCounts.data.monthChartData}
+								index="name"
+								categories={['Month completions']}
+								allowDecimals={false}
+								className="2xl:h-[450px]"
+							/>
+						</TabPanel>
+						<TabPanel>
+							<BarChart
+								data={timestampSummaryCounts.data.yearChartData}
+								index="name"
+								categories={['Year completions']}
+								allowDecimals={false}
+								className="2xl:h-[450px]"
+							/>
+						</TabPanel>
+					</TabPanels>
+				) : (
+					<DetailError>{timestampSummaryCounts.error.message}</DetailError>
+				)}
 			</TabGroup>
 		</Card>
 	)

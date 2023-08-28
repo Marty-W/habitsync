@@ -1,14 +1,27 @@
 import { Card, LineChart, Title } from '@tremor/react'
+import { AlertCircle } from 'lucide-react'
 
-import type { RouterOutputs } from '@habitsync/api'
-
+import { api } from '~/utils/trpc'
 import ComponentDialog from './componentDialog'
+import DetailError from './detailError'
 
 interface Props {
-	data: RouterOutputs['stats']['getExpSmoothingSuccessRate']
+	habitId: string
 }
 
-const SuccessLineGraph = ({ data }: Props) => {
+const SuccessLineGraph = ({ habitId }: Props) => {
+	const habitSmoothingData = api.stats.getExpSmoothingSuccessRate.useQuery(
+		{
+			habitId,
+		},
+		{
+			retry: false,
+			retryOnMount: false,
+		},
+	)
+
+	if (habitSmoothingData.isLoading) return null
+
 	return (
 		<Card className="2xl:flex 2xl:h-full 2xl:flex-col">
 			<div className="flex items-center justify-between">
@@ -25,14 +38,18 @@ const SuccessLineGraph = ({ data }: Props) => {
 					"
 				/>
 			</div>
-			<LineChart
-				className="mt-6 min-w-full 2xl:flex-1"
-				data={data}
-				index="date"
-				categories={['Habit score']}
-				yAxisWidth={40}
-				valueFormatter={(value) => `${value}%`}
-			/>
+			{!habitSmoothingData.error ? (
+				<LineChart
+					className="mt-6 min-w-full 2xl:flex-1"
+					data={habitSmoothingData.data}
+					index="date"
+					categories={['Habit score']}
+					yAxisWidth={40}
+					valueFormatter={(value) => `${value}%`}
+				/>
+			) : (
+				<DetailError>{habitSmoothingData.error.message}</DetailError>
+			)}
 		</Card>
 	)
 }

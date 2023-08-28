@@ -87,7 +87,7 @@ export const streakRouter = createTRPCRouter({
 				})
 			}
 
-			return calculateAllStreaks(
+			const streaks = calculateAllStreaks(
 				habit.timestamps.map((timestamp) => timestamp.time),
 				{
 					type: habit.recurrenceType,
@@ -95,5 +95,13 @@ export const streakRouter = createTRPCRouter({
 					step: habit.recurrenceStep!,
 				},
 			).slice(0, input.numStreaks)
+
+			if (streaks.length === 0) {
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: "You don't have any streaks yet.",
+				})
+			}
+			return streaks
 		}),
 })

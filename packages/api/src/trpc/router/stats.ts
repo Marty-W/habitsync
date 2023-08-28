@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server'
 import { eachDayOfInterval, endOfYesterday, startOfDay } from 'date-fns'
 import { z } from 'zod'
 
@@ -75,6 +76,13 @@ export const statsRouter = createTRPCRouter({
 			const completionDates = habit.timestamps.map((timestamp) =>
 				normalizeDate(timestamp.time),
 			)
+
+			if (completionDates.length < 2) {
+				throw new TRPCError({
+					code: 'BAD_REQUEST',
+					message: 'Not enough data to calculate smoothing',
+				})
+			}
 
 			// get every day of interval  and prefill with 0 (for the smoothing alg)
 			const everyDaySinceHabitStarted = eachDayOfInterval({
